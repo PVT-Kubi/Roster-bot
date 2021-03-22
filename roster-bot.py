@@ -6,6 +6,7 @@ import random
 import sys
 import datetime
 import asyncio
+import sqlite3
 import re
 
 intents = discord.Intents.default()
