@@ -6,7 +6,6 @@ import random
 import sys
 import datetime
 import asyncio
-import sqlite3
 import re
 
 intents = discord.Intents.default()
@@ -209,7 +208,7 @@ async def edit(ctx, baza, kolumna, wartosc, imie):
         await ctx.send("Podany użytkownik nie istnieje")
 
 
-    
+
 
 def num(s):
     try:
