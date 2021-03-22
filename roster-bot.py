@@ -299,4 +299,4 @@ async def oddzial(ctx, tabela):
 
 
 
-client.run('ODIzNjMwMjEwMTkxNzIwNDg4.YFjnaA.sR4wBR_Av1r5hH-zpsK096EVEu8')
+client.run('TOKEN')
