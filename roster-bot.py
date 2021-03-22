@@ -209,9 +209,7 @@ async def edit(ctx, baza, kolumna, wartosc, imie):
         await ctx.send("Podany użytkownik nie istnieje")
 
 
-@client.command()
-async def(ctx, baza, imie):
-
+    
 
 def num(s):
     try:
