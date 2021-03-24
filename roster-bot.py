@@ -157,8 +157,6 @@ async def wypisz(ctx, tabela, imie):
 
         else:
             await ctx.send("Nie znaleziono uzytkownika w bazie")
-        cursor.close()
-        db.close()
     else:
         await ctx.send("Ten użytkownik nie istnieje")
 
