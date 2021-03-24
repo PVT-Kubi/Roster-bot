@@ -124,7 +124,7 @@ async def wypisz(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
         mycursor.execute(f"SELECT*FROM {tabela} WHERE IdStorm = '{member.id}'")
-        result = cursor.fetchone()
+        result = mycursor.fetchone()
         if result is not None:
             author = ctx.message.author
             icon = author.avatar_url
