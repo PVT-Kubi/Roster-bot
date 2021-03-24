@@ -8,13 +8,21 @@ import datetime
 import asyncio
 import sqlite3
 import re
+import mysql.connector
 
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix = '?', help_command = None, intents=intents)
 
 
+db = mysql.connector.connect(
+    host = "eu-cdbr-west-03.cleardb.net",
+    user = "bd8ad38ff63784",
+    passwd = "f3a8831d",
+    database = "heroku_cd6d7049894a6fc"
+    )
 
+mycursor = db.cursor()
 
 
 async def findMember(ctx, query):
@@ -76,15 +84,10 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 @client.command()
-async def tab(ctx, baza):
-
-    db = sqlite3.connect('pingus.sqlite', timeout = 10)
-    cursor = db.cursor()
-    db2 = sqlite3.connect('tesst.db', timeout = 10)
-    cursor2 = db2.cursor()
-    if baza==('pingus'):
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        result = cursor.fetchall()
+async def Kompania(ctx, *baza):
+    if baza==('penis w dupie'):
+        mycursor.execute("SELECT*FROM 4th")
+        result = mycursor.fetchall()
         embed = discord.Embed(
             title = 'Oddziały:',
             color = discord.Color.red()
@@ -94,8 +97,8 @@ async def tab(ctx, baza):
                 embed.add_field(value = (f'{y}'), name = 'Nazwa oddziału:',  inline = True)
         await ctx.send(embed=embed)
     elif baza==('tesst'):
-        cursor2.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        result = cursor2.fetchall()
+        mycursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        result = mycursor.fetchall()
         embed = discord.Embed(
             title = 'Oddziały:',
             color = discord.Color.red()
@@ -106,10 +109,6 @@ async def tab(ctx, baza):
         await ctx.send(embed=embed)
     else:
         await ctx.send('Nie znalazłem takiego oddziału (albo o czymś nie wiem)')
-    cursor.close()
-    cursor2.close()
-    db.close()
-    db2.close()
 @client.command()
 async def members(ctx):
     members = ctx.message.guild.members
@@ -124,9 +123,7 @@ async def members(ctx):
 async def wypisz(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
-        db = sqlite3.connect('pingus.sqlite')
-        cursor = db.cursor()
-        cursor.execute(f"SELECT*FROM {tabela} WHERE Imie = '{member.id}'")
+        mycursor.execute(f"SELECT*FROM {tabela} WHERE IdStorm = '{member.id}'")
         result = cursor.fetchone()
         if result is not None:
             author = ctx.message.author
@@ -218,19 +215,16 @@ def num(s):
         return None
 
 @client.command()
-async def dodaj(ctx, baza, imie, nazwisko, wiek):
+async def dodaj(ctx, baza, imie):
     member = await findMember(ctx, imie)
     if member is not None:
-        if num(wiek) is not None:
-            db = sqlite3.connect('pingus.sqlite', timeout = 10)
-            cursor = db.cursor()
-            cursor.execute(f"INSERT INTO {baza} VALUES('{member.id}', '{nazwisko}', {wiek})")
-            db.commit()
-            await ctx.send("Uzytkownik zostal pomyślnie dodany!")
-            cursor.close()
-            db.close()
-        else:
-            await ctx.send('Wiek jest liczbą,a nie wyrazem jełopie jebany')
+        sliced = member.nick[2:]
+        array = sliced.split("-")
+        print(array)
+        mycursor.execute(f"INSERT INTO {baza}(`IdStorm`, `Ranga`, `Nickname`, `Status`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwansu/degrada`, `Awansujacy`, `Pozycja`) VALUES('{member.id}', 1, '{array[2]}', 'Aktywny', {array[1]}, 'Piechur', NULL, NULL, '3', '3', NULL, NULL, 1 )")
+        mycursor.execute(f"SELECT*FROM {baza} WHERE IdStorm = '{member.id}'")
+        await ctx.send("Uzytkownik zostal pomyślnie dodany!")
+
     else:
         await ctx.send('Podany użytkownik nie istnieje!')
 
