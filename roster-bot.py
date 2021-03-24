@@ -220,8 +220,10 @@ async def dodaj(ctx, baza, imie):
         array = sliced.split("-")
         print(array)
         mycursor.execute(f"INSERT INTO {baza}(`IdStorm`, `Ranga`, `Nickname`, `Status`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwansu/degrada`, `Awansujacy`, `Pozycja`) VALUES('{member.id}', 1, '{array[2]}', 'Aktywny', {array[1]}, 'Piechur', NULL, NULL, '3', '3', NULL, NULL, 1 )")
+        db.commit()
         mycursor.execute(f"SELECT*FROM {baza} WHERE IdStorm = '{member.id}'")
-            await ctx.send("Uzytkownik zostal pomyślnie dodany!")
+        result  = mycursor.fetchone()
+        await ctx.send(result)
 
     else:
         await ctx.send('Podany użytkownik nie istnieje!')
