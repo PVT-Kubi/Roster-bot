@@ -8,20 +8,22 @@ import datetime
 import asyncio
 import sqlite3
 import re
-import mysql.connector
+from mysql.connector import pooling
 
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix = '?', help_command = None, intents=intents)
 
 
-db = mysql.connector.connect(
+connection_pool = pooling.MySQLConnectionPool(
+    pool_size=5,
+    pool_reset_session=True,
     host = "eu-cdbr-west-03.cleardb.net",
     user = "bd8ad38ff63784",
     passwd = "f3a8831d",
     database = "heroku_cd6d7049894a6fc"
     )
-
+db = connection_pool.get_connection()
 mycursor = db.cursor()
 
 
