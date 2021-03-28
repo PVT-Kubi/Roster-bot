@@ -517,7 +517,6 @@ async def a(ctx, tabela, imie):
         else:
             mycursor.execute(f"UPDATE {tabela} set Ranga = '{up(x)}', DataAwDeg = '{wiad.year}-{wiad.month}-{wiad.day}', Awansujacy = '{author.id}' WHERE IdStorm = '{member.id}'")
             db.commit()
-            mycursor.execute(f"select r.N")
             await ctx.send(f"Gratuluję awansu {member.mention} na :partying_face: :partying_face: :partying_face: ")
     elif hasRole == False:
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
