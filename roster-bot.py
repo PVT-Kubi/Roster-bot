@@ -25,7 +25,7 @@ dbconfig ={
 
 connection_pool = pooling.MySQLConnectionPool(
     pool_name = 'Pingus',
-    pool_size= 5,
+    pool_size= 8,
     #pool_reset_session=True,
     **dbconfig
     )
