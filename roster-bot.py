@@ -203,7 +203,7 @@ async def w(ctx, tabela, imie):
         hasRole = False
         for role in member.roles:
             if role.name != '@everyone':
-                if role.name == 'Tak o':
+                if role.name == 'Edytor rostera':
                     hasRole = True
                     break
         if hasRole:
@@ -230,7 +230,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
     if member is not None:
         for role in author.roles:
             if role.name != '@everyone':
-                if role.name == 'Tak o':
+                if role.name == 'Edytor rostera':
                     hasRole = True
                     break
         if hasRole == True:
@@ -288,7 +288,7 @@ async def d(ctx, baza, imie):
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Tak o':
+            if role.name == 'Edytor rostera':
                 hasRole = True
                 break
 
@@ -357,7 +357,7 @@ async def p(ctx, tabela, imie):
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Tak o':
+            if role.name == 'Edytor rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -381,7 +381,7 @@ async def m(ctx, tabela, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Tak o':
+            if role.name == 'Edytor rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -407,7 +407,7 @@ async def ak(ctx, tabela, arg, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Tak o':
+            if role.name == 'Edytor rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -452,7 +452,7 @@ async def z(ctx, tabela, arg, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Tak o':
+            if role.name == 'Edytor rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -496,7 +496,7 @@ async def a(ctx, tabela, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Tak o':
+            if role.name == 'Edytor rostera':
                 hasRole = True
                 break
     if hasRole == True:
