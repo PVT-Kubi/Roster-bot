@@ -25,7 +25,7 @@ dbconfig ={
 
 connection_pool = pooling.MySQLConnectionPool(
     pool_name = 'Pingus',
-    pool_size= 8,
+    pool_size= 9,
     #pool_reset_session=True,
     **dbconfig
     )
@@ -309,7 +309,7 @@ async def d(ctx, baza, imie):
 
             embed2.set_image(url="https://media.discordapp.net/attachments/811324655310602303/825141657393299456/Tapeta.png?width=840&height=473")
             embed2.set_footer(text=AtName, icon_url=icon)
-            embed2.set_author(name = member.mention)
+            embed2.set_author(name = f'{array[0]}-{array[1]}-{array[2]}')
             await ctx.send(embed=embed2)
 
             await wypisywanie(ctx, member, baza)
