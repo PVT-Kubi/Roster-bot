@@ -121,7 +121,7 @@ async def help(ctx):
 #or '12th' or 'Mechanized' or 'mechanized' or 'Mechanized Company' or '12th Mechanized Company'
 @client.command(aliases = ['kompania', 'Kompania', 'K'])
 async def k(ctx, *baza):
-    
+
     b = " ".join(baza)
     b = b.lower()
     if b == '4' or b == '4th' or b == 'marksman' or b == '4th marksman company' or b =='4th company':
@@ -129,7 +129,7 @@ async def k(ctx, *baza):
         color = discord.Color.red()
     elif b == '12' or b == '12th' or b == 'mechanized' or b == '12th mechanized company' or b == '12th company':
         mycursor.execute("SELECT*FROM 12th")
-        color = dirscord.Color.blue()
+        color = discord.Color.blue()
     else:
         return await ctx.send('Taki taka kompania nie istnieje (albo o czymś nie wiem)')
     result = mycursor.fetchall()
