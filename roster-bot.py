@@ -25,13 +25,12 @@ dbconfig ={
 
 connection_pool = pooling.MySQLConnectionPool(
     pool_name = 'Pingus',
-    pool_size=5,
-    pool_reset_session=True,
+    pool_size= 5,
+    #pool_reset_session=True,
     **dbconfig
     )
 db = connection_pool.get_connection()
-mycursor = db.cursor()
-
+mycursor = db.cursor(buffered=True)
 
 async def findMember(ctx, query):
     members = []
