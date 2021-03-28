@@ -129,7 +129,7 @@ async def k(ctx, *baza):
             color = discord.Color.red()
     elif b == '12' or b == '12th' or b == 'mechanized' or b == '12th mechanized company' or b == '12th company':
         mycursor.execute("SELECT*FROM 12th")
-        color = dirscord.Color.blue()
+        color = discord.Color.blue()
     else:
         return await ctx.send('Taki taka kompania nie istnieje (albo o czymś nie wiem)')
         result = mycursor.fetchall()
