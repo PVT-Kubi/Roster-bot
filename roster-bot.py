@@ -307,7 +307,7 @@ async def d(ctx, baza, imie):
                 color = discord.Color.green()
             )
 
-            embed2.set_image(url="https://media.discordapp.net/attachments/811324655310602303/825141657393299456/Tapeta.png?width=840&height=473")
+            embed2.set_image(url="https://cdn.discordapp.com/attachments/760953812713472060/825819921287217202/proxy-image.jpg")
             embed2.set_footer(text=AtName, icon_url=icon)
             embed2.set_author(name = f'{array[0]}-{array[1]}-{array[2]}')
             await ctx.send(embed=embed2)
