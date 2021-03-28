@@ -12,7 +12,7 @@ from mysql.connector import pooling
 
 intents = discord.Intents.default()
 intents.members = True
-client = commands.Bot(command_prefix = '?', help_command = None, intents=intents)
+client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
 
 dbconfig ={
     "host" : "eu-cdbr-west-03.cleardb.net",
@@ -121,7 +121,7 @@ async def help(ctx):
 #or '12th' or 'Mechanized' or 'mechanized' or 'Mechanized Company' or '12th Mechanized Company'
 @client.command(aliases = ['kompania', 'Kompania', 'K'])
 async def k(ctx, *baza):
-    color
+    
     b = " ".join(baza)
     b = b.lower()
     if b == '4' or b == '4th' or b == 'marksman' or b == '4th marksman company' or b =='4th company':
@@ -171,7 +171,7 @@ async def wypisywanie(ctx, mb, tab):
         if pingus == 'Korpus Podoficerów':
             kolor = discord.Color.red()
         elif pingus == 'Sztab Wyższy':
-            kolor = discord.Color.yellow()
+            kolor = discord.Color.green()
         elif pingus == 'Korpus Szeregowych':
             kolor = discord.Color.green()
         else:
