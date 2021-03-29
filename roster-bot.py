@@ -167,9 +167,9 @@ async def wypisywanie(ctx, mb, tab):
         pingus = result[13]
 
 
-        if pingus == 'Korpus Podoficerów':
+        if pingus == 'Korpus Podoficerow':
             kolor = discord.Color.red()
-        elif pingus == 'Sztab Wyższy':
+        elif pingus == 'Sztab Wyzszy':
             kolor = 0xf1c40f
         elif pingus == 'Korpus Szeregowych':
             kolor = discord.Color.green()
