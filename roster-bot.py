@@ -304,7 +304,7 @@ async def d(ctx, baza, imie):
             array = sliced.split("-")
             print(array)
             mycursor.execute(f"INSERT INTO {baza}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) VALUES('{member.id}', 1, '{array[2]}', 'Aktywny', {array[1]}, 'Piechur', NULL, NULL, '3', '3', NULL, NULL, 1 )")
-            db.commit()
+            conn.commit()
             embed2 = discord.Embed(
                 title = f'witamy w ~~koloni~~ szeregach',
                 color = discord.Color.green()
