@@ -26,8 +26,8 @@ def connection():
     db = 'heroku_cd6d7049894a6fc',
     )
 
-    mycursor = SSCursor(connection)
-    return mycursor
+
+    return connection
 
 
 async def findMember(ctx, query):
@@ -153,6 +153,7 @@ async def wypisywanie(ctx, mb, tab):
     member = mb
     tabela = tab
     conn = connection()
+    mycursor = SSCursor(conn)
     mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
     result = mycursor.fetchone()
     if result is not None:
@@ -284,6 +285,7 @@ def num(s):
 async def d(ctx, baza, imie):
     member = await findMember(ctx, imie)
     conn= connection()
+    mycursor = SSCursor(conn)
     hasRole = False
     author = ctx.message.author
     for role in author.roles:
