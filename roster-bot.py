@@ -27,7 +27,7 @@ def connection():
     )
 
     mycursor = SSCursor(connection)
-    return connection, mycursor
+    return mycursor
 
 
 async def findMember(ctx, query):
