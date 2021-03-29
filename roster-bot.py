@@ -9,28 +9,25 @@ import asyncio
 import sqlite3
 import re
 from mysql.connector import pooling
+import MySQLdb
+from MySQLdb.cursors import SSCursor
+
 
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
 
-dbconfig ={
-    "host" : "eu-cdbr-west-03.cleardb.net",
-    "user" : "bd8ad38ff63784",
-    "passwd" : "f3a8831d",
-    "database": "heroku_cd6d7049894a6fc"
-}
 
 
+connection = MySQLdb.connect(
+host = "eu-cdbr-west-03.cleardb.net",
+user = 'bd8ad38ff63784',
+passwd = 'f3a8831d',
+db = 'heroku_cd6d7049894a6fc',
+)
 
-connection_pool = pooling.MySQLConnectionPool(
-    pool_name = 'Pingus',
-    pool_size= 9,
-    #pool_reset_session=True,
-    **dbconfig
-    )
-db = connection_pool.get_connection()
-mycursor = db.cursor(buffered=True)
+mycursor = SSCursor(connection)
+
 
 async def findMember(ctx, query):
     members = []
@@ -417,11 +414,11 @@ async def ak(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'No kto by pomyślał, {prin.mention} przestał się opierdzielać!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {down(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'{prin.mention} przestań się opierdzielać i pić na służbie!')
             else:
                 mycursor.execute(f"SELECT Ranga, Pozycja FROM {tabela} WHERE IdStorm = '{member.id}'")
@@ -429,11 +426,11 @@ async def ak(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'No po prostu wzorowy żołnierz! Zawsze na treningu i nie pije na służbie! {prin.nick} powinieneś brać z niego przykład!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {down(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'{member.nick} nie idź w ślady Kubiego!!!')
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
@@ -462,11 +459,11 @@ async def z(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'No kto by pomyślał, {prin.mention} przestał się opierdzielać!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'{prin.mention} przestań się opierdzielać i pić na służbie!')
             else:
                 mycursor.execute(f"SELECT Ranga, Pozycja FROM {tabela} WHERE IdStorm = '{member.id}'")
@@ -474,11 +471,11 @@ async def z(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'No po prostu wzorowy żołnierz! Zawsze na treningu i nie pije na służbie! {prin.nick} powinieneś brać z niego przykład!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    db.commit()
+                    connection.commit()
                     await ctx.send(f'{member.nick} nie idź w ślady Kubiego!!!')
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
@@ -510,13 +507,13 @@ async def a(ctx, tabela, imie):
         print(member.id)
         if x > 2 and z < 2:
             mycursor.execute(f"UPDATE {tabela} set Ranga = {up(x)}, Pozycja = {up(z)}, DataAwDeg = '{wiad.year}-{wiad.month}-{wiad.day}', Awansujacy = '{author.id}' WHERE IdStorm = '{member.id}'")
-            db.commit()
+            connection.commit()
             await ctx.send(f"Gratuluję awa")
             await ctx.send('chwila...')
             await ctx.send(f"O cholera {member.mention} witamy w podoficerach!!!")
         else:
             mycursor.execute(f"UPDATE {tabela} set Ranga = '{up(x)}', DataAwDeg = '{wiad.year}-{wiad.month}-{wiad.day}', Awansujacy = '{author.id}' WHERE IdStorm = '{member.id}'")
-            db.commit()
+            connection.commit()
             await ctx.send(f"Gratuluję awansu {member.mention} na :partying_face: :partying_face: :partying_face: ")
     elif hasRole == False:
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
