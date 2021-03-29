@@ -18,15 +18,16 @@ intents.members = True
 client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
 
 
+def connection:
+    connection = MySQLdb.connect(
+    host = "eu-cdbr-west-03.cleardb.net",
+    user = 'bd8ad38ff63784',
+    passwd = 'f3a8831d',
+    db = 'heroku_cd6d7049894a6fc',
+    )
 
-connection = MySQLdb.connect(
-host = "eu-cdbr-west-03.cleardb.net",
-user = 'bd8ad38ff63784',
-passwd = 'f3a8831d',
-db = 'heroku_cd6d7049894a6fc',
-)
-
-mycursor = SSCursor(connection)
+    mycursor = SSCursor(connection)
+    return connection, mycursor
 
 
 async def findMember(ctx, query):
@@ -151,6 +152,7 @@ async def members(ctx):
 async def wypisywanie(ctx, mb, tab):
     member = mb
     tabela = tab
+    connection = connection()
     mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
         result = mycursor.fetchone()
         if result is not None:
@@ -188,6 +190,7 @@ async def wypisywanie(ctx, mb, tab):
         embed.set_author(name=member.nick, icon_url=member.avatar_url)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
+        connection.close()
     else:
         await ctx.send("Nie znaleziono uzytkownika w bazie")
 
@@ -280,6 +283,7 @@ def num(s):
 @client.command(aliases = ['dodaj', 'Dodaj', 'add', 'Add', 'D'])
 async def d(ctx, baza, imie):
     member = await findMember(ctx, imie)
+    connection = connection()
     hasRole = False
     author = ctx.message.author
     for role in author.roles:
@@ -314,6 +318,7 @@ async def d(ctx, baza, imie):
 
     else:
         await ctx.send('Podany użytkownik nie istnieje!')
+        connection.close()
     else:
         await ctx.send('Coś mi się wydaje, że jedyne co możesz sobie dodać to chromosom...')
 
