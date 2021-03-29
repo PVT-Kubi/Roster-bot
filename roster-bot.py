@@ -118,7 +118,8 @@ async def help(ctx):
 #or '12th' or 'Mechanized' or 'mechanized' or 'Mechanized Company' or '12th Mechanized Company'
 @client.command(aliases = ['kompania', 'Kompania', 'K'])
 async def k(ctx, *baza):
-
+    conn = connection()
+    mycursor = SSCursor(conn)
     b = " ".join(baza)
     b = b.lower()
     if b == '4' or b == '4th' or b == 'marksman' or b == '4th marksman company' or b =='4th company':
@@ -214,6 +215,7 @@ async def w(ctx, tabela, imie):
 
 
 
+
     else:
         await ctx.send("Ten użytkownik nie istnieje")
 
@@ -225,6 +227,8 @@ async def find(ctx, query):
 @client.command(aliases = ['edit', 'Edit', 'edytuj', 'Edytuj','E'])
 async def e(ctx, baza, kolumna, wartosc, imie):
     member = await findMember(ctx, imie)
+    conn = connection()
+    mycursor = SSCursor(conn)
     hasRole = False
     author = ctx.message.author
     if member is not None:
@@ -242,7 +246,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
             AtName = (f"{author.name}#{author.discriminator}")
 
             mycursor.execute(f"UPDATE {baza} set {kolumna} = '{wartosc}' WHERE IdStorm = '{member.id}'")
-            db.commit()
+            conn.commit()
 
             mycursor.execute(f"SELECT {kolumna} FROM {baza} WHERE IdStorm = '{member.id}' ")
             result2 = mycursor.fetchone()
@@ -263,6 +267,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
 
         else:
             await ctx.send('Jak chcesz edytować nick na GMD-2137-JP2 to gadaj z przełożonymi...')
+        conn.close()
     else:
         await ctx.send("Podany użytkownik nie istnieje")
 
@@ -356,6 +361,8 @@ def down(arg):
 @client.command(aliases = ['plus', 'Plus', 'P', 'plusik'])
 async def p(ctx, tabela, imie):
     member = await findMember(ctx, imie)
+    conn = connection()
+    mycursor = SSCursor(conn)
     hasRole = False
     author = ctx.message.author
     for role in author.roles:
@@ -369,18 +376,21 @@ async def p(ctx, tabela, imie):
             r = mycursor.fetchall()
             x = r[0][0]
             mycursor.execute(f"UPDATE {tabela} set Plusy = {up(x)} where IdStorm = '{member.id}'")
-            db.commit()
+            conn.commit()
             await ctx.send(f'Plusik dla pana {member.nick}')
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Jak chcesz sobie zaplusować to rusz dupę a nie tykasz nie swoje komendy!')
+    conn.close()
 
 
 @client.command(aliases = ['minus', 'Minus', 'M', 'minusik'])
 async def m(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     author = ctx.message.author
+    conn = connection()
+    mycursor = SSCursor(conn)
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
@@ -393,18 +403,21 @@ async def m(ctx, tabela, imie):
             r = mycursor.fetchall()
             x = r[0][0]
             mycursor.execute(f"UPDATE {tabela} set Minusy = {up(x)} where IdStorm = '{member.id}'")
-            db.commit()
+            conn.commit()
             await ctx.send(f'No, ciekawe co pan {member.nick} przeskrobał')
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Ty chyba jesteś jakiś niepełnosprytny ?!')
+    conn.close()
 
 
 @client.command(aliases = ['aktywnosc', 'Aktywnosc', 'aktywność', 'Aktywność'])
 async def ak(ctx, tabela, arg, imie):
     member = await findMember(ctx, imie)
     prin = ctx.message.guild.get_member(509353384709586945)
+    conn = connection()
+    mycursor = SSCursor(conn)
     author = ctx.message.author
     pM = arg.lower()
     hasRole = False
@@ -421,11 +434,11 @@ async def ak(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'No kto by pomyślał, {prin.mention} przestał się opierdzielać!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {down(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'{prin.mention} przestań się opierdzielać i pić na służbie!')
             else:
                 mycursor.execute(f"SELECT Ranga, Pozycja FROM {tabela} WHERE IdStorm = '{member.id}'")
@@ -443,12 +456,15 @@ async def ak(ctx, tabela, arg, imie):
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Rusz tą dupę a nie kombinujesz!')
+    con.close()
 
 
 
 @client.command(aliases = ['Zachowanie', 'zachowanie', 'Z', 'Zach', 'zach'])
 async def z(ctx, tabela, arg, imie):
     member = await findMember(ctx, imie)
+    conn = connection()
+    mycursor = SSCursor(conn)
     author = ctx.message.author
     prin = ctx.message.guild.get_member(509353384709586945)
     pM = arg.lower()
@@ -466,11 +482,11 @@ async def z(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'No kto by pomyślał, {prin.mention} przestał się opierdzielać!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'{prin.mention} przestań się opierdzielać i pić na służbie!')
             else:
                 mycursor.execute(f"SELECT Ranga, Pozycja FROM {tabela} WHERE IdStorm = '{member.id}'")
@@ -478,17 +494,17 @@ async def z(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'No po prostu wzorowy żołnierz! Zawsze na treningu i nie pije na służbie! {prin.nick} powinieneś brać z niego przykład!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'{member.nick} nie idź w ślady Kubiego!!!')
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Ja już nie mam siły. Plusy rozumiem, awans rozumiem, AKTYWNOŚĆ też jeszcze zrozumiem, ALE PO CHOLERE TO ZACHOWANIE SOBIE ZWIĘKSZASZ! PRZECIEŻ TO PRAKTYCZNIE NIC NIE ZNACZY!!!')
-
+    conn.close()
 
 @client.command(aliases = ['awans', 'Awans', 'up', 'Up', 'aw', 'Aw'])
 async def a(ctx, tabela, imie):
@@ -496,6 +512,8 @@ async def a(ctx, tabela, imie):
     wiad = ctx.message.created_at
     author = ctx.message.author
     member2 = await findMember(ctx, author.name)
+    conn = connection()
+    mycursor = SSCursor(conn)
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
@@ -514,16 +532,17 @@ async def a(ctx, tabela, imie):
         print(member.id)
         if x > 2 and z < 2:
             mycursor.execute(f"UPDATE {tabela} set Ranga = {up(x)}, Pozycja = {up(z)}, DataAwDeg = '{wiad.year}-{wiad.month}-{wiad.day}', Awansujacy = '{author.id}' WHERE IdStorm = '{member.id}'")
-            connection.commit()
+            conn.commit()
             await ctx.send(f"Gratuluję awa")
             await ctx.send('chwila...')
             await ctx.send(f"O cholera {member.mention} witamy w podoficerach!!!")
         else:
             mycursor.execute(f"UPDATE {tabela} set Ranga = '{up(x)}', DataAwDeg = '{wiad.year}-{wiad.month}-{wiad.day}', Awansujacy = '{author.id}' WHERE IdStorm = '{member.id}'")
-            connection.commit()
+            conn.commit()
             await ctx.send(f"Gratuluję awansu {member.mention} na :partying_face: :partying_face: :partying_face: ")
     elif hasRole == False:
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
+    con.close()
 
 
 
