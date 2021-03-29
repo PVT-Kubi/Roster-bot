@@ -79,37 +79,37 @@ async def help(ctx):
 
     embed.add_field(name = '``Komendy dostępne dla wszystkich``', value = '\u200B', inline = False)
     embed.add_field(name = 'Wypisz', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?w [nazwa oddziału] [nazwa użytkownika (bez tej gwiazdki na początku), ping, oryginalna nazwa użytkownia]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.w [nazwa oddziału] [nazwa użytkownika (bez tej gwiazdki na początku), ping, oryginalna nazwa użytkownia]', inline = True)
     embed.add_field(name = 'Opis:', value = 'wypisuje wszystkie dane, o podanym użytkowniku\n', inline = True)
 
 
     embed.add_field(name = 'Kompania', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?k [nazwa kompanii]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.k [nazwa kompanii]', inline = True)
     embed.add_field(name = 'Opis:', value = 'wyświetla wszystkie oddziały z danej kompanii\n', inline = True)
 
 
 
     embed.add_field(name = '``Komendy tylko dla edytorów``', value = '\u200B', inline = False)
     embed.add_field(name = 'Edit', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?ed [oddzial] [kolumna] [nowa wartoscśclassć] [nazwa użytkownika, ping oryginalna nazwa użytkownia]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.e [oddzial] [kolumna] [nowa wartoscśclassć] [nazwa użytkownika, ping oryginalna nazwa użytkownia]', inline = True)
     embed.add_field(name = 'Opis:', value = 'zwiększa dane\n', inline = True)
 
 
     embed.add_field(name = 'Dodaj', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?d [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.d [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
     embed.add_field(name = 'Opis:', value = "dodaje użytkownika do rostera (użytkownik musi mieć ten war'owski pseudonim)\n", inline = True)
 
 
     embed.add_field(name = 'Awans', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?a [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.a [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
     embed.add_field(name = 'Opis:', value = 'zwiększa rangę użytkownika o jeden w górę\n', inline = True)
 
     embed.add_field(name = 'Plus/Minus', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?p/m [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.p/m [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
     embed.add_field(name = 'Opis:', value = 'Dodaje plusa lub minusa (napisane w jednym bo składnia identyczna)\n', inline = True)
 
     embed.add_field(name = 'Aktywność/Zachowanie', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '?ak/z [nazwa oddzialu] [plus albo minus] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    embed.add_field(name = 'Składnia', value = '.ak/z [nazwa oddzialu] [plus albo minus] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
     embed.add_field(name = 'Opis:', value = 'Zwiększa lub zmniejsza Aktywność/Zachowanie o jeden (napisane razem bo taka sama składnia)\n', inline = True)
 
 
