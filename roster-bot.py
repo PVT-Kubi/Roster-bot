@@ -182,7 +182,7 @@ async def wypisywanie(ctx, mb, tab):
             prin = ctx.message.guild.get_member(int(result[12]))
             desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
         elif result[12] == 'NULL':
-            desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {None}'
+            desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {result[12]}'
 
             embed = discord.Embed(
             description = desc,
