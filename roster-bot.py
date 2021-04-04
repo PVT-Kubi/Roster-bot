@@ -603,7 +603,7 @@ async def o(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
 
             pracie += '```'
-            await ctx.send(f'Dane na aktywności:\n{pracie}')
+            await ctx.send(f'Dane dotyczące aktywności:\n{pracie}')
             mycursor.close()
             conn.close()
         elif pp.lower() == 'awanse' or pp.lower() =="aw" :
