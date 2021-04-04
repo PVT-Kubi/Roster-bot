@@ -554,7 +554,7 @@ async def a(ctx, tabela, imie):
 
 
 @client.command(aliases = ['oddzial', 'Oddzial', 'oddział', 'Oddział', 'O'])
-async def od(ctx, tabela, pp):
+async def o(ctx, tabela, pp):
     #author = ctx.message.author
     #icon = author.avatar_url
     conn= connection()
