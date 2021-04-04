@@ -586,6 +586,7 @@ async def o(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
 
             pracie += '```'
+            await ctx.send(f'Podstawowe dane:\n{pracie}')
             mycursor.close()
             conn.close()
         elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
@@ -602,7 +603,7 @@ async def o(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
 
             pracie += '```'
-
+            await ctx.send(f'Dane dotyczące aktywności:\n{pracie}')
             mycursor.close()
             conn.close()
         elif pp.lower() == 'awanse' or pp.lower() =="aw" :
@@ -622,18 +623,11 @@ async def o(ctx, tabela, pp):
                 else:
                     pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
             pracie += '```'
-
+            await ctx.send(f'Dane na temat awansów:\n{pracie}')
             mycursor.close()
             conn.close()
         else:
             await ctx.send('Podaj poprawne dane!!!')
-        embed = discord.Embed(
-            description = pracie,
-            color = discord.Color.blue()
-        )
-
-        await ctx.send(embed=embed)
-
     else:
         await ctx.send('Nie znalazłem takiego oddziału')
 
