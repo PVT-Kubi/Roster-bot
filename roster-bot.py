@@ -629,13 +629,6 @@ async def od(ctx, tabela, pp):
             conn.close()
         else:
             await ctx.send('Podaj poprawne dane!!!')
-        embed = discord.Embed(
-            description = pracie,
-            color = discord.Color.blue()
-        )
-
-        await ctx.send(embed=embed)
-
     else:
         await ctx.send('Nie znalazłem takiego oddziału')
 
