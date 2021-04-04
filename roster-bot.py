@@ -25,8 +25,6 @@ def connection():
     passwd = 'f3a8831d',
     db = 'heroku_cd6d7049894a6fc',
     )
-
-
     return connection
 
 
@@ -554,6 +552,84 @@ async def a(ctx, tabela, imie):
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
     con.close()
 
+@client.command(aliases = ['oddzial', 'Oddzial', 'oddział', 'Oddział', 'O'])
+async def o(ctx, tabela, pp):
+    #author = ctx.message.author
+    #icon = author.avatar_url
+    conn= connection()
+    mycursor = SSCursor(conn)
+    #tab = ['Rang', 'Nick', 'Stat', 'Num', 'Spec', '+', '-', 'Aktyw', 'Zach', 'Data_Aw/Deg', 'Aw', 'Poz']
+    pracie = '```python\n'
+    #pracie += f'{padMiddle(tab[0], 4)} | {padMiddle(tab[1], 4)} | {padMiddle(tab[2], 4)} | {padMiddle(tab[3], 4)} | {padMiddle(tab[4], 4)} | {padMiddle(tab[5], 2)} | {padMiddle(tab[6], 2)} | {padMiddle(tab[7], 4)} | {padMiddle(tab[8], 4)} | {padMiddle(tab[9], 12)} | {padMiddle(tab[10], 2)} | {padMiddle(tab[11], 4)}\n'
+    #pracie += '---------------------------------------------------\n'
+    #AtName = (f"{author.name}#{author.discriminator}")
+    mycursor.execute("SELECT*FROM tabele")
+    r = mycursor.fetchall()
+    tabele = []
+    uz = []
+    for y in r:
+        for z in y:
+            tabele.append(z.lower())
+    print(tabele)
+    if tabela.lower() in tabele:
+        if pp.lower() == 'podstawowe' or pp.lower() =='p':
+            mycursor.execute(f"select  r.RangaId, r.RangaNazw, a.Nickname, a.Specka, a.Numer, a.Stat, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja")
+            re = mycursor.fetchall()
+            print(re)
+
+            pracie += f"{padMiddle(f'RangaNazw',20)} | {padMiddle(f'Nickname',12)} | {padMiddle(f'Specka',10)} | {padMiddle(f'Numer',6)} | {padMiddle(f'Pozycja',18)}\n"
+            pracie += f"-----------------------------------------------------------------------------\n"
+            for x in re:
+                 print(x[0])
+                 p = x[5]
+
+                 pracie += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
+
+            pracie += '```'
+            await ctx.send(f'Podstawowe dane:\n{pracie}')
+            mycursor.close()
+            conn.close()
+        elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
+            mycursor.execute(f"select  a.Nickname, a.Stat, a.Aktywnosc, a.Zachowanie, a.Plusy, a.Minusy FROM {tabela} a")
+            re = mycursor.fetchall()
+            print(re)
+
+            pracie += f"{padMiddle(f'Nickname',12)} | {padMiddle(f'Stat',8)} | {padMiddle(f'Aktywnosc',10)} | {padMiddle(f'Zachowanie',12)}| {padMiddle('Plusy', 6)} | {padMiddle('Minusy', 8)}\n"
+            pracie += f"-----------------------------------------------------------------------------\n"
+            for x in re:
+                 print(x[0])
+
+
+                 pracie += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
+
+            pracie += '```'
+            await ctx.send(f'Dane na aktywności:\n{pracie}')
+            mycursor.close()
+            conn.close()
+        elif pp.lower() == 'awanse' or pp.lower() =="aw" :
+            mycursor.execute(f"select  a.Nickname, a.DataAwDeg, a.Awansujacy FROM {tabela} a")
+            re = mycursor.fetchall()
+            print(re)
+
+            pracie += f"{padMiddle(f'Nickname',14)} | {padMiddle(f'DataAwDeg',12)} | {padMiddle(f'Awansujacy',22)} |\n"
+            pracie += f"-------------------------------------------------------\n"
+            for x in re:
+                print(x[0])
+                if x[2] is not None:
+                    prin = ctx.message.guild.get_member(int(x[2]))
+                    sliced = prin.nick[2:]
+                    print(sliced)
+                    pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'{sliced}', 22)} |\n"
+                else:
+                    pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
+            pracie += '```'
+            await ctx.send(f'Dane na temat awansów:\n{pracie}')
+            mycursor.close()
+            conn.close()
+        else:
+            await ctx.send('Podaj poprawne dane!!!')
+    else:
+        await ctx.send('Nie znalazłem takiego oddziału')
 
 
 
