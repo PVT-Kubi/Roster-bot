@@ -624,7 +624,7 @@ async def o(ctx, tabela, pp):
                 else:
                     pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
             pracie += '```'
-            await ctx.send(f'Dane na temat awansów:\n{pracie}')
+            await ctx.send(f'Dane na temat awansów {tabela}u:\n{pracie}')
             mycursor.close()
             conn.close()
         else:
