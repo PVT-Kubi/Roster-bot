@@ -552,6 +552,33 @@ async def a(ctx, tabela, imie):
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
     con.close()
 
+@client.command(aliases = ['u', 'U', 'Usuń', 'usuń', 'Miej_litość_usuń ', 'delete', 'Delete', 'De'])
+async def de(ctx, tabela, imie):
+    member = await findMember(ctx, imie)
+    if member is not None:
+        conn = connection()
+        mycursor = SSCursor(conn)
+        mycursor.execute(f"select*from tabele")
+        r = mycursor.fetchall()
+        tab = []
+        for x in r:
+            for y in x:
+                tab.append(y.lower())
+        if tabela.lower() in tab:
+            mycursor.execute(f"DELETE FROM {tabela} WHERE IdStorm = '{member.id}'")
+            conn.commit()
+            await ctx.send(f"{member.nick} dostał lepę z {tabela}u")
+        else:
+            await ctx.send(f"Niestety nie udało mi się znaleźć oddziału o nazwie: '{tabela}'")
+    else:
+        await ctx.send('Nie udało mi się znaleźć takiego użytkownika (pamiętaj, że na razie obsługuję tylko pingi)')
+
+
+
+
+
+
+
 
 @client.command(aliases = ['oddzial', 'Oddzial', 'oddział', 'Oddział', 'O'])
 async def od(ctx, tabela, pp):
