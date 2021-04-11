@@ -620,7 +620,7 @@ async def od(ctx, tabela, pp):
             mycursor.close()
             conn.close()
         elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
-            mycursor.execute(f"select  a.Nickname, a.Stat, a.Aktywnosc, a.Zachowanie, a.Plusy, a.Minusy FROM {tabela} a")
+            mycursor.execute(f"select  a.Nickname, a.Stat, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie FROM {tabela} a")
             re = mycursor.fetchall()
             print(re)
 
