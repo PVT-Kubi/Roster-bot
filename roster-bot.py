@@ -454,11 +454,11 @@ async def ak(ctx, tabela, arg, imie):
                 x = r[0][0]
                 if pM =='plus' or pM=='p' or pM=='+':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {up(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'No po prostu wzorowy żołnierz! Zawsze na treningu i nie pije na służbie! {prin.nick} powinieneś brać z niego przykład!')
                 elif pM=='minus' or pM == 'm' or pM == '-':
                     mycursor.execute(f"UPDATE {tabela} set Aktywnosc = {down(x)} where IdStorm = '{member.id}'")
-                    connection.commit()
+                    conn.commit()
                     await ctx.send(f'{member.nick} nie idź w ślady Kubiego!!!')
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
