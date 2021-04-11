@@ -624,7 +624,7 @@ async def od(ctx, tabela, pp):
             re = mycursor.fetchall()
             print(re)
 
-            pracie += f"{padMiddle(f'Nickname',12)} | {padMiddle(f'Stat',8)} | {padMiddle(f'Aktywnosc',10)} | {padMiddle(f'Zachowanie',12)}| {padMiddle('Plusy', 6)} | {padMiddle('Minusy', 8)}\n"
+            pracie += f"{padMiddle(f'Nickname',12)} | {padMiddle(f'Stat',8)} | {padMiddle('Plusy', 6)} | {padMiddle('Minusy', 8)} | {padMiddle(f'Aktywnosc',10)} | {padMiddle(f'Zachowanie',12)}|\n"
             pracie += f"-----------------------------------------------------------------------------\n"
             for x in re:
                  print(x[0])
