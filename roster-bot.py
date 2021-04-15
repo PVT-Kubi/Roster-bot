@@ -165,7 +165,7 @@ async def wypisywanie(ctx, mb, tab):
 
 
             embed = discord.Embed(
-                color = '#b3ffff'
+                color = discord.color.Blue()
             )
             embed.add_field(name = 'Id Lidera', value = prin.nick, inline = false)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = false)
@@ -173,82 +173,84 @@ async def wypisywanie(ctx, mb, tab):
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
-
-
-
-    mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
-    result = mycursor.fetchone()
-    if result is not None:
-
-        author = ctx.message.author
-        icon = author.avatar_url
-        AtName = (f"{author.name}#{author.discriminator}")
-        members = ctx.message.guild.members
-        if result[12] in members:
-           print('chuj')
-        pingus = result[13]
-        hasArc = False
-        for role in member.roles:
-            if role.name != '@everyone':
-                if role.name == '┃ARC┃':
-                    hasArck = True
-                    break
-        if hasArc:
-            sliced = member.nick[3:]
         else:
-            sliced = member.nick[2:]
-        array = sliced.split("-")
-
-        if pingus == 'Korpus Podoficerow':
-            kolor = discord.Color.red()
-        elif pingus == 'Sztab Wyzszy':
-            kolor = 0xf1c40f
-        elif pingus == 'Korpus Szeregowych':
-            kolor = discord.Color.green()
-        else:
-            kolor = discord.Color.green()
-        #await ctx.send(f'```{result[0]} {result[1]} {result[2]}```')
-        desc = ''
-        if result[12] is not None:
-            prin = ctx.message.guild.get_member(int(result[12]))
-            desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[2]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
-        else:
-            desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {result[12]}'
-
-        embed = discord.Embed(
-            description = desc,
-            color = kolor
-        )
-
-        embed.set_author(name=member.nick, icon_url=member.avatar_url)
-        embed.set_footer(text=AtName, icon_url=icon)
-        await ctx.send(embed=embed)
-        conn.close()
+            await ctx.send('Podany uzytkownik nie istnieje (no chyba, że jestem ślepy ale śmiem w to wątpi, gdyż do czytania danych nie używam wzroku tylko kodu...)')
     else:
-        await ctx.send("Nie znaleziono uzytkownika w bazie")
 
-@client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
-async def w(ctx, tabela, imie):
-    member = await findMember(ctx, imie)
-    if member is not None:
-        await wypisywanie(ctx, member, tabela)
-        hasRole = False
-        for role in member.roles:
-            if role.name != '@everyone':
-                if role.name == 'Edytor rostera':
-                    hasRole = True
-                    break
-        if hasRole:
-            sliced = member.nick[3:]
+
+        mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
+        result = mycursor.fetchone()
+        if result is not None:
+
+            author = ctx.message.author
+            icon = author.avatar_url
+            AtName = (f"{author.name}#{author.discriminator}")
+            members = ctx.message.guild.members
+            if result[12] in members:
+               print('chuj')
+            pingus = result[13]
+            hasArc = False
+            for role in member.roles:
+                if role.name != '@everyone':
+                    if role.name == '┃ARC┃':
+                        hasArck = True
+                        break
+            if hasArc:
+                sliced = member.nick[3:]
+            else:
+                sliced = member.nick[2:]
+            array = sliced.split("-")
+
+            if pingus == 'Korpus Podoficerow':
+                kolor = discord.Color.red()
+            elif pingus == 'Sztab Wyzszy':
+                kolor = 0xf1c40f
+            elif pingus == 'Korpus Szeregowych':
+                kolor = discord.Color.green()
+            else:
+                kolor = discord.Color.green()
+            #await ctx.send(f'```{result[0]} {result[1]} {result[2]}```')
+            desc = ''
+            if result[12] is not None:
+                prin = ctx.message.guild.get_member(int(result[12]))
+                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[2]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
+            else:
+                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {result[12]}'
+
+            embed = discord.Embed(
+                description = desc,
+                color = kolor
+            )
+
+            embed.set_author(name=member.nick, icon_url=member.avatar_url)
+            embed.set_footer(text=AtName, icon_url=icon)
+            await ctx.send(embed=embed)
+            conn.close()
         else:
-            sliced = member.nick[2:]
-        array = sliced.split("-")
+            await ctx.send("Nie znaleziono uzytkownika w bazie")
+
+    @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
+    async def w(ctx, tabela, imie):
+        member = await findMember(ctx, imie)
+        if member is not None:
+            await wypisywanie(ctx, member, tabela)
+            hasRole = False
+            for role in member.roles:
+                if role.name != '@everyone':
+                    if role.name == 'Edytor rostera':
+                        hasRole = True
+                        break
+            if hasRole:
+                sliced = member.nick[3:]
+            else:
+                sliced = member.nick[2:]
+            array = sliced.split("-")
 
 
 
 
-    else:
-        await ctx.send("Ten użytkownik nie istnieje")
+        else:
+            await ctx.send("Ten użytkownik nie istnieje")
 
 @client.command()
 async def find(ctx, query):
