@@ -608,7 +608,11 @@ async def de(ctx, tabela, imie):
 
 
 @client.command(aliases = ['oddzial', 'Oddzial', 'oddział', 'Oddział', 'O'])
+<<<<<<< HEAD
 async def od(ctx, tabela, pp):
+=======
+async def o(ctx, tabela, pp):
+>>>>>>> d014c27 (Update roster-bot.py)
     #author = ctx.message.author
     #icon = author.avatar_url
     conn= connection()
@@ -650,7 +654,11 @@ async def od(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
 
             pracie += '```'
+<<<<<<< HEAD
             await ctx.send(f'Podstawowe dane:\n{pracie}')
+=======
+            await ctx.send(f'Podstawowe dane {tabela}u:\n{pracie}')
+>>>>>>> d014c27 (Update roster-bot.py)
             mycursor.close()
             conn.close()
         elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
@@ -667,7 +675,11 @@ async def od(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
 
             pracie += '```'
+<<<<<<< HEAD
             await ctx.send(f'Dane dotyczące aktywności:\n{pracie}')
+=======
+            await ctx.send(f'Dane dotyczące aktywności {tabela}u:\n{pracie}')
+>>>>>>> d014c27 (Update roster-bot.py)
             mycursor.close()
             conn.close()
         elif pp.lower() == 'awanse' or pp.lower() =="aw" :
@@ -687,7 +699,11 @@ async def od(ctx, tabela, pp):
                 else:
                     pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
             pracie += '```'
+<<<<<<< HEAD
             await ctx.send(f'Dane na temat awansów:\n{pracie}')
+=======
+            await ctx.send(f'Dane na temat awansów {tabela}u:\n{pracie}')
+>>>>>>> d014c27 (Update roster-bot.py)
             mycursor.close()
             conn.close()
         else:
@@ -700,4 +716,8 @@ async def od(ctx, tabela, pp):
 
 
 
+<<<<<<< HEAD
 client.run('TOKEN')
+=======
+client.run('ODIzNjMwMjEwMTkxNzIwNDg4.YFjnaA.sR4wBR_Av1r5hH-zpsK096EVEu8')
+>>>>>>> d014c27 (Update roster-bot.py)
