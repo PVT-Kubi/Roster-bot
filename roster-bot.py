@@ -634,7 +634,7 @@ async def o(ctx, tabela, pp):
             for x in re:
                 print(x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                pracie +=f"{prin.nick} | {x[1]}\n"
+                pracie +=f"{padMiddle(prin.nick, 30)} | {padMiddle(x[1], 38)}\n"
             pracie += "```"
             await ctx.send(pracie)
 
