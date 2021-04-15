@@ -165,7 +165,7 @@ async def wypisywanie(ctx, mb, tab):
 
 
             embed = discord.Embed(
-                color = '#b3ffff'
+                color = discord.color.Blue()
             )
             embed.add_field(name = 'Id Lidera', value = prin.nick, inline = false)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = false)
@@ -173,7 +173,9 @@ async def wypisywanie(ctx, mb, tab):
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
-
+        else:
+            await ctx.send('Podany uzytkownik nie istnieje (no chyba, że jestem ślepy ale śmiem w to wątpi, gdyż do czytania danych nie używam wzroku tylko kodu...)')
+    else:
 
 
     mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
@@ -227,8 +229,8 @@ async def wypisywanie(ctx, mb, tab):
     else:
         await ctx.send("Nie znaleziono uzytkownika w bazie")
 
-@client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
-async def w(ctx, tabela, imie):
+    @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
+    async def w(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
         await wypisywanie(ctx, member, tabela)
