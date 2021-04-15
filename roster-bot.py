@@ -229,8 +229,8 @@ async def wypisywanie(ctx, mb, tab):
     else:
         await ctx.send("Nie znaleziono uzytkownika w bazie")
 
-    @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
-    async def w(ctx, tabela, imie):
+@client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
+async def w(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
         await wypisywanie(ctx, member, tabela)
