@@ -153,6 +153,29 @@ async def wypisywanie(ctx, mb, tab):
     tabela = tab
     conn = connection()
     mycursor = SSCursor(conn)
+    if tab == 'liderzy' or tab == 'Liderzy' or tab == 'Lider' or tab == 'lider':
+        mycursor.execute(f"select IdStorm, Czego FROM liderzy WHERE IdStorm = '{member.id}'")
+        result = mycursor.fetchone()
+        if result is not None:
+            author = ctx.message.author
+            icon = author.avatar_url
+            AtName = (f"{author.name}#{author.discriminator}")
+            members = ctx.message.guild.members
+            prin = ctx.message.guild.get_member(int(result[0]))
+
+
+            embed = discord.Embed(
+                color = '#b3ffff'
+            )
+            embed.add_field(name = 'Id Lidera', value = prin.nick, inline = false)
+            embed.add_field(name = 'Lider czego?', value = result[1], inline = false)
+            embed.set_author(name=member.nick, icon_url=member.avatar_url)
+            embed.set_footer(text=AtName, icon_url=icon)
+            await ctx.send(embed=embed)
+            conn.close()
+
+
+
     mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
         result = mycursor.fetchone()
         if result is not None:
