@@ -627,7 +627,7 @@ async def o(ctx, tabela, pp):
             tabele.append(z.lower())
     print(tabele)
     if tabela.lower() in tabele:
-        if tabela.lower() = 'liderzy' or tabela.lower() = 'l':
+        if tabela.lower() == 'liderzy' or tabela.lower() == 'l':
             mycursor.execute(f"select IdStorm, Czego FROM liderzy ")
             re = mycursor.fetchall()
 
