@@ -634,8 +634,9 @@ async def o(ctx, tabela, pp):
             for x in re:
                 print(x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                #pracie +=f"{prin.nick} | {x[1]}\n"
+                pracie +=f"{prin.nick} | {x[1]}\n"
             pracie += "```"
+            await ctx.send(pracie)
 
         elif pp.lower() == 'podstawowe' or pp.lower() =='p':
             mycursor.execute(f"select  r.RangaId, r.RangaNazw, a.Nickname, a.Specka, a.Numer, a.Stat, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja")
