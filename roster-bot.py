@@ -229,28 +229,28 @@ async def wypisywanie(ctx, mb, tab):
         else:
             await ctx.send("Nie znaleziono uzytkownika w bazie")
 
-    @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
-    async def w(ctx, tabela, imie):
-        member = await findMember(ctx, imie)
-        if member is not None:
-            await wypisywanie(ctx, member, tabela)
-            hasRole = False
-            for role in member.roles:
-                if role.name != '@everyone':
-                    if role.name == 'Edytor rostera':
-                        hasRole = True
-                        break
-            if hasRole:
-                sliced = member.nick[3:]
-            else:
-                sliced = member.nick[2:]
-            array = sliced.split("-")
-
-
-
-
+@client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
+async def w(ctx, tabela, imie):
+    member = await findMember(ctx, imie)
+    if member is not None:
+        await wypisywanie(ctx, member, tabela)
+        hasRole = False
+        for role in member.roles:
+            if role.name != '@everyone':
+                if role.name == 'Edytor rostera':
+                    hasRole = True
+                    break
+        if hasRole:
+            sliced = member.nick[3:]
         else:
-            await ctx.send("Ten użytkownik nie istnieje")
+            sliced = member.nick[2:]
+        array = sliced.split("-")
+
+
+
+
+    else:
+        await ctx.send("Ten użytkownik nie istnieje")
 
 @client.command()
 async def find(ctx, query):
