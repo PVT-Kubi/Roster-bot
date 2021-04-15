@@ -122,23 +122,23 @@ async def k(ctx, *baza):
     b = b.lower()
     if b == '4' or b == '4th' or b == 'marksman' or b == '4th marksman company' or b =='4th company':
         mycursor.execute("SELECT*FROM 4th")
-            color = discord.Color.red()
+        color = discord.Color.red()
     elif b == '12' or b == '12th' or b == 'mechanized' or b == '12th mechanized company' or b == '12th company':
         mycursor.execute("SELECT*FROM 12th")
         color = discord.Color.blue()
     else:
         return await ctx.send('Taki taka kompania nie istnieje (albo o czymś nie wiem)')
-        result = mycursor.fetchall()
-        embed = discord.Embed(
-            title = 'Oddziały:',
+    result = mycursor.fetchall()
+    embed = discord.Embed(
+        title = 'Oddziały:',
         color = color
-        )
+    )
 
 
-        for x in result:
-            for y in x:
-                embed.add_field(value = (f'{y}'), name = 'Nazwa oddziału:',  inline = True)
-        await ctx.send(embed=embed)
+    for x in result:
+        for y in x:
+            embed.add_field(value = (f'{y}'), name = 'Nazwa oddziału:',  inline = True)
+    await ctx.send(embed=embed)
 
 
 @client.command()
@@ -178,73 +178,73 @@ async def wypisywanie(ctx, mb, tab):
     else:
 
 
-    mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
+        mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
         result = mycursor.fetchone()
         if result is not None:
 
             author = ctx.message.author
             icon = author.avatar_url
             AtName = (f"{author.name}#{author.discriminator}")
-        members = ctx.message.guild.members
-        if result[12] in members:
-           print('chuj')
-        pingus = result[13]
-        hasArc = False
-        for role in member.roles:
-            if role.name != '@everyone':
-                if role.name == '┃ARC┃':
-                    hasArck = True
-                    break
-        if hasArc:
-            sliced = member.nick[3:]
-        else:
-            sliced = member.nick[2:]
-        array = sliced.split("-")
+            members = ctx.message.guild.members
+            if result[12] in members:
+               print('chuj')
+            pingus = result[13]
+            hasArc = False
+            for role in member.roles:
+                if role.name != '@everyone':
+                    if role.name == '┃ARC┃':
+                        hasArck = True
+                        break
+            if hasArc:
+                sliced = member.nick[3:]
+            else:
+                sliced = member.nick[2:]
+            array = sliced.split("-")
 
-        if pingus == 'Korpus Podoficerow':
-            kolor = discord.Color.red()
-        elif pingus == 'Sztab Wyzszy':
-            kolor = 0xf1c40f
-        elif pingus == 'Korpus Szeregowych':
-            kolor = discord.Color.green()
-        else:
-            kolor = discord.Color.green()
+            if pingus == 'Korpus Podoficerow':
+                kolor = discord.Color.red()
+            elif pingus == 'Sztab Wyzszy':
+                kolor = 0xf1c40f
+            elif pingus == 'Korpus Szeregowych':
+                kolor = discord.Color.green()
+            else:
+                kolor = discord.Color.green()
             #await ctx.send(f'```{result[0]} {result[1]} {result[2]}```')
-        desc = ''
-        if result[12] is not None:
-            prin = ctx.message.guild.get_member(int(result[12]))
-            desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[2]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
-        else:
-            desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {result[12]}'
+            desc = ''
+            if result[12] is not None:
+                prin = ctx.message.guild.get_member(int(result[12]))
+                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[2]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
+            else:
+                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {result[12]}'
 
             embed = discord.Embed(
-            description = desc,
-            color = kolor
+                description = desc,
+                color = kolor
             )
 
-        embed.set_author(name=member.nick, icon_url=member.avatar_url)
+            embed.set_author(name=member.nick, icon_url=member.avatar_url)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
-        conn.close()
-    else:
-        await ctx.send("Nie znaleziono uzytkownika w bazie")
+            conn.close()
+        else:
+            await ctx.send("Nie znaleziono uzytkownika w bazie")
 
 @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
 async def w(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
         await wypisywanie(ctx, member, tabela)
-            hasRole = False
-            for role in member.roles:
-                if role.name != '@everyone':
+        hasRole = False
+        for role in member.roles:
+            if role.name != '@everyone':
                 if role.name == 'Edytor rostera':
-                        hasRole = True
-                        break
-            if hasRole:
-                sliced = member.nick[3:]
-            else:
-                sliced = member.nick[2:]
-            array = sliced.split("-")
+                    hasRole = True
+                    break
+        if hasRole:
+            sliced = member.nick[3:]
+        else:
+            sliced = member.nick[2:]
+        array = sliced.split("-")
 
 
 
@@ -274,9 +274,9 @@ async def e(ctx, baza, kolumna, wartosc, imie):
             mycursor.execute(f"SELECT {kolumna} FROM {baza} WHERE IdStorm = '{member.id}' ")
 
             result = mycursor.fetchone()
-        author = ctx.message.author
-        icon = author.avatar_url
-        AtName = (f"{author.name}#{author.discriminator}")
+            author = ctx.message.author
+            icon = author.avatar_url
+            AtName = (f"{author.name}#{author.discriminator}")
 
             mycursor.execute(f"UPDATE {baza} set {kolumna} = '{wartosc}' WHERE IdStorm = '{member.id}'")
             conn.commit()
@@ -284,19 +284,19 @@ async def e(ctx, baza, kolumna, wartosc, imie):
             mycursor.execute(f"SELECT {kolumna} FROM {baza} WHERE IdStorm = '{member.id}' ")
             result2 = mycursor.fetchone()
 
-        embed = discord.Embed(
-            color = discord.Color.green()
-        )
+            embed = discord.Embed(
+                color = discord.Color.green()
+            )
 
-        embed.set_author(name=member.name, icon_url=member.avatar_url)
+            embed.set_author(name=member.name, icon_url=member.avatar_url)
             embed.add_field(name = 'Przed: ' , value = f"``{kolumna}:`` {result[0]}", inline = False)
             embed.add_field(name = 'Po: ' , value = f"``{kolumna}:`` {result2[0]}", inline = False)
-        embed.set_footer(text=AtName, icon_url=icon)
+            embed.set_footer(text=AtName, icon_url=icon)
 
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
 
-        await ctx.send("Dane zostały pomyślnie zaktualizowane!")
+            await ctx.send("Dane zostały pomyślnie zaktualizowane!")
 
         else:
             await ctx.send('Jak chcesz edytować nick na GMD-2137-JP2 to gadaj z przełożonymi...')
@@ -334,13 +334,13 @@ async def d(ctx, baza, imie):
 
     if hasRole == True:
         desc = ''
-    if member is not None:
+        if member is not None:
             author = ctx.message.author
             icon = author.avatar_url
             AtName = (f"{author.name}#{author.discriminator}")
             sliced = member.nick[0:]
-        array = sliced.split("-")
-        print(array)
+            array = sliced.split("-")
+            print(array)
             mycursor.execute(f"INSERT INTO {baza}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) VALUES('{member.id}', 1, '{array[2]}', 'Aktywny', {array[1]}, 'Piechur', NULL, NULL, '3', '3', NULL, NULL, 1 )")
             conn.commit()
             embed2 = discord.Embed(
@@ -356,8 +356,8 @@ async def d(ctx, baza, imie):
             await wypisywanie(ctx, member, baza)
             await ctx.send('A tutaj twój wygląd w rosterze :point_up:')
 
-    else:
-        await ctx.send('Podany użytkownik nie istnieje!')
+        else:
+            await ctx.send('Podany użytkownik nie istnieje!')
         conn.close()
     else:
         await ctx.send('Coś mi się wydaje, że jedyne co możesz sobie dodać to chromosom...')
@@ -608,11 +608,7 @@ async def de(ctx, tabela, imie):
 
 
 @client.command(aliases = ['oddzial', 'Oddzial', 'oddział', 'Oddział', 'O'])
-<<<<<<< HEAD
-async def od(ctx, tabela, pp):
-=======
 async def o(ctx, tabela, pp):
->>>>>>> d014c27 (Update roster-bot.py)
     #author = ctx.message.author
     #icon = author.avatar_url
     conn= connection()
@@ -654,11 +650,7 @@ async def o(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
 
             pracie += '```'
-<<<<<<< HEAD
-            await ctx.send(f'Podstawowe dane:\n{pracie}')
-=======
             await ctx.send(f'Podstawowe dane {tabela}u:\n{pracie}')
->>>>>>> d014c27 (Update roster-bot.py)
             mycursor.close()
             conn.close()
         elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
@@ -675,11 +667,7 @@ async def o(ctx, tabela, pp):
                  pracie += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
 
             pracie += '```'
-<<<<<<< HEAD
-            await ctx.send(f'Dane dotyczące aktywności:\n{pracie}')
-=======
             await ctx.send(f'Dane dotyczące aktywności {tabela}u:\n{pracie}')
->>>>>>> d014c27 (Update roster-bot.py)
             mycursor.close()
             conn.close()
         elif pp.lower() == 'awanse' or pp.lower() =="aw" :
@@ -699,11 +687,7 @@ async def o(ctx, tabela, pp):
                 else:
                     pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
             pracie += '```'
-<<<<<<< HEAD
-            await ctx.send(f'Dane na temat awansów:\n{pracie}')
-=======
             await ctx.send(f'Dane na temat awansów {tabela}u:\n{pracie}')
->>>>>>> d014c27 (Update roster-bot.py)
             mycursor.close()
             conn.close()
         else:
@@ -716,8 +700,4 @@ async def o(ctx, tabela, pp):
 
 
 
-<<<<<<< HEAD
-client.run('TOKEN')
-=======
 client.run('ODIzNjMwMjEwMTkxNzIwNDg4.YFjnaA.sR4wBR_Av1r5hH-zpsK096EVEu8')
->>>>>>> d014c27 (Update roster-bot.py)
