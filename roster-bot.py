@@ -630,11 +630,11 @@ async def o(ctx, tabela, pp):
         if tabela.lower() == 'liderzy' or tabela.lower() == 'l':
             mycursor.execute(f"select IdStorm, Czego FROM liderzy ")
             re = mycursor.fetchall()
-
+            pracie += f"{padMiddle('ID Lidera', 30)} | {padMiddle('Blok dowodzenia', 38)}|\n"
             for x in re:
                 print(x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                pracie +=f"{padMiddle(prin.nick, 30)} | {padMiddle(x[1], 38)}\n"
+                pracie +=f"{padMiddle(prin.nick, 30)} | {padMiddle(x[1], 38)}|\n"
             pracie += "```"
             await ctx.send(pracie)
 
