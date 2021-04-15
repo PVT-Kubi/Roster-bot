@@ -627,7 +627,16 @@ async def od(ctx, tabela, pp):
             tabele.append(z.lower())
     print(tabele)
     if tabela.lower() in tabele:
-        if pp.lower() == 'podstawowe' or pp.lower() =='p':
+        if tabela.lower() = 'liderzy' or tabela.lower() = 'l':
+            mycursor.execute(f"select IdStorm, Czego FROM liderzy ")
+            re = mycursor.fetchall()
+
+            for x in re:
+                prin = ctx.message.guild.get_member(int(x[0]))
+                pracie +=f"{prin.nick} | {x[1]}\n"
+            pracie += "```"
+
+        elif pp.lower() == 'podstawowe' or pp.lower() =='p':
             mycursor.execute(f"select  r.RangaId, r.RangaNazw, a.Nickname, a.Specka, a.Numer, a.Stat, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja")
             re = mycursor.fetchall()
             print(re)
