@@ -634,7 +634,7 @@ async def o(ctx, tabela, pp):
             for x in re:
                 print(x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                pracie +=f"{padStart(f"{prin.nick}", 29)} | {padStart(f"{x[1]}", 37)}|\n"
+                pracie +=f"{padStart(f'{prin.nick}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
             pracie += "```"
             await ctx.send(pracie)
 
