@@ -632,8 +632,9 @@ async def o(ctx, tabela, pp):
             re = mycursor.fetchall()
 
             for x in re:
+                print(x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                pracie +=f"{prin.nick} | {x[1]}\n"
+                #pracie +=f"{prin.nick} | {x[1]}\n"
             pracie += "```"
 
         elif pp.lower() == 'podstawowe' or pp.lower() =='p':
