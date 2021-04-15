@@ -165,7 +165,7 @@ async def wypisywanie(ctx, mb, tab):
 
 
             embed = discord.Embed(
-                color = discord.color.Blue()
+                color = discord.Color.blue()
             )
             embed.add_field(name = 'Id Lidera', value = prin.nick, inline = false)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = false)
