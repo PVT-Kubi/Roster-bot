@@ -634,7 +634,17 @@ async def o(ctx, tabela, pp):
             for x in re:
                 print(x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                pracie +=f"{padStart(f'{prin.nick}', 29)}| {padStart(f'{x[1]}', 37)}|\n"
+                for role in member.roles:
+                    if role.name != '@everyone':
+                        if role.name == '┃ARC┃':
+                            hasArck = True
+                            break
+                if hasArc:
+                    sliced = prin.nick[3:]
+                else:
+                    sliced = prin.nick[2:]
+                array = sliced.split("-")
+                pracie +=f"{padStart(f'{sliced[0]}-{sliced[1]}-{sliced[2]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
             pracie += "```"
             await ctx.send(pracie)
 
