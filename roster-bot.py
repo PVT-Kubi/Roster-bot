@@ -613,7 +613,7 @@ async def o(ctx, tabela, pp):
     #icon = author.avatar_url
     conn= connection()
     mycursor = SSCursor(conn)
-    member = await findMember(ctx, imie)
+
     #tab = ['Rang', 'Nick', 'Stat', 'Num', 'Spec', '+', '-', 'Aktyw', 'Zach', 'Data_Aw/Deg', 'Aw', 'Poz']
     pracie = '```python\n'
     #pracie += f'{padMiddle(tab[0], 4)} | {padMiddle(tab[1], 4)} | {padMiddle(tab[2], 4)} | {padMiddle(tab[3], 4)} | {padMiddle(tab[4], 4)} | {padMiddle(tab[5], 2)} | {padMiddle(tab[6], 2)} | {padMiddle(tab[7], 4)} | {padMiddle(tab[8], 4)} | {padMiddle(tab[9], 12)} | {padMiddle(tab[10], 2)} | {padMiddle(tab[11], 4)}\n'
@@ -634,6 +634,7 @@ async def o(ctx, tabela, pp):
             pracie += f"{padMiddle('ID Lidera', 30)} | {padMiddle('Blok dowodzenia', 38)}|\n"
             for x in re:
                 print(x[0])
+                member = await findMember(ctx, int(x[0]))
                 prin = ctx.message.guild.get_member(int(x[0]))
                 for role in member.roles:
                     if role.name != '@everyone':
