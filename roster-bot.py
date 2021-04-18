@@ -158,7 +158,7 @@ async def wypisywanie(ctx, mb, tab):
         result = mycursor.fetchone()
         if result is not None:
             author = ctx.message.author
-            icon = author.avatar_url
+            #icon = author.avatar_url
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
             prin = ctx.message.guild.get_member(int(result[0]))
@@ -183,7 +183,7 @@ async def wypisywanie(ctx, mb, tab):
         if result is not None:
 
             author = ctx.message.author
-            icon = author.avatar_url
+            #icon = author.avatar_url
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
             if result[12] in members:
@@ -326,7 +326,7 @@ async def d(ctx, baza, imie):
         desc = ''
         if member is not None:
             author = ctx.message.author
-            icon = author.avatar_url
+            #icon = author.avatar_url
             AtName = (f"{author.name}#{author.discriminator}")
             sliced = member.nick[0:]
             array = sliced.split("-")
