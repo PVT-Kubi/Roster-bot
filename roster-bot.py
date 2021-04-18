@@ -636,11 +636,7 @@ async def o(ctx, tabela, pp):
                 print(x[0])
                 member = await findMember(ctx, x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-                for role in member.roles:
-                    if role.name != '@everyone':
-                        if role.name == '┃ARC┃':
-                            hasArck = True
-                            break
+
                 print(prin)
                 array = sliced.split("-")
                 pracie +=f"{padStart(f'{x[1]}', 37)}|\n"
