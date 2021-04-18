@@ -639,7 +639,7 @@ async def o(ctx, tabela, pp):
                 print(prin)
                 sliced = prin.nick[2:]
                 array = sliced.split("-")
-                pracie +=f"{padStart(f'{sliced[0]}-{sliced[1]}-{sliced[2]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
+                pracie +=f"{padStart(f'{sliced[0]}{sliced[1]}{sliced[2]}-{sliced[3]}-{sliced[4]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
             pracie += "```"
             await ctx.send(pracie)
 
