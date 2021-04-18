@@ -636,11 +636,9 @@ async def o(ctx, tabela, pp):
                 print(x[0])
                 member = await findMember(ctx, x[0])
                 prin = ctx.message.guild.get_member(int(x[0]))
-
                 print(prin)
-
-    
-                pracie +=f"{padStart(f'{x[1]}', 37)}|\n"
+                array = sliced.split("-")
+                pracie +=f"{padStart(f'{sliced[0]}-{sliced[1]}-{sliced[2]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
             pracie += "```"
             await ctx.send(pracie)
 
