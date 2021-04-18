@@ -151,7 +151,7 @@ async def members(ctx):
 async def wypisywanie(ctx, mb, tab):
     member = mb
     tabela = tab
-    #url = member.avatar_url
+    url = member.avatar
     conn = connection()
     mycursor = SSCursor(conn)
     if tab == 'liderzy' or tab == 'Liderzy' or tab == 'Lider' or tab == 'lider':
@@ -159,7 +159,7 @@ async def wypisywanie(ctx, mb, tab):
         result = mycursor.fetchone()
         if result is not None:
             author = ctx.message.author
-            #icon = author.avatar_url
+            icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
             prin = ctx.message.guild.get_member(int(result[0]))
@@ -170,8 +170,8 @@ async def wypisywanie(ctx, mb, tab):
             )
             embed.add_field(name = 'ID Lidera', value = prin.nick, inline = False)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = False)
-            #embed.set_author(name=member.nick, icon_url = url)
-            #embed.set_footer(text=AtName, icon_url=icon)
+            embed.set_author(name=member.nick, icon_url = url)
+            embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
         else:
@@ -184,7 +184,7 @@ async def wypisywanie(ctx, mb, tab):
         if result is not None:
 
             author = ctx.message.author
-    #        icon = author.avatar_url
+            icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
             if result[12] in members:
@@ -224,7 +224,7 @@ async def wypisywanie(ctx, mb, tab):
             )
 
             embed.set_author(name=member.nick, icon_url= member.avatar)
-            #embed.set_footer(text=AtName, icon_url=icon)
+            embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
         else:
@@ -266,7 +266,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
 
             result = mycursor.fetchone()
             author = ctx.message.author
-            icon = author.avatar_url
+            icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
 
             mycursor.execute(f"UPDATE {baza} set {kolumna} = '{wartosc}' WHERE IdStorm = '{member.id}'")
@@ -279,7 +279,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
                 color = discord.Color.green()
             )
 
-            embed.set_author(name=member.name, icon_url=member.avatar_url)
+            embed.set_author(name=member.name, icon_url=member.avatar)
             embed.add_field(name = 'Przed: ' , value = f"``{kolumna}:`` {result[0]}", inline = False)
             embed.add_field(name = 'Po: ' , value = f"``{kolumna}:`` {result2[0]}", inline = False)
             embed.set_footer(text=AtName, icon_url=icon)
@@ -327,7 +327,7 @@ async def d(ctx, baza, imie):
         desc = ''
         if member is not None:
             author = ctx.message.author
-            icon = author.avatar_url
+            icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             sliced = member.nick[0:]
             array = sliced.split("-")
@@ -601,7 +601,7 @@ async def de(ctx, tabela, imie):
 @client.command(aliases = ['oddzial', 'Oddzial', 'oddział', 'Oddział', 'O'])
 async def o(ctx, tabela, pp):
     author = ctx.message.author
-    icon = author.avatar_url
+    icon = author.avatar
     conn= connection()
     mycursor = SSCursor(conn)
 
