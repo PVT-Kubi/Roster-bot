@@ -623,10 +623,10 @@ async def o(ctx, tabela, pp):
             mycursor.execute(f"select IdStorm, Czego FROM liderzy ")
             re = mycursor.fetchall()
             pracie += f"{padMiddle('ID Lidera', 30)} | {padMiddle('Blok dowodzenia', 38)}|\n"
-            
+
             for x in re:
                 print(x[0])
-                member = await findMember(ctx, int(x[0]))
+
                 prin = ctx.message.guild.get_member(int(x[0]))
                 sliced = prin.nick[2:]
                 array = sliced.split("-")
