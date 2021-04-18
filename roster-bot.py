@@ -169,7 +169,7 @@ async def wypisywanie(ctx, mb, tab):
             )
             embed.add_field(name = 'ID Lidera', value = prin.nick, inline = False)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = False)
-            #embed.set_author(name=member.nick, icon_url=member.avatar_u)
+            embed.set_author(name=member.nick, icon_url=member.avatar_u)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
@@ -234,17 +234,7 @@ async def w(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
         await wypisywanie(ctx, member, tabela)
-        hasRole = False
-        for role in member.roles:
-            if role.name != '@everyone':
-                if role.name == 'Edytor rostera':
-                    hasRole = True
-                    break
-        if hasRole:
-            sliced = member.nick[3:]
-        else:
-            sliced = member.nick[2:]
-        array = sliced.split("-")
+
 
 
 
@@ -275,7 +265,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
 
             result = mycursor.fetchone()
             author = ctx.message.author
-            icon = author.avatar_url
+            #icon = author.avatar_url
             AtName = (f"{author.name}#{author.discriminator}")
 
             mycursor.execute(f"UPDATE {baza} set {kolumna} = '{wartosc}' WHERE IdStorm = '{member.id}'")
@@ -288,7 +278,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
                 color = discord.Color.green()
             )
 
-            embed.set_author(name=member.name, icon_url=member.avatar_url)
+            #embed.set_author(name=member.name, icon_url=member.avatar_url)
             embed.add_field(name = 'Przed: ' , value = f"``{kolumna}:`` {result[0]}", inline = False)
             embed.add_field(name = 'Po: ' , value = f"``{kolumna}:`` {result2[0]}", inline = False)
             embed.set_footer(text=AtName, icon_url=icon)
