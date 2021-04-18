@@ -623,7 +623,7 @@ async def o(ctx, tabela, pp):
             mycursor.execute(f"select IdStorm, Czego FROM liderzy ")
             re = mycursor.fetchall()
             pracie += f"{padMiddle('ID Lidera', 30)} | {padMiddle('Blok dowodzenia', 38)}|\n"
-            pracie += f"-----------------------------------------------------"
+            pracie += f"----------------------------------------------------------------------\n"
             for x in re:
                 print(x[0])
 
