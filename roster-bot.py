@@ -151,6 +151,7 @@ async def members(ctx):
 async def wypisywanie(ctx, mb, tab):
     member = mb
     tabela = tab
+    url = member.avatar_url
     conn = connection()
     mycursor = SSCursor(conn)
     if tab == 'liderzy' or tab == 'Liderzy' or tab == 'Lider' or tab == 'lider':
@@ -169,7 +170,7 @@ async def wypisywanie(ctx, mb, tab):
             )
             embed.add_field(name = 'ID Lidera', value = prin.nick, inline = False)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = False)
-            embed.set_author(name=member.nick, icon_url=member.avatar_u)
+            embed.set_author(name=member.nick, icon_url = url)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
@@ -222,7 +223,7 @@ async def wypisywanie(ctx, mb, tab):
                 color = kolor
             )
 
-            embed.set_author(name=member.nick, icon_url=member.avatar_url)
+            embed.set_author(name=member.nick, icon_url= url)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
