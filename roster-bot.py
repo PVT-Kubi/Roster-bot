@@ -568,7 +568,7 @@ async def a(ctx, tabela, imie):
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
     conn.close()
 
-@client.command(aliases = ['u', 'U', 'Usuń', 'usuń', 'Miej_litość_usuń ', 'delete', 'Delete', 'De'])
+@client.command(aliases = ['u', 'U', 'Usuń', 'usuń', 'Zmiluj_sie_usuń ', 'delete', 'Delete', 'De'])
 async def de(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     if member is not None:
