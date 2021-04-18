@@ -169,7 +169,7 @@ async def wypisywanie(ctx, mb, tab):
             )
             embed.add_field(name = 'ID Lidera', value = prin.nick, inline = False)
             embed.add_field(name = 'Lider czego?', value = result[1], inline = False)
-            embed.set_author(name=member.nick, icon_url=member.avatar_url)
+            #embed.set_author(name=member.nick, icon_url=member.avatar_u)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
