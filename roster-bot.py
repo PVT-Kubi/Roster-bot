@@ -641,12 +641,9 @@ async def o(ctx, tabela, pp):
                         if role.name == '┃ARC┃':
                             hasArck = True
                             break
-                if hasArc:
-                    sliced = prin.nick[3:]
-                else:
-                    sliced = prin.nick[2:]
+                print(prin)
                 array = sliced.split("-")
-                pracie +=f"{padStart(f'{sliced[0]}-{sliced[1]}-{sliced[2]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
+                pracie +=f"{padStart(f'{x[1]}', 37)}|\n"
             pracie += "```"
             await ctx.send(pracie)
 
