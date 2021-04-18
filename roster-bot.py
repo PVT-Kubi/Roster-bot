@@ -223,8 +223,8 @@ async def wypisywanie(ctx, mb, tab):
                 color = kolor
             )
 
-            embed.set_author(name=member.nick, icon_url= member.avatar)
-    #        embed.set_footer(text=AtName, icon_url=icon)
+            embed.set_author(name=member.nick, icon_url= member.avatar_url)
+            #embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
             conn.close()
         else:
