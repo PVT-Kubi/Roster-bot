@@ -590,11 +590,37 @@ async def de(ctx, tabela, imie):
     else:
         await ctx.send('Nie udało mi się znaleźć takiego użytkownika (pamiętaj, że na razie obsługuję tylko pingi)')
 
+@client.command()
+async def list(ctx, *,arg):
+
+    for c in ctx.guild.channels:
+        if c.name == arg:
+            ThisId = c.id
+
+    voiceChannel = discord.utils.get(ctx.message.guild.channels, id = ThisId, type=discord.ChannelType.voice)
+    tekst = f'```**Lista Obecności**```\n'
+    memeber = voiceChannel.members
+    print(len(memeber))
+    if len(memeber) != 0:
+        author = ctx.message.author
+        icon = author.avatar_url
+        AtName = (f"{author.name}#{author.discriminator}")
+
+        await ctx.send("Już podaję:")
+        for x in memeber:
+            tekst += f"{x.nick}\n"
+
+            embed = discord.Embed(
+                color = discord.Color.orange(),
+                description = tekst
+            )
 
 
+            embed.set_footer(text=AtName, icon_url=icon)
+            await ctx.send(embed=embed)
 
-
-
+    else:
+        await ctx.send("Ludzie tu nikogo nie ma")
 
 
 
