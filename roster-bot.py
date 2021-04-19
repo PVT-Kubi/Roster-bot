@@ -603,7 +603,7 @@ async def list(ctx, *,arg):
     print(len(memeber))
     if len(memeber) != 0:
         author = ctx.message.author
-        icon = author.avatar_url
+        icon = author.avatar
         AtName = (f"{author.name}#{author.discriminator}")
 
         await ctx.send("Już podaję:")
