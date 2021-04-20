@@ -592,7 +592,7 @@ async def de(ctx, tabela, imie):
 
 
 
-@client.command(aliases = ['Lista'])
+@client.command(aliases = ['Lista', 'lista', 'L'])
 async def l(ctx):
     if ctx.author.voice and ctx.author.voice.channel:
         channel = ctx.author.voice.channel
