@@ -114,7 +114,7 @@ async def help(ctx):
 
     await ctx.send(embed=embed)
 
-@client.command(aliases = ['P', 'paste', 'Paste'])
+@client.command(aliases = ['Pa', 'paste', 'Paste'])
 async def pa(ctx, oddzial, newOd, imie):
     member = await findMember(ctx, imie)
     if member is not None:
