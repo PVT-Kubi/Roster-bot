@@ -622,13 +622,12 @@ async def l(ctx):
     else:
         await ctx.send("Z tego co widzę nie ma cię na głosowym?")
 
-@client.command()
+@client.command(aliases = ['LK', 'Lk', 'LisaKanalu'])
 async def lk(ctx, *,arg):
 
     for c in ctx.guild.channels:
-        if c.name.lower() == arg.lower():
+        if c.name.lower()[2:] == arg.lower():
             ThisId = c.id
-
     voiceChannel = discord.utils.get(ctx.message.guild.channels, id = ThisId, type=discord.ChannelType.voice)
     tekst = f'```**Lista Obecności**```\n'
     memeber = voiceChannel.members
