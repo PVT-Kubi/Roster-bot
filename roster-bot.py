@@ -63,6 +63,7 @@ async def findMember(ctx, query):
 
 
 
+
 @client.event
 async def on_ready():
     print('Bot is ready')
@@ -112,6 +113,29 @@ async def help(ctx):
 
 
     await ctx.send(embed=embed)
+
+@client.command(aliases = ['P', 'paste', 'Paste'])
+async def p(ctx, oddzial, newOd, imie):
+    member = await findMember(ctx, imie)
+    if member is not None:
+        conn = connection()
+        mycursor = SSCursor(conn)
+
+        mycursor.execute(f"select * FROM {oddzial} WHERE IdStorm = '{member.id}'")
+        result = mycursor.fetchone()
+        print(result)
+        if result is not None:
+            mycursor.execute(f"INSERT INTO {newOd}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', '{result[11]}', '{result[12]}') ")
+            conn.commit()
+    else:
+        await ctx.send('Nie udało mi się znaleźć podanego użytkownia')
+    #for x in ctx.message.mentions:
+        #member = ctx.message.guild.get_member_named(x)
+
+
+
+
+
 #or '4th' or 'Marksman' or 'marksman' or '4th Marksman Company' or '4th company' or '4th marksman company'
 #or '12th' or 'Mechanized' or 'mechanized' or 'Mechanized Company' or '12th Mechanized Company'
 @client.command(aliases = ['kompania', 'Kompania', 'K'])
@@ -176,6 +200,7 @@ async def wypisywanie(ctx, mb, tab):
             conn.close()
         else:
             await ctx.send('Podany uzytkownik nie istnieje (no chyba, że jestem ślepy ale śmiem w to wątpi, gdyż do czytania danych nie używam wzroku tylko kodu...)')
+
     else:
 
 
@@ -232,6 +257,9 @@ async def wypisywanie(ctx, mb, tab):
 
 @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
 async def w(ctx, tabela, imie):
+    #if ctx.message.mentions[0] == 823630210191720488:
+    #    await ctx.send("Miło, że sprawidzłeś/aś co ze mną, ale stety lub nie da się mnie dodać do rostera...\n*Znowu_w_życiu_mi_nie_wyszło.mp4*")
+    #else:
     member = await findMember(ctx, imie)
     if member is not None:
         await wypisywanie(ctx, member, tabela)
