@@ -117,13 +117,13 @@ async def help(ctx):
 @client.command(aliases = ['Pa', 'paste', 'Paste'])
 async def pa(ctx, oddzial, newOd, imie):
     member = await findMember(ctx, imie)
-    i = 0
+    hasRole =  False
     for role in author.roles:
         if role.name != '@everyone':
             if role.name == 'Edytor rostera':
                 hasRole = True
                 break
-    if hasRole = True:
+    if hasRole:
         if member is not None:
             conn = connection()
             mycursor = SSCursor(conn)
@@ -612,12 +612,13 @@ async def a(ctx, tabela, imie):
 @client.command(aliases = ['u', 'U', 'Usuń', 'usuń', 'Zmiluj_sie_usuń ', 'delete', 'Delete', 'De'])
 async def de(ctx, tabela, imie):
     member = await findMember(ctx, imie)
+    hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
             if role.name == 'Edytor rostera':
                 hasRole = True
                 break
-    if hasRole = True:
+    if hasRole:
         if member is not None:
             conn = connection()
             mycursor = SSCursor(conn)
