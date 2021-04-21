@@ -118,6 +118,7 @@ async def help(ctx):
 async def pa(ctx, oddzial, newOd, imie):
     member = await findMember(ctx, imie)
     hasRole =  False
+    author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
             if role.name == 'Edytor rostera':
@@ -613,6 +614,7 @@ async def a(ctx, tabela, imie):
 async def de(ctx, tabela, imie):
     member = await findMember(ctx, imie)
     hasRole = False
+    author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
             if role.name == 'Edytor rostera':
