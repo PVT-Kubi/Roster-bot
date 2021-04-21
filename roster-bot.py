@@ -117,17 +117,21 @@ async def help(ctx):
 @client.command(aliases = ['Pa', 'paste', 'Paste'])
 async def pa(ctx, oddzial, newOd, imie):
     member = await findMember(ctx, imie)
+    i = 0
     if member is not None:
         conn = connection()
         mycursor = SSCursor(conn)
 
         mycursor.execute(f"select * FROM {oddzial} WHERE IdStorm = '{member.id}'")
         result = mycursor.fetchone()
-        print(result)
-        if result is not None:
+        print(result[i])
+
+        if result[11] is None or result[11] == 'None':
+            mycursor.execute(f"INSERT INTO {newOd}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', NULL, '{result[12]}') ")
+        else:
             mycursor.execute(f"INSERT INTO {newOd}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', '{result[11]}', '{result[12]}') ")
-            conn.commit()
-            await ctx.send(f'Pomyslnie udało się skopiować i przenieść użytkownia {member.nick} do {newOd}u. Można już go bezpiecznie usunąć ze starego oddziału!')
+        conn.commit()
+        await ctx.send(f'Pomyslnie udało się skopiować i przenieść użytkownia {member.nick} do {newOd}u. Można już go bezpiecznie usunąć ze starego oddziału!')
     else:
         await ctx.send('Nie udało mi się znaleźć podanego użytkownia')
     #for x in ctx.message.mentions:
@@ -242,7 +246,7 @@ async def wypisywanie(ctx, mb, tab):
                 prin = ctx.message.guild.get_member(int(result[12]))
                 desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[2]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
             else:
-                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {result[12]}'
+                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: '
 
             embed = discord.Embed(
                 description = desc,
