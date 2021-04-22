@@ -660,14 +660,14 @@ async def l(ctx):
             for x in memeber:
                 tekst += f"{x.nick}\n"
 
-                embed = discord.Embed(
-                    color = discord.Color.orange(),
-                    description = tekst
-                )
+            embed = discord.Embed(
+                color = discord.Color.orange(),
+                description = tekst
+            )
 
 
-                embed.set_footer(text=AtName, icon_url=icon)
-                await ctx.send(embed=embed)
+            embed.set_footer(text=AtName, icon_url=icon)
+            await ctx.send(embed=embed)
 
         else:
             await ctx.send("Ludzie tu nikogo nie ma")
