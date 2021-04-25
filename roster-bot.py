@@ -131,7 +131,6 @@ async def pa(ctx, oddzial, newOd, imie):
 
             mycursor.execute(f"select * FROM {oddzial} WHERE IdStorm = '{member.id}'")
             result = mycursor.fetchone()
-            print(result[i])
 
             if result[11] is None or result[11] == 'None':
                 mycursor.execute(f"INSERT INTO {newOd}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', NULL, '{result[12]}') ")
