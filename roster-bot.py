@@ -691,18 +691,18 @@ async def lk(ctx, *,arg):
         icon = author.avatar
         AtName = (f"{author.name}#{author.discriminator}")
 
-    await ctx.send("Już podaję:")
-    for x in memeber:
-        tekst += f"{x.nick}\n"
+        await ctx.send("Już podaję:")
+        for x in memeber:
+            tekst += f"{x.nick}\n"
 
-    embed = discord.Embed(
-        color = discord.Color.orange(),
-        description = tekst
-    )
+        embed = discord.Embed(
+            color = discord.Color.orange(),
+            description = tekst
+        )
 
 
-    embed.set_footer(text=AtName, icon_url=icon)
-    await ctx.send(embed=embed)
+        embed.set_footer(text=AtName, icon_url=icon)
+        await ctx.send(embed=embed)
 
     else:
         await ctx.send("Ludzie tu nikogo nie ma")
