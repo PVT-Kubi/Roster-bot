@@ -163,6 +163,9 @@ async def k(ctx, *baza):
     elif b == '12' or b == '12th' or b == 'mechanized' or b == '12th mechanized company' or b == '12th company':
         mycursor.execute("SELECT*FROM 12th")
         color = discord.Color.blue()
+    elif b == '7' or b == '7th' or b == 'armored' or b == '7th armored company' or b == '7th company':
+        mycursor.execute("SELECT*FROM 7th")
+        color = discord.Color.yellow()
     else:
         return await ctx.send('Taki taka kompania nie istnieje (albo o czymś nie wiem)')
     result = mycursor.fetchall()
@@ -688,18 +691,18 @@ async def lk(ctx, *,arg):
         icon = author.avatar
         AtName = (f"{author.name}#{author.discriminator}")
 
-        await ctx.send("Już podaję:")
-        for x in memeber:
-            tekst += f"{x.nick}\n"
+    await ctx.send("Już podaję:")
+    for x in memeber:
+        tekst += f"{x.nick}\n"
 
-            embed = discord.Embed(
-                color = discord.Color.orange(),
-                description = tekst
-            )
+    embed = discord.Embed(
+        color = discord.Color.orange(),
+        description = tekst
+    )
 
 
-            embed.set_footer(text=AtName, icon_url=icon)
-            await ctx.send(embed=embed)
+    embed.set_footer(text=AtName, icon_url=icon)
+    await ctx.send(embed=embed)
 
     else:
         await ctx.send("Ludzie tu nikogo nie ma")
