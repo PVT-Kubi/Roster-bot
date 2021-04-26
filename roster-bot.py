@@ -598,7 +598,7 @@ async def a(ctx, tabela, imie):
         #ar = sliced.split("-")
         print(author.nick)
         print(member.id)
-        if x = 2 and z < 2:
+        if x == 2 and z < 2:
             mycursor.execute(f"UPDATE {tabela} set Ranga = {up(x)}, Pozycja = {up(z)}, DataAwDeg = '{wiad.year}-{wiad.month}-{wiad.day}', Awansujacy = '{author.id}' WHERE IdStorm = '{member.id}'")
             conn.commit()
             await ctx.send(f"Gratuluję awa")
