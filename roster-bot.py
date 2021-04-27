@@ -340,12 +340,6 @@ async def e(ctx, baza, kolumna, wartosc, imie):
         await ctx.send("Podany użytkownik nie istnieje")
 
 
-
-
-
-
-
-
 def num(s):
     try:
         return int(s)
@@ -376,7 +370,7 @@ async def d(ctx, baza, imie):
             sliced = member.nick[0:]
             array = sliced.split("-")
             print(array)
-            mycursor.execute(f"INSERT INTO {baza}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) VALUES('{member.id}', 1, '{array[2]}', 'Aktywny', {array[1]}, 'Piechur', NULL, NULL, '3', '3', NULL, NULL, 1 )")
+            mycursor.execute(f"INSERT INTO {baza}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) VALUES('{member.id}', 1, '{array[2]}', 'Aktywny', {array[1]}, 'Piechur', NULL, NULL, '4', '4', NULL, NULL, 1 )")
             conn.commit()
             embed2 = discord.Embed(
                 title = f'witamy w ~~koloni~~ szeregach',
