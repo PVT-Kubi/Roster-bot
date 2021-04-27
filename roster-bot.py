@@ -72,45 +72,50 @@ async def on_ready():
 
 @client.group(invoke_without_command=True)
 async def help(ctx):
+    tresc = "```Komendy dostępne dla wszystkich```\n\n**Wypisz**\n``Składnia``: .w [nazwa oddziału] [ping użytkownik]\n``Opis``: wypisuje wszystkie dane, o podanym użytkowniku\n\n**Kompania**\n``Składnia``: .k [nazwa kompanii]\n``Opis``: wyświetla wszystkie oddziały z danej kompanii\n\n**Oddzial**\n``Składnia``: .o [nazwa oddziału] podstawowe(lub p)/awanse(lub aw)/aktywnosc(lub ak)\n``Opis``: Wypisuje podany w argumentach rodzaj danych na temat danego oddziału\n\n**Lista**"
+    tresc += "\n``Składnia``: .l\n``Opis``: wypisuje listę użytkowników na kanale, na którym znajduje się piszący komendę\n\n**Lista Kanału**\n``Składnia``: .lk [pełna nazwa kanału (bez emotek kresek czy spacji)]\n``Opis``: wyświetla listę użytkowników z podanego kanału (nie radzę używać bo pełne nazwy kanałów głosowych w łor są trochę dlugie :p\n\n```Komendy dostępne tylko dla edytorów```\n\n**Edit**\n``Składnia``: "
+    tresc += ".e [oddzial] [kolumna] [nowa wartoscść] [ping użytkownia]\n``Opis``: Zmienia wartosc kolumny na podaną przez użytkownika\n\n**Dodaj**\n``Składnia``: .d [nazwa oddziału] [ping użytkownia]\n``Opis``: dodaje użytkownika do podanego oddziału (używać tylko dla nowych użytkowników!!!)\n\n**Copy paste**\n``Składnia``: .pa [nazwa starego oddziału] [nazwa nowego oddziału] [ping użytkownia]\n``Opis``: kopiuje użytkownika i wkleja jego dane do nowego oddziału (jednak nie usuwa go ze starego, ze względu na bezpieczeństwo)\n\n **Delete**\n``Składnia``: .de [nazwa oddziału [nazwa użytkownika]\n``Opis``: Usuwa użytkownika z podanego oddziału\n\n**Plus/Minus**\n``Składnia``: .p/m [nazwa oddziału] [ping użytkownika]\n``Opis``: Dodaje jednego plusa/minusa\n\n**Awans**\n``Składnia``: .a [nazwa oddziału] [ping użytkownika]\n``Opis``: zwiększa rangę użytkownika o jeden\n\n**Zachowanie/Aktywnosc**\n``Składnia``: .ak/z [nazwa oddziału] +/- [ping użytkownika]\n``Opis``: zwiększa/zmniejsza aktywnosc/zachowanie użytkownika o jeden"
+
     embed = discord.Embed(
-        color = discord.Color.purple()
+        color = discord.Color.purple(),
+        description = tresc
     )
 
-    embed.add_field(name = '``Komendy dostępne dla wszystkich``', value = '\u200B', inline = False)
-    embed.add_field(name = 'Wypisz', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.w [nazwa oddziału] [nazwa użytkownika (bez tej gwiazdki na początku), ping, oryginalna nazwa użytkownia]', inline = True)
-    embed.add_field(name = 'Opis:', value = 'wypisuje wszystkie dane, o podanym użytkowniku\n', inline = True)
-
-
-    embed.add_field(name = 'Kompania', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.k [nazwa kompanii]', inline = True)
-    embed.add_field(name = 'Opis:', value = 'wyświetla wszystkie oddziały z danej kompanii\n', inline = True)
-
-
-
-    embed.add_field(name = '``Komendy tylko dla edytorów``', value = '\u200B', inline = False)
-    embed.add_field(name = 'Edit', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.e [oddzial] [kolumna] [nowa wartoscśclassć] [nazwa użytkownika, ping oryginalna nazwa użytkownia]', inline = True)
-    embed.add_field(name = 'Opis:', value = 'zwiększa dane\n', inline = True)
-
-
-    embed.add_field(name = 'Dodaj', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.d [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
-    embed.add_field(name = 'Opis:', value = "dodaje użytkownika do rostera (użytkownik musi mieć ten war'owski pseudonim)\n", inline = True)
-
-
-    embed.add_field(name = 'Awans', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.a [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
-    embed.add_field(name = 'Opis:', value = 'zwiększa rangę użytkownika o jeden w górę\n', inline = True)
-
-    embed.add_field(name = 'Plus/Minus', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.p/m [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
-    embed.add_field(name = 'Opis:', value = 'Dodaje plusa lub minusa (napisane w jednym bo składnia identyczna)\n', inline = True)
-
-    embed.add_field(name = 'Aktywność/Zachowanie', value = '\u200B', inline = False)
-    embed.add_field(name = 'Składnia', value = '.ak/z [nazwa oddzialu] [plus albo minus] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
-    embed.add_field(name = 'Opis:', value = 'Zwiększa lub zmniejsza Aktywność/Zachowanie o jeden (napisane razem bo taka sama składnia)\n', inline = True)
-
+    # embed.add_field(name = '``Komendy dostępne dla wszystkich``', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Wypisz', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.w [nazwa oddziału] [nazwa użytkownika (bez tej gwiazdki na początku), ping, oryginalna nazwa użytkownia]', inline = True)
+    # embed.add_field(name = 'Opis:', value = 'wypisuje wszystkie dane, o podanym użytkowniku\n', inline = True)
+    #
+    #
+    # embed.add_field(name = 'Kompania', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.k [nazwa kompanii]', inline = True)
+    # embed.add_field(name = 'Opis:', value = 'wyświetla wszystkie oddziały z danej kompanii\n', inline = True)
+    #
+    #
+    #
+    # embed.add_field(name = '``Komendy tylko dla edytorów``', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Edit', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.e [oddzial] [kolumna] [nowa wartoscśclassć] [nazwa użytkownika, ping oryginalna nazwa użytkownia]', inline = True)
+    # embed.add_field(name = 'Opis:', value = 'zwiększa dane\n', inline = True)
+    #
+    #
+    # embed.add_field(name = 'Dodaj', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.d [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    # embed.add_field(name = 'Opis:', value = "dodaje użytkownika do rostera (użytkownik musi mieć ten war'owski pseudonim)\n", inline = True)
+    #
+    #
+    # embed.add_field(name = 'Awans', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.a [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    # embed.add_field(name = 'Opis:', value = 'zwiększa rangę użytkownika o jeden w górę\n', inline = True)
+    #
+    # embed.add_field(name = 'Plus/Minus', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.p/m [nazwa oddzialu] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    # embed.add_field(name = 'Opis:', value = 'Dodaje plusa lub minusa (napisane w jednym bo składnia identyczna)\n', inline = True)
+    #
+    # embed.add_field(name = 'Aktywność/Zachowanie', value = '\u200B', inline = False)
+    # embed.add_field(name = 'Składnia', value = '.ak/z [nazwa oddzialu] [plus albo minus] [nazwa użytkownika (bez tej gwiazdki), ping lub oryginalna nazwa użytkownika]', inline = True)
+    # embed.add_field(name = 'Opis:', value = 'Zwiększa lub zmniejsza Aktywność/Zachowanie o jeden (napisane razem bo taka sama składnia)\n', inline = True)
+    #
 
     await ctx.send(embed=embed)
 
@@ -280,10 +285,6 @@ async def w(ctx, tabela, imie):
     if member is not None:
         await wypisywanie(ctx, member, tabela)
 
-
-
-
-
     else:
         await ctx.send("Ten użytkownik nie istnieje")
 
@@ -338,7 +339,6 @@ async def e(ctx, baza, kolumna, wartosc, imie):
         conn.close()
     else:
         await ctx.send("Podany użytkownik nie istnieje")
-
 
 def num(s):
     try:
@@ -797,9 +797,6 @@ async def o(ctx, tabela, pp):
             await ctx.send('Podaj poprawne dane!!!')
     else:
         await ctx.send('Nie znalazłem takiego oddziału')
-
-
-
 
 
 
