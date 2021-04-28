@@ -203,7 +203,7 @@ async def k(ctx, *baza):
 async def wypisywanie(ctx, mb, tab):
     member = mb
     tabela = tab
-    author = ctx.message.author
+
     url = member.avatar
     conn = connection()
     mycursor = SSCursor(conn)
@@ -211,6 +211,7 @@ async def wypisywanie(ctx, mb, tab):
         mycursor.execute(f"select IdStorm, Czego FROM liderzy WHERE IdStorm = '{member.id}'")
         result = mycursor.fetchone()
         if result is not None:
+            author = ctx.message.author
             icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
@@ -235,7 +236,7 @@ async def wypisywanie(ctx, mb, tab):
         mycursor.execute(f"select a.IdStorm, r.RangaId, r.RangaNazw, a.Nickname, a.Stat, a.Numer, a.Specka, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie,a.DataAwDeg, a.Awansujacy, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja and IdStorm = '{member.id}'")
         result = mycursor.fetchone()
         if result is not None:
-
+            author = ctx.message.author
             icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
