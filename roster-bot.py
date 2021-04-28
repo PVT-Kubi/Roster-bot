@@ -11,8 +11,8 @@ import re
 from mysql.connector import pooling
 import MySQLdb
 from MySQLdb.cursors import SSCursor
-from discord_slash import SlashCommand
-from discord_slash.utils.manage_commands import create_option
+#from discord_slash import SlashCommand
+#from discord_slash.utils.manage_commands import create_option
 
 
 intents = discord.Intents.default()
