@@ -11,11 +11,18 @@ import re
 from mysql.connector import pooling
 import MySQLdb
 from MySQLdb.cursors import SSCursor
+from discord_slash import SlashCommand
+from discord_slash.utils.manage_commands import create_option
 
 
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
+#slash = SlashCommand(client, sync_commands=True)
+
+#guild_ids = 811324655310602300
+
+
 
 
 def connection():
@@ -184,16 +191,17 @@ async def k(ctx, *baza):
     await ctx.send(embed=embed)
 
 
-@client.command()
-async def members(ctx):
-    members = ctx.message.guild.members
-    filtrowanie = [member for member in members if member.nick == 'dupa']
-    print(filtrowanie)
-    print(filtrowanie[0])
+#@client.command()
+#async def members(ctx):
+#    members = ctx.message.guild.members
+#    filtrowanie = [member for member in members if member.nick == 'dupa']
+#    print(filtrowanie)
+#    print(filtrowanie[0])
 
 async def wypisywanie(ctx, mb, tab):
     member = mb
     tabela = tab
+    author = ctx.message.author
     url = member.avatar
     conn = connection()
     mycursor = SSCursor(conn)
@@ -201,7 +209,6 @@ async def wypisywanie(ctx, mb, tab):
         mycursor.execute(f"select IdStorm, Czego FROM liderzy WHERE IdStorm = '{member.id}'")
         result = mycursor.fetchone()
         if result is not None:
-            author = ctx.message.author
             icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
@@ -227,7 +234,6 @@ async def wypisywanie(ctx, mb, tab):
         result = mycursor.fetchone()
         if result is not None:
 
-            author = ctx.message.author
             icon = author.avatar
             AtName = (f"{author.name}#{author.discriminator}")
             members = ctx.message.guild.members
@@ -273,6 +279,25 @@ async def wypisywanie(ctx, mb, tab):
             conn.close()
         else:
             await ctx.send("Nie znaleziono uzytkownika w bazie")
+
+# @slash.slash(name = "wypisywanie", description = "wypisuje wszystkie dane podanego użytkownia", options = [create_option(name = "od", description = "oddzial", option_type = 3, required=True), create_option(name = "ping", description = "ping", option_type = 6, required=True)],  guild_ids = guild_ids)
+# async def w(ctx, od: str, ping):
+#     print(ping.id)
+#     member = ctx.guild.get_member(ping.id)
+#     author = ctx.guild.get_member(ctx.author_id)
+#     guild = client.get_guild(guild_ids)
+#
+#     print(guild)
+#
+#     print(ctx.author_id)
+#
+#     await wypisywanie(ctx, member, od, author)
+# #
+# #    else:
+    #    await ctx.send("Ten użytkownik nie istnieje")
+
+
+
 
 @client.command(aliases = ['wypisz', 'Wypisz', 'wypisywanie', 'Wypisywanie', 'W'])
 async def w(ctx, tabela, imie):
