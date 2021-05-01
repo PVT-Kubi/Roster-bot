@@ -74,7 +74,7 @@ async def findMember(ctx, query):
 @client.event
 async def on_ready():
     print('Bot is ready')
-    await client.change_presence(activity=discord.Streaming(name="Na służbie 24/7 z przerwami", url='https://www.youtube.com/watch?v=FUD5mX0G-KQ'))
+    await client.change_presence(activity=discord.Streaming(name="Pozdro Cherro jesteś kocur <3", url='https://www.youtube.com/watch?v=FUD5mX0G-KQ'))
 
 
 @client.group(invoke_without_command=True)
