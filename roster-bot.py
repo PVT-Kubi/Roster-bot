@@ -74,7 +74,20 @@ async def findMember(ctx, query):
 @client.event
 async def on_ready():
     print('Bot is ready')
+    # kubi = client.get_user(509353384709586945)
+    # levi = client.get_user(776053863483965470)
+    #
     await client.change_presence(activity=discord.Streaming(name="Pozdro Cherro jesteś kocur <3", url='https://www.youtube.com/watch?v=uVgZHQ93H1o'))
+    #
+    # embed = discord.Embed(
+    #     color = 10092441,
+    #     title = "Siemano kapitany!",
+    #     description = f" Pewnie większość z was mnie zna, a jak nie to chociaż o mnie słyszała, gdyż z tego co mi wiadomo byłem pare razy wspominany, ale dla tych co mnie jeszcze nie kojarzą, jestem szeregowy Bubi i będę odpowiedzialny za papierkową robotę tego oddziału! Jeśli chodzi o pochodzenie to przenieśli mnie z innej jednostki (bo usłyszeli, że do teraz używacie tabelek w excelu). O i jeszcze jedno, nie jestem klonem, jednak nie jeste też naturalnie powstałą rasą. Zostałem sztucznie stworzony w ramach operacji R O A S T. Za projekt ciała odpowiada {levi.mention} jednak twórcą umysłu na moje cholerne nieszczęście jest {kubi.mention} (z tego powodu łatwo mogę się wywalić). Nom o mnie to chyba tyle...\n **Liczę na owocną współpracę!**"
+    # )
+    #
+    # embed.set_image(url = "https://media.discordapp.net/attachments/833425519802449951/836872743541669928/Wilk_Natasza.jpg?width=473&height=473")
+    # await client.get_channel(811324655310602303).send(embed=embed)
+
 
 
 @client.group(invoke_without_command=True)
@@ -150,10 +163,13 @@ async def pa(ctx, oddzial, newOd, imie):
                 mycursor.execute(f"INSERT INTO {newOd}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', '{result[11]}', '{result[12]}') ")
             conn.commit()
             await ctx.send(f'Pomyslnie udało się skopiować i przenieść użytkownia {member.nick} do {newOd}u. Można już go bezpiecznie usunąć ze starego oddziału!')
+            mycursor.close()
+            conn.close()
         else:
             await ctx.send('Nie udało mi się znaleźć podanego użytkownia')
     else:
-        await ctx.send('Na twoje nieszczęście Bilokacja to tylko bajeczka a nie faktyczne zjawisko.')
+        await ctx.send('Na twoje nieszczęście Bilokacja to tylko bajeczka, a nie faktyczne zjawisko.')
+
     #for x in ctx.message.mentions:
         #member = ctx.message.guild.get_member_named(x)
 
@@ -191,6 +207,8 @@ async def k(ctx, *baza):
         for y in x:
             embed.add_field(value = (f'{y}'), name = 'Nazwa oddziału:',  inline = True)
     await ctx.send(embed=embed)
+    mycursor.close()
+    conn.close()
 
 
 #@client.command()
@@ -226,7 +244,6 @@ async def wypisywanie(ctx, mb, tab):
             embed.set_author(name=member.nick, icon_url = url)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
-            conn.close()
         else:
             await ctx.send('Podany uzytkownik nie istnieje (no chyba, że jestem ślepy ale śmiem w to wątpi, gdyż do czytania danych nie używam wzroku tylko kodu...)')
 
@@ -279,9 +296,10 @@ async def wypisywanie(ctx, mb, tab):
             embed.set_author(name=member.nick, icon_url= member.avatar)
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
-            conn.close()
         else:
             await ctx.send("Nie znaleziono uzytkownika w bazie")
+    mycursor.close()
+    conn.close()
 
 # @slash.slash(name = "wypisywanie", description = "wypisuje wszystkie dane podanego użytkownia", options = [create_option(name = "od", description = "oddzial", option_type = 3, required=True), create_option(name = "ping", description = "ping", option_type = 6, required=True)],  guild_ids = guild_ids)
 # async def w(ctx, od: str, ping):
@@ -362,9 +380,11 @@ async def e(ctx, baza, kolumna, wartosc, imie):
 
         else:
             await ctx.send('Jak chcesz edytować nick na GMD-2137-JP2 to gadaj z przełożonymi...')
-        conn.close()
     else:
         await ctx.send("Podany użytkownik nie istnieje")
+    mycursor.close()
+    conn.close()
+
 
 def num(s):
     try:
@@ -413,9 +433,10 @@ async def d(ctx, baza, imie):
 
         else:
             await ctx.send('Podany użytkownik nie istnieje!')
-        conn.close()
     else:
         await ctx.send('Coś mi się wydaje, że jedyne co możesz sobie dodać to chromosom...')
+    mycursor.close()
+    conn.close()
 
 def padStart(string, count):
     if len(string) < count:
@@ -470,6 +491,7 @@ async def p(ctx, tabela, imie):
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Jak chcesz sobie zaplusować to rusz dupę a nie tykasz nie swoje komendy!')
+    mycursor.close()
     conn.close()
 
 
@@ -497,6 +519,7 @@ async def m(ctx, tabela, imie):
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Ty chyba jesteś jakiś niepełnosprytny ?!')
+    mycursor.close()
     conn.close()
 
 
@@ -544,6 +567,7 @@ async def ak(ctx, tabela, arg, imie):
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Rusz tą dupę a nie kombinujesz!')
+    mycursor.close()
     conn.close()
 
 
@@ -592,6 +616,7 @@ async def z(ctx, tabela, arg, imie):
             await ctx.send('Podany użytkownik nie istnieje!')
     else:
         await ctx.send('Ja już nie mam siły. Plusy rozumiem, awans rozumiem, AKTYWNOŚĆ też jeszcze zrozumiem, ALE PO CHOLERE TO ZACHOWANIE SOBIE ZWIĘKSZASZ! PRZECIEŻ TO PRAKTYCZNIE NIC NIE ZNACZY!!!')
+    mycursor.close()
     conn.close()
 
 @client.command(aliases = ['awans', 'Awans', 'up', 'Up', 'aw', 'Aw'])
@@ -630,6 +655,7 @@ async def a(ctx, tabela, imie):
             await ctx.send(f"Gratuluję awansu {member.mention} :partying_face: :partying_face: :partying_face: ")
     elif hasRole == False:
         await ctx.send('A CO TO ZA DODAWANIE SOBIE AWANSU?! NIE DLA PSA!')
+    mycursor.close()
     conn.close()
 
 @client.command(aliases = ['u', 'U', 'Usuń', 'usuń', 'Zmiluj_sie_usuń ', 'delete', 'Delete', 'De'])
@@ -658,6 +684,7 @@ async def de(ctx, tabela, imie):
                 await ctx.send(f"{member.nick} dostał lepę z {tabela}u")
             else:
                 await ctx.send(f"Niestety nie udało mi się znaleźć oddziału o nazwie: '{tabela}'")
+            mycursor.close()
             conn.close()
         else:
             await ctx.send('Nie udało mi się znaleźć takiego użytkownika (pamiętaj, że na razie obsługuję tylko pingi)')
@@ -686,7 +713,6 @@ async def l(ctx):
                 color = discord.Color.orange(),
                 description = tekst
             )
-
 
             embed.set_footer(text=AtName, icon_url=icon)
             await ctx.send(embed=embed)
@@ -780,8 +806,7 @@ async def o(ctx, tabela, pp):
 
             pracie += '```'
             await ctx.send(f'Podstawowe dane {tabela}u:\n{pracie}')
-            mycursor.close()
-            conn.close()
+
         elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
             mycursor.execute(f"select  a.Nickname, a.Stat, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie FROM {tabela} a")
             re = mycursor.fetchall()
@@ -797,8 +822,8 @@ async def o(ctx, tabela, pp):
 
             pracie += '```'
             await ctx.send(f'Dane dotyczące aktywności {tabela}u:\n{pracie}')
-            mycursor.close()
-            conn.close()
+
+
         elif pp.lower() == 'awanse' or pp.lower() =="aw" :
             mycursor.execute(f"select  a.Nickname, a.DataAwDeg, a.Awansujacy FROM {tabela} a")
             re = mycursor.fetchall()
@@ -817,12 +842,13 @@ async def o(ctx, tabela, pp):
                     pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
             pracie += '```'
             await ctx.send(f'Dane na temat awansów {tabela}u:\n{pracie}')
-            mycursor.close()
-            conn.close()
         else:
             await ctx.send('Podaj poprawne dane!!!')
     else:
         await ctx.send('Nie znalazłem takiego oddziału')
+
+    mycursor.close()
+    conn.close()
 
 
 
