@@ -12,8 +12,8 @@ from mysql.connector import pooling
 import MySQLdb
 from MySQLdb.cursors import SSCursor
 from discord.utils import get
-# from discord import FFmpegPCMAudio
-# from youtube_dl import YoutubeDL
+from discord import FFmpegPCMAudio
+from youtube_dl import YoutubeDL
 #from discord_slash import SlashCommand
 #from discord_slash.utils.manage_commands import create_option
 
