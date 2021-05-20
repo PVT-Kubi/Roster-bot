@@ -771,7 +771,6 @@ async def l(ctx):
 
 @client.command(aliases = ['LK', 'Lk', 'LisaKanalu'])
 async def lk(ctx, *,arg):
-    ThisId
     if arg.lower() == "7" or arg.lower() == "7th":
         ThisId = 834103651882106971
     elif arg.lower() == "12" or arg.lower() == "12th":
