@@ -11,6 +11,9 @@ import re
 from mysql.connector import pooling
 import MySQLdb
 from MySQLdb.cursors import SSCursor
+#from discord.utils import get
+#from discord import FFmpegPCMAudio
+#from youtube_dl import YoutubeDL
 #from discord_slash import SlashCommand
 #from discord_slash.utils.manage_commands import create_option
 
@@ -22,7 +25,7 @@ client = commands.Bot(command_prefix = '.', help_command = None, intents=intents
 
 #guild_ids = 811324655310602300
 
-
+# players = {}
 
 
 def connection():
@@ -74,11 +77,12 @@ async def findMember(ctx, query):
 @client.event
 async def on_ready():
     print('Bot is ready')
-    # kubi = client.get_user(509353384709586945)
-    # levi = client.get_user(776053863483965470)
-    #
+    kubi = client.get_user(509353384709586945)
+    levi = client.get_user(776053863483965470)
+    cherr= client.get_user(521992400755884052)
+
     await client.change_presence(activity=discord.Streaming(name="Pozdro Cherro jesteś kocur <3", url='https://www.youtube.com/watch?v=uVgZHQ93H1o'))
-    #
+
     # embed = discord.Embed(
     #     color = 10092441,
     #     title = "Siemano kapitany!",
@@ -86,8 +90,10 @@ async def on_ready():
     # )
     #
     # embed.set_image(url = "https://media.discordapp.net/attachments/833425519802449951/836872743541669928/Wilk_Natasza.jpg?width=473&height=473")
-    # await client.get_channel(811324655310602303).send(embed=embed)
-
+    # await client.get_channel(843512570057195521).send(embed=embed)
+    #
+    # await client.get_channel(843512570057195521).send(f'O i by the way, mogłem również wyglądać w ten sposób, ale Kubi uznał, że "piękny chłopiec" kupił jego serce (projekt opracowany przez Cherra/spagjedi)')
+    # await client.get_channel(843512570057195521).send(f'https://media.discordapp.net/attachments/760953812713472060/838789087740690473/mergedimage.png?width=473&height=473')
 
 
 @client.group(invoke_without_command=True)
@@ -139,6 +145,47 @@ async def help(ctx):
 
     await ctx.send(embed=embed)
 
+
+
+# @client.command()
+# async def play(ctx, url):
+#     voice = get(client.voice_clients, guild=ctx.guild)
+#     YDL_OPTIONS = {
+#         'format': 'bestaudio',
+#         'postprocessors': [{
+#             'key': 'FFmpegExtractAudio',
+#             'preferredcodec': 'mp3',
+#             'preferredquality': '192',
+#         }],
+#         'outtmpl': 'song.%(ext)s',
+#     }
+#
+#     with YoutubeDL(Music.YDL_OPTIONS) as ydl:
+#         ydl.download("URL", download=True)
+#
+#     if not voice.is_playing():
+#         voice.play(FFmpegPCMAudio("song.mp3"))
+#         voice.is_playing()
+#         await ctx.send(f"Now playing {url}")
+#     else:
+#         await ctx.send("Already playing song")
+#         return
+
+
+
+
+# @client.command()
+# async def play(ctx, url):
+#     channel = ctx.message.author.voice.channel
+#     guild = ctx.message.guild
+#     await channel.connect()
+#     voice_client = guild.voice_client
+#     player = await voice_client.create_ytdl_player(url)
+#     playerrs[server.id] = player
+#     player.start()
+
+
+
 @client.command(aliases = ['Pa', 'paste', 'Paste'])
 async def pa(ctx, oddzial, newOd, imie):
     member = await findMember(ctx, imie)
@@ -146,7 +193,7 @@ async def pa(ctx, oddzial, newOd, imie):
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole:
@@ -347,7 +394,7 @@ async def e(ctx, baza, kolumna, wartosc, imie):
     if member is not None:
         for role in author.roles:
             if role.name != '@everyone':
-                if role.name == 'Edytor rostera':
+                if role.name == 'Edytor Rostera':
                     hasRole = True
                     break
         if hasRole == True:
@@ -403,7 +450,7 @@ async def d(ctx, baza, imie):
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
 
@@ -476,7 +523,7 @@ async def p(ctx, tabela, imie):
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -504,7 +551,7 @@ async def m(ctx, tabela, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -534,7 +581,7 @@ async def ak(ctx, tabela, arg, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -583,7 +630,7 @@ async def z(ctx, tabela, arg, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -630,7 +677,7 @@ async def a(ctx, tabela, imie):
     hasRole = False
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole == True:
@@ -665,7 +712,7 @@ async def de(ctx, tabela, imie):
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
-            if role.name == 'Edytor rostera':
+            if role.name == 'Edytor Rostera':
                 hasRole = True
                 break
     if hasRole:

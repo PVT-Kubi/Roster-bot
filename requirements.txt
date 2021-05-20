@@ -1,4 +1,3 @@
 git+https://github.com/Rapptz/discord.py
 mysql-connector-python
 mysqlclient
-python -m pip install -U youtube_dl
