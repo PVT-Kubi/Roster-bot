@@ -724,10 +724,18 @@ async def l(ctx):
 
 @client.command(aliases = ['LK', 'Lk', 'LisaKanalu'])
 async def lk(ctx, *,arg):
-
-    for c in ctx.guild.channels:
-        if c.name.lower()[2:] == arg.lower():
-            ThisId = c.id
+    if arg.lower() == "7" or arg.lower() == "7th":
+        ThisId = 834103651882106971
+    elif arg.lower() == "12" or arg.lower() == "12th":
+        ThisId = 825294836033781760
+    elif arg.lower() == "4" or arg.lower() == "4th":
+        ThisId = 825294826965958696
+    elif arg.lower() == "104" or arg.lower() == "104th":
+        ThisId = 825294815007604788
+    else:
+        for c in ctx.guild.channels:
+            if c.name.lower()[2:] == arg.lower():
+                ThisId = c.id
     voiceChannel = discord.utils.get(ctx.message.guild.channels, id = ThisId, type=discord.ChannelType.voice)
     tekst = f'```**Lista Obecności**```\n'
     memeber = voiceChannel.members
