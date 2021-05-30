@@ -102,8 +102,8 @@ async def on_ready():
 
 @client.event
 async def on_member_remove(member):
-    channel = client.get_channel(811324655310602303)
-    #channel2 = client.get_channel(843512570057195521)
+    channel = client.get_channel(825344498178981888)
+    channel2 = client.get_channel(843512570057195521)
     print(member.id)
     hasRole = False
     Oddzial = ''
@@ -127,7 +127,7 @@ async def on_member_remove(member):
         if result:
             mycursor.execute(f"DELETE FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
             conn.commit()
-            await client.send_message(message.channel, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
+            await client.send_message(message.channel2, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
 
 
 
