@@ -8,12 +8,14 @@ import datetime
 import asyncio
 import sqlite3
 import re
+import time
 from mysql.connector import pooling
 import MySQLdb
 from MySQLdb.cursors import SSCursor
-#from discord.utils import get
-#from discord import FFmpegPCMAudio
-#from youtube_dl import YoutubeDL
+from discord.utils import get
+# from discord import FFmpegPCMAudio
+# import youtube_dl
+# from youtube_dl import YoutubeDL
 #from discord_slash import SlashCommand
 #from discord_slash.utils.manage_commands import create_option
 
@@ -26,7 +28,9 @@ client = commands.Bot(command_prefix = '.', help_command = None, intents=intents
 #guild_ids = 811324655310602300
 
 # players = {}
-
+queue = []
+z = 0
+#voice_client = ''
 
 def connection():
     connection = MySQLdb.connect(
@@ -81,6 +85,7 @@ async def on_ready():
     levi = client.get_user(776053863483965470)
     cherr= client.get_user(521992400755884052)
 
+
     await client.change_presence(activity=discord.Streaming(name="Pozdro Cherro jesteś kocur <3", url='https://www.youtube.com/watch?v=uVgZHQ93H1o'))
 
     # embed = discord.Embed(
@@ -95,12 +100,45 @@ async def on_ready():
     # await client.get_channel(843512570057195521).send(f'O i by the way, mogłem również wyglądać w ten sposób, ale Kubi uznał, że "piękny chłopiec" kupił jego serce (projekt opracowany przez Cherra/spagjedi)')
     # await client.get_channel(843512570057195521).send(f'https://media.discordapp.net/attachments/760953812713472060/838789087740690473/mergedimage.png?width=473&height=473')
 
+@client.event
+async def on_member_remove(member):
+    channel = client.get_channel(811324655310602303)
+    #channel2 = client.get_channel(843512570057195521)
+    print(member.id)
+    hasRole = False
+    Oddzial = ''
+    for role in member.roles:
+        if role.name != '@everyone':
+            if role.name == '104th Battalion':
+                hasRole = True
+                break
+    if hasRole:
+        for role in member.roles:
+            if role.name != '@everyone':
+                if 'Platoon' in role.name:
+                    Oddzial = role.name.replace('Platoon','')
+                    break
+        print(Oddzial)
+        conn = connection()
+        mycursor = SSCursor(conn)
+
+        mycursor.execute(f"select * FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
+        result = mycursor.fetchone()
+        if result:
+            mycursor.execute(f"DELETE FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
+            conn.commit()
+            await client.send_message(message.channel, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
+
+
+
 
 @client.group(invoke_without_command=True)
 async def help(ctx):
     tresc = "```Komendy dostępne dla wszystkich```\n\n**Wypisz**\n``Składnia``: .w [nazwa oddziału] [ping użytkownik]\n``Opis``: wypisuje wszystkie dane, o podanym użytkowniku\n\n**Kompania**\n``Składnia``: .k [nazwa kompanii]\n``Opis``: wyświetla wszystkie oddziały z danej kompanii\n\n**Oddzial**\n``Składnia``: .o [nazwa oddziału] podstawowe(lub p)/awanse(lub aw)/aktywnosc(lub ak)\n``Opis``: Wypisuje podany w argumentach rodzaj danych na temat danego oddziału\n\n**Lista**"
     tresc += "\n``Składnia``: .l\n``Opis``: wypisuje listę użytkowników na kanale, na którym znajduje się piszący komendę\n\n**Lista Kanału**\n``Składnia``: .lk [pełna nazwa kanału (bez emotek kresek czy spacji)]\n``Opis``: wyświetla listę użytkowników z podanego kanału (nie radzę używać bo pełne nazwy kanałów głosowych w łor są trochę dlugie :p\n\n```Komendy dostępne tylko dla edytorów```\n\n**Edit**\n``Składnia``: "
     tresc += ".e [oddzial] [kolumna] [nowa wartoscść] [ping użytkownia]\n``Opis``: Zmienia wartosc kolumny na podaną przez użytkownika\n\n**Dodaj**\n``Składnia``: .d [nazwa oddziału] [ping użytkownia]\n``Opis``: dodaje użytkownika do podanego oddziału (używać tylko dla nowych użytkowników!!!)\n\n**Copy paste**\n``Składnia``: .pa [nazwa starego oddziału] [nazwa nowego oddziału] [ping użytkownia]\n``Opis``: kopiuje użytkownika i wkleja jego dane do nowego oddziału (jednak nie usuwa go ze starego, ze względu na bezpieczeństwo)\n\n **Delete**\n``Składnia``: .de [nazwa oddziału [nazwa użytkownika]\n``Opis``: Usuwa użytkownika z podanego oddziału\n\n**Plus/Minus**\n``Składnia``: .p/m [nazwa oddziału] [ping użytkownika]\n``Opis``: Dodaje jednego plusa/minusa\n\n**Awans**\n``Składnia``: .a [nazwa oddziału] [ping użytkownika]\n``Opis``: zwiększa rangę użytkownika o jeden\n\n**Zachowanie/Aktywnosc**\n``Składnia``: .ak/z [nazwa oddziału] +/- [ping użytkownika]\n``Opis``: zwiększa/zmniejsza aktywnosc/zachowanie użytkownika o jeden"
+    voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+    print(voice_client)
 
     embed = discord.Embed(
         color = discord.Color.purple(),
@@ -172,18 +210,153 @@ async def help(ctx):
 #         return
 
 
+#------------------------------------Moduł muzyczny-------------------------------------------------------------
+# async def playing(ctx, u, g, ch, vc):
+#     song_there = os.path.isfile("song.webm")
+#     try:
+#         if song_there:
+#             os.remove("song.webm")
+#     except PermissionError:
+#         await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
+#         return
+#
+#
+#     ydl_opts = {
+#         'format': '249/250/251',
+#     }
+#
+#     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+#         ydl.download([u])
+#     for file in os.listdir("./"):
+#         if file.endswith(".webm"):
+#             os.rename(file, "song.webm")
+#     vc.play(discord.FFmpegOpusAudio("song.webm"))
+
+
+
+
 
 
 # @client.command()
-# async def play(ctx, url):
-#     channel = ctx.message.author.voice.channel
-#     guild = ctx.message.guild
-#     await channel.connect()
-#     voice_client = guild.voice_client
-#     player = await voice_client.create_ytdl_player(url)
-#     playerrs[server.id] = player
-#     player.start()
+# async def play(ctx, url : str):
+#     hasRole =  False
+#     author = ctx.message.author
+#     for role in author.roles:
+#         if role.name != '@everyone':
+#             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#     if hasRole:
+#         song_there = os.path.isfile("song.webm")
+#         try:
+#             if song_there:
+#                 os.remove("song.webm")
+#         except PermissionError:
+#             await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
+#             return
+#
+#         if ctx.author.voice and ctx.author.voice.channel:
+#             channel = ctx.author.voice.channel
+#         else:
+#             await ctx.send("You are not connected to a voice channel")
+#             return
+#         print(channel)
+#         guild = ctx.message.guild
+#         try:
+#             await channel.connect()
+#         except:
+#             print("Bot jest już na kanale")
+#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#         ydl_opts = {
+#             'format': '249/250/251',
+#         }
+#
+#         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+#             ydl.download([url])
+#         for file in os.listdir("./"):
+#             if file.endswith(".webm"):
+#                 os.rename(file, "song.webm")
+#         voice_client.play(discord.FFmpegOpusAudio("song.webm"))
+#     else:
+#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+#
+#
+# @client.command()
+# async def leave(ctx):
+#     hasRole =  False
+#     author = ctx.message.author
+#     for role in author.roles:
+#         if role.name != '@everyone':
+#             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#     if hasRole:
+#         if ctx.author.voice and ctx.author.voice.channel:
+#             channel = ctx.author.voice.channel
+#         else:
+#             await ctx.send("You are not connected to a voice channel")
+#             return
+#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#         if voice_client:
+#             if voice_client.is_connected():
+#                 await voice_client.disconnect()
+#             else:
+#                 await ctx.send("Nie jestem połączony z kanałem głosowym")
+#     else:
+#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+#
+# @client.command()
+# async def pause(ctx):
+#     hasRole =  False
+#     author = ctx.message.author
+#     for role in author.roles:
+#         if role.name != '@everyone':
+#             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#     if hasRole:
+#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#         if voice_client.is_playing():
+#             voice_client.pause()
+#         else:
+#             await ctx.send("Nic nie gram")
+#     else:
+#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+#
+# @client.command()
+# async def resume(ctx):
+#     hasRole =  False
+#     author = ctx.message.author
+#     for role in author.roles:
+#         if role.name != '@everyone':
+#             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#     if hasRole:
+#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#         if voice_client.is_paused():
+#             voice_client.resume()
+#         else:
+#             await ctx.send("Nie zatrzymałeś utworu, więc jak mam go kontynuować?")
+#     else:
+#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+#
+# @client.command()
+# async def stop(ctx):
+#     hasRole =  False
+#     author = ctx.message.author
+#     for role in author.roles:
+#         if role.name != '@everyone':
+#             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#     if hasRole:
+#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#         voice_client.stop()
+#     else:
+#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
 
+#-------------------------------------------------------------------------------------------------------------------------------------------
 
 
 @client.command(aliases = ['Pa', 'paste', 'Paste'])
