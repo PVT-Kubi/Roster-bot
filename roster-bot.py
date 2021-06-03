@@ -20,7 +20,7 @@ from discord.utils import get
 #from discord_slash.utils.manage_commands import create_option
 
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
 #slash = SlashCommand(client, sync_commands=True)
