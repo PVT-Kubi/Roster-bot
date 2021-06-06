@@ -1,7 +1,6 @@
 git+https://github.com/Rapptz/discord.py
 mysql-connector-python
 mysqlclient
-git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
 youtube-dl
 ffmpeg
 waiting
