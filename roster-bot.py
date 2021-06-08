@@ -13,11 +13,13 @@ from mysql.connector import pooling
 import MySQLdb
 from MySQLdb.cursors import SSCursor
 from discord.utils import get
-# from discord import FFmpegPCMAudio
-# import youtube_dl
-# from youtube_dl import YoutubeDL
-#from discord_slash import SlashCommand
-#from discord_slash.utils.manage_commands import create_option
+from discord import FFmpegPCMAudio
+import youtube_dl
+from youtube_dl import YoutubeDL
+# import cv2
+from waiting import wait
+# from discord_slash import SlashCommand
+# from discord_slash.utils.manage_commands import create_option
 
 
 intents = discord.Intents.all()
@@ -30,7 +32,9 @@ client = commands.Bot(command_prefix = '.', help_command = None, intents=intents
 # players = {}
 queue = []
 z = 0
-#voice_client = ''
+obj = {}
+songs = {}
+
 
 def connection():
     connection = MySQLdb.connect(
@@ -211,43 +215,18 @@ async def help(ctx):
 
 
 #------------------------------------Moduł muzyczny-------------------------------------------------------------
-# async def playing(ctx, u, g, ch, vc):
+# def is_something_ready(something):
+#     if not something.is_playing():
+#         return True
+#     return False
+#
+#
+# async def playing(ctx, g):
+#     global songs
+#     global obj
 #     song_there = os.path.isfile("song.webm")
-#     try:
-#         if song_there:
-#             os.remove("song.webm")
-#     except PermissionError:
-#         await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
-#         return
-#
-#
-#     ydl_opts = {
-#         'format': '249/250/251',
-#     }
-#
-#     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download([u])
-#     for file in os.listdir("./"):
-#         if file.endswith(".webm"):
-#             os.rename(file, "song.webm")
-#     vc.play(discord.FFmpegOpusAudio("song.webm"))
-
-
-
-
-
-
-# @client.command()
-# async def play(ctx, url : str):
-#     hasRole =  False
-#     author = ctx.message.author
-#     for role in author.roles:
-#         if role.name != '@everyone':
-#             if role.name == '104th Battalion':
-#                 hasRole = True
-#                 break
-#     if hasRole:
-#         song_there = os.path.isfile("song.webm")
+#     wait(lambda: is_something_ready(obj[g.id][1]), timeout_seconds=120, waiting_for="utwór się kończy")
+#     for x in songs[g.id]:
 #         try:
 #             if song_there:
 #                 os.remove("song.webm")
@@ -255,28 +234,74 @@ async def help(ctx):
 #             await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
 #             return
 #
-#         if ctx.author.voice and ctx.author.voice.channel:
-#             channel = ctx.author.voice.channel
-#         else:
-#             await ctx.send("You are not connected to a voice channel")
-#             return
-#         print(channel)
-#         guild = ctx.message.guild
-#         try:
-#             await channel.connect()
-#         except:
-#             print("Bot jest już na kanale")
-#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#
 #         ydl_opts = {
 #             'format': '249/250/251',
 #         }
-#
 #         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-#             ydl.download([url])
+#             ydl.download([x])
 #         for file in os.listdir("./"):
 #             if file.endswith(".webm"):
 #                 os.rename(file, "song.webm")
-#         voice_client.play(discord.FFmpegOpusAudio("song.webm"))
+#         obj[g.id][1].play(discord.FFmpegOpusAudio("song.webm"))
+#
+#
+#
+#
+# @client.command()
+# async def play(ctx, url : str):
+#     global obj
+#     global songs
+#
+#     hasRole =  False
+#     hasGuild = False
+#     canPlay = False
+#     author = ctx.message.author
+#     guild = ctx.message.guild
+#     for role in author.roles:
+#         if role.name != '@everyone':
+#             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#     if hasRole:
+#         for x in obj:
+#             if x == guild.id:
+#                 hasGuild = True
+#         if hasGuild == False:
+#             if ctx.author.voice and ctx.author.voice.channel:
+#                 channel = ctx.author.voice.channel
+#             else:
+#                 await ctx.send("Nie ma cię na żadnym kanale głosowym")
+#                 return
+#             try:
+#                 await channel.connect()
+#             except:
+#                 print("Bot jest już na kanale")
+#             voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#             obj = {
+#                 guild.id: [channel, voice_client]
+#             }
+#             songs  = {
+#                 guild.id: []
+#             }
+#             songs[guild.id].append(url)
+#             print("Nie ma gilidi")
+#             await playing(ctx, guild)
+#
+#         elif hasGuild == True:
+#             songs[guild.id].append(url)
+#             await playing(ctx, guild)
+#
+#
+#
+#
+#             # channel = obj[guild.id][0]
+#             # voice_client = obj[guild.id][1]
+#             # while canPlay == False:
+#             #     if not voice_client.is_playing():
+#             #         time.sleep()
+#             #         await playing(ctx, url, guild, channel, voice_client)
+#
 #     else:
 #         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
 #
@@ -504,7 +529,7 @@ async def wypisywanie(ctx, mb, tab):
             desc = ''
             if result[12] is not None:
                 prin = ctx.message.guild.get_member(int(result[12]))
-                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[2]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
+                desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {array[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: {prin.nick}'
             else:
                 desc += f'**Ranga**: {result[2]}\n**Nickname**: {result[3]}\n **ID**: {result[5]}\n \u200B\n**Pozycja**: {result[13]}\n**Status**: {result[4]}\n**Specka**: {result[6]}\n\u200B\n**Plusy**: {result[7]}\n**Minusy**: {result[8]}\n**Aktywność**: {result[9]}\n**Zachowanie**: {result[10]}\n\u200B\n**Data Awansu/Degrada**: {result[11]}\n**Awansujący**: '
 
