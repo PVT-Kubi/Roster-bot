@@ -4,4 +4,4 @@ mysqlclient
 youtube-dl
 ffmpeg
 waiting
-NHentai
+NHentai-API
