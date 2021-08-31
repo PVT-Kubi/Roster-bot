@@ -4,3 +4,5 @@ mysqlclient
 youtube-dl
 ffmpeg
 waiting
+NHentai.nhentai
+NHentai.nhentai_async
