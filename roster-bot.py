@@ -20,6 +20,8 @@ from youtube_dl import YoutubeDL
 from waiting import wait
 # from discord_slash import SlashCommand
 # from discord_slash.utils.manage_commands import create_option
+from NHentai.nhentai import NHentai
+from NHentai.nhentai_async import NHentaiAsync
 
 
 intents = discord.Intents.all()
@@ -215,13 +217,39 @@ async def help(ctx):
 
 
 #------------------------------------Moduł muzyczny-------------------------------------------------------------
+
+#opcja druga któa też nie działas
+# global songs
+# global obj
+# print(obj[g.id][1])
+# song_there = os.path.isfile("song.m4a")
+# wait(lambda: is_something_ready(obj[g.id][1]) == True)
+# for x in songs[g.id]:
+#     try:
+#         if song_there:
+#             os.remove("song.m4a")
+#     except PermissionError:
+#         await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
+#         return
+#
+#
+#     ydl_opts = {
+#         'format': 'm4a'
+#     }
+#     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+#         ydl.download([x])
+#     for file in os.listdir("./"):
+#         if file.endswith(".m4a"):
+#             os.rename(file, "song.m4a")
+#     obj[g.id][1].play(discord.FFmpegOpusAudio("song.m4a"))
+#
 # def is_something_ready(something):
 #     if not something.is_playing():
 #         return True
 #     return False
 #
 #
-# async def playing(ctx, g):
+# async def playing(ctx, g, vc):
 #     global songs
 #     global obj
 #     song_there = os.path.isfile("song.webm")
@@ -243,11 +271,132 @@ async def help(ctx):
 #         for file in os.listdir("./"):
 #             if file.endswith(".webm"):
 #                 os.rename(file, "song.webm")
-#         obj[g.id][1].play(discord.FFmpegOpusAudio("song.webm"))
+#         vc.play(discord.FFmpegOpusAudio("song.webm"))
+
+
+
 #
 #
 #
 #
+@client.command()
+async def porn(ctx):
+    guild = ctx.message.guild
+    if guild.id != 819694752240107590:
+        nhentai = NHentai()
+        doujins: PopularPage = nhentai.get_popular_now()
+        PORNO = doujins.doujins[random.randrange(0, doujins.total_doujins)]
+
+        embed = discord.Embed(
+            title = PORNO.title,
+            url = PORNO.url,
+            color = discord.Color.purple()
+
+        )
+        embed.add_field(name = "Język", value = PORNO.lang, inline = False)
+        embed.add_field(name = "Tagi", value = str(PORNO.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
+        embed.set_image(url=PORNO.cover)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("Ja ci dam porno zboczuszku :smirk:")
+
+
+@client.command()
+async def szukamPronoFree(ctx, *, p):
+    nhentai = NHentai()
+    print(p)
+    guild = ctx.message.guild
+    if guild.id != 819694752240107590:
+        try:
+            search_obj: SearchPage = nhentai.search(query=f'{p}', sort='popular', page=1)
+            print(search_obj)
+            ps = search_obj.doujins[0]
+            embed = discord.Embed(
+                title = ps.title,
+                url = ps.url,
+                color = discord.Color.purple()
+
+            )
+
+            embed.set_image(url=ps.cover)
+            await ctx.send(embed=embed)
+        except:
+            # try:
+            search_obj: SearchPage = nhentai.search(query=f'{p}', sort='popular', page=1)
+            sb2: SearchPage = nhentai.search(query=f'{search_obj.title}', sort='popular', page=1)
+            ps = sb2.doujins[0]
+            embed = discord.Embed(
+                title = ps.title+".",
+                url = ps.url,
+                color = discord.Color.purple()
+
+            )
+
+            embed.add_field(name = "Artysta/ci", value = str(search_obj.artists).replace("'", "").replace("[", "").replace("]", "")+".", inline = False)
+            embed.add_field(name = "Języki", value = str(search_obj.languages).replace("'", "").replace("[", "").replace("]", "")+".", inline = False)
+            embed.add_field(name = "Tags", value = str(search_obj.tags).replace("'", "").replace("[", "").replace("]", "")+".", inline = False)
+            embed.set_image(url=search_obj.images[0])
+            embed.set_footer(text = f"Total pages: {search_obj.total_pages}")
+            await ctx.send(embed=embed)
+            # except:
+            #     await ctx.send("Nie znaleziono żadnego wyniku pasującego do wyszukiwania")
+    else:
+        await ctx.send("Człowieku, poszukaj lepiej kiedy masz trening. Zrobisz chociaż coś pożytecznego")
+@client.command()
+async def ReadPorn(ctx, *, p):
+    nhentai = NHentai()
+    guild = ctx.message.guild
+    if guild.id != 819694752240107590:
+        try:
+            search_obj: SearchPage = nhentai.search(query=f'{p}', sort='popular', page=1)
+            ps = search_obj.doujins[0]
+            sb2: SearchPage = nhentai.get_doujin(id=ps.id)
+            print(sb2)
+            for i in sb2.images:
+                await ctx.send(i)
+        except:
+            try:
+                search_obj: SearchPage = nhentai.get_doujin(id=p)
+                for i in search_obj.images:
+                    await ctx.send(i)
+            except:
+                await ctx.send("Nie znaleziono żadnego wyniku pasującego do wyszukiwania")
+    else:
+        await ctx.send("Doceniam to, że czytasz, jednak radziłbym sięgnąć po bardziej rozwijające dzieła...")
+
+
+@client.command()
+async def radio(ctx, a):
+    author = ctx.message.author
+    guild = ctx.message.guild
+    radia = {
+    'nowyswiat' :  'https://n13a-eu.rcs.revma.com/ypqt40u0x1zuv?rj-ttl=5&rj-tok=AAABe5gXcdwA-OfbaBMtuSF13w',
+    'rmf' : 'https://rs202-krk.rmfstream.pl/RMFFM48?aw_0_req.gdpr=false&aw_0_req.userConsentV2=CPLwq6lPLwq6lFKACAPLBoCgAAAAAEPAAB5YAAAQTAJMNS8gC7EscGRaNKoUQIwrCQ6AUAFFAMLRMYAMDgp2VgEOoAWACA1ARgRAgxBRgwCAAQCAJCIgJACwQCIAiAAAAgBUgIQAETAILACwMAgAFANCxAigCECQgyOCo5TAgIkWignsrAEou9hTCEMssAKBR_RUYCJQggWBkJCwcxwBICXAAAAA.YAAAD4AAAAAA&aw_0_1st.playerid=RMF_Player_JS_P&aw_0_1st.rmf_disable_preroll=true',
+    'eska' : 'https://uk3-play.adtonos.com/8102/eska-sosnowiec',
+    'antyradio' : 'https://n-16-12.dcs.redcdn.pl/sc/o2/Eurozet/live/antyradio.livx?audio=5?t=1630345258565',
+    'radiozet' : 'https://n-16-11.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx?audio=5?t=1630345320815',
+    'chillizet' : 'https://n-22-9.dcs.redcdn.pl/sc/o2/Eurozet/live/chillizet.livx?audio=5?t=1630345364253',
+    'maryja' : 'https://radiomaryja.fastcast4u.com/proxy/radiomaryja?mp=/1',
+    'anime' : 'https://radioanime.radioca.st/stream/1/'
+    }
+
+
+
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+    else:
+        await ctx.send("Nie ma cię na żadnym kanale głosowym")
+        return
+    try:
+        await channel.connect()
+    except:
+        print("Bot jest już na kanale")
+    voice_client = discord.utils.get(client.voice_clients, guild = guild)
+    voice_client.play(FFmpegPCMAudio(radia[a.lower()]))
+
+
+
+
 # @client.command()
 # async def play(ctx, url : str):
 #     global obj
@@ -257,7 +406,9 @@ async def help(ctx):
 #     hasGuild = False
 #     canPlay = False
 #     author = ctx.message.author
-#     guild = ctx.message.guild
+#     # guild = ctx.message.guild
+#     channel = client.get_channel(811324655310602304)
+#     guild = client.get_guild(811324655310602300)
 #     for role in author.roles:
 #         if role.name != '@everyone':
 #             if role.name == '104th Battalion':
@@ -268,16 +419,16 @@ async def help(ctx):
 #             if x == guild.id:
 #                 hasGuild = True
 #         if hasGuild == False:
-#             if ctx.author.voice and ctx.author.voice.channel:
-#                 channel = ctx.author.voice.channel
-#             else:
-#                 await ctx.send("Nie ma cię na żadnym kanale głosowym")
-#                 return
+#             # if ctx.author.voice and ctx.author.voice.channel:
+#             #     channel = ctx.author.voice.channel
+#             # else:
+#             #     await ctx.send("Nie ma cię na żadnym kanale głosowym")
+#             #     return
 #             try:
 #                 await channel.connect()
 #             except:
 #                 print("Bot jest już na kanale")
-#             voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+#             voice_client = discord.utils.get(client.voice_clients, guild = guild)
 #             obj = {
 #                 guild.id: [channel, voice_client]
 #             }
@@ -286,11 +437,13 @@ async def help(ctx):
 #             }
 #             songs[guild.id].append(url)
 #             print("Nie ma gilidi")
-#             await playing(ctx, guild)
+#             await playing(ctx, guild, voice_client)
+#
 #
 #         elif hasGuild == True:
 #             songs[guild.id].append(url)
 #             await playing(ctx, guild)
+#
 #
 #
 #
@@ -304,82 +457,95 @@ async def help(ctx):
 #
 #     else:
 #         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+# #
 #
-#
-# @client.command()
-# async def leave(ctx):
-#     hasRole =  False
-#     author = ctx.message.author
-#     for role in author.roles:
-#         if role.name != '@everyone':
-#             if role.name == '104th Battalion':
-#                 hasRole = True
-#                 break
-#     if hasRole:
-#         if ctx.author.voice and ctx.author.voice.channel:
-#             channel = ctx.author.voice.channel
-#         else:
-#             await ctx.send("You are not connected to a voice channel")
-#             return
-#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
-#         if voice_client:
-#             if voice_client.is_connected():
-#                 await voice_client.disconnect()
-#             else:
-#                 await ctx.send("Nie jestem połączony z kanałem głosowym")
-#     else:
-#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
-#
-# @client.command()
-# async def pause(ctx):
-#     hasRole =  False
-#     author = ctx.message.author
-#     for role in author.roles:
-#         if role.name != '@everyone':
-#             if role.name == '104th Battalion':
-#                 hasRole = True
-#                 break
-#     if hasRole:
-#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
-#         if voice_client.is_playing():
-#             voice_client.pause()
-#         else:
-#             await ctx.send("Nic nie gram")
-#     else:
-#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
-#
-# @client.command()
-# async def resume(ctx):
-#     hasRole =  False
-#     author = ctx.message.author
-#     for role in author.roles:
-#         if role.name != '@everyone':
-#             if role.name == '104th Battalion':
-#                 hasRole = True
-#                 break
-#     if hasRole:
-#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
-#         if voice_client.is_paused():
-#             voice_client.resume()
-#         else:
-#             await ctx.send("Nie zatrzymałeś utworu, więc jak mam go kontynuować?")
-#     else:
-#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
-#
-# @client.command()
-# async def stop(ctx):
-#     hasRole =  False
-#     author = ctx.message.author
-#     for role in author.roles:
-#         if role.name != '@everyone':
-#             if role.name == '104th Battalion':
-#                 hasRole = True
-#                 break
-#     if hasRole:
-#         voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
-#         voice_client.stop()
-#     else:
-#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+@client.command()
+async def leave(ctx):
+    hasRole =  False
+    author = ctx.message.author
+    for role in author.roles:
+        if role.name != '@everyone':
+            if role.name == '104th Battalion':
+                hasRole = True
+                break
+            elif role.name == 'Przeciętny Pasożyt':
+                hasRole = True
+                break
+    if hasRole:
+        if ctx.author.voice and ctx.author.voice.channel:
+            channel = ctx.author.voice.channel
+        else:
+            await ctx.send("You are not connected to a voice channel")
+            return
+        voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+        if voice_client:
+            if voice_client.is_connected():
+                await voice_client.disconnect()
+            else:
+                await ctx.send("Nie jestem połączony z kanałem głosowym")
+    else:
+        await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+
+@client.command()
+async def pause(ctx):
+    hasRole =  False
+    author = ctx.message.author
+    for role in author.roles:
+        if role.name != '@everyone':
+            if role.name == '104th Battalion':
+                hasRole = True
+                break
+            elif role.name == 'Przeciętny Pasożyt':
+                hasRole = True
+                break
+    if hasRole:
+        voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+        if voice_client.is_playing():
+            voice_client.pause()
+        else:
+            await ctx.send("Nic nie gram")
+    else:
+        await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+
+@client.command()
+async def resume(ctx):
+    hasRole =  False
+    author = ctx.message.author
+    for role in author.roles:
+        if role.name != '@everyone':
+            if role.name == '104th Battalion':
+                hasRole = True
+                break
+            elif role.name == 'Przeciętny Pasożyt':
+                hasRole = True
+                break
+    if hasRole:
+        voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+        if voice_client.is_paused():
+            voice_client.resume()
+        else:
+            await ctx.send("Nie zatrzymałeś utworu, więc jak mam go kontynuować?")
+    else:
+        await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
+
+@client.command()
+async def stop(ctx):
+    hasRole =  False
+    author = ctx.message.author
+    for role in author.roles:
+        if role.name != '@everyone':
+            if role.name == '104th Battalion':
+                hasRole = True
+                break
+            elif role.name == 'Przeciętny Pasożyt':
+                hasRole = True
+                break
+
+    if hasRole:
+        voice_client = discord.utils.get(client.voice_clients, guild = ctx.guild)
+        voice_client.stop()
+    else:
+        await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 
