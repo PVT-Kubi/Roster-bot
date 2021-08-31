@@ -392,6 +392,7 @@ async def radio(ctx, a):
     except:
         print("Bot jest już na kanale")
     voice_client = discord.utils.get(client.voice_clients, guild = guild)
+    print(voice_client)
     voice_client.play(FFmpegPCMAudio(radia[a.lower()]))
 
 
