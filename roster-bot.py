@@ -21,7 +21,7 @@ from waiting import wait
 # from discord_slash import SlashCommand
 # from discord_slash.utils.manage_commands import create_option
 from NHentai.nhentai import NHentai
-from NHentai.nhentai_async import NHentaiAsync
+# from NHentai.nhentai_async import NHentaiAsync
 
 
 intents = discord.Intents.all()
