@@ -34,8 +34,6 @@ client = commands.Bot(command_prefix = '.', help_command = None, intents=intents
 # players = {}
 queue = []
 z = 0
-obj = {}
-songs = {}
 
 
 def connection():
@@ -244,41 +242,57 @@ async def help(ctx):
 #     obj[g.id][1].play(discord.FFmpegOpusAudio("song.m4a"))
 #
 # def is_something_ready(something):
-#     if not something.is_playing():
+#     if not something.is_playing(): #<- nawet tu miałem takie coś
 #         return True
 #     return False
-#
-#
-# async def playing(ctx, g, vc):
+
+#tu event bu uratował bo nie musi co sekundę sprawdzać
+# def looping(ctx, g, vc, i, loop):
 #     global songs
 #     global obj
+#     if len(songs[g.id]) > 0:
+#         i+=1
+#         asyncio.run_coroutine_threadsafe(playing(ctx, g, vc, i), loop)
+#     else:
+#         return
+#
+#
+#
+#
+#
+# async def playing(ctx, g, vc, i):
+#     global songs
+#     global obj
+#     countdown = 0
+#
+#     print(songs[g.id])
 #     song_there = os.path.isfile("song.webm")
-#     wait(lambda: is_something_ready(obj[g.id][1]), timeout_seconds=120, waiting_for="utwór się kończy")
-#     for x in songs[g.id]:
-#         try:
-#             if song_there:
-#                 os.remove("song.webm")
-#         except PermissionError:
-#             await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
-#             return
+#     # wait(lambda: is_something_ready(obj[g.id][1]), timeout_seconds=120, waiting_for="utwór się kończy")
+#     try:
+#         if song_there:
+#             os.remove("song.webm")
+#     except PermissionError:
+#         # await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
+#         return
 #
 #
-#         ydl_opts = {
-#             'format': '249/250/251',
-#         }
-#         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-#             ydl.download([x])
-#         for file in os.listdir("./"):
-#             if file.endswith(".webm"):
-#                 os.rename(file, "song.webm")
-#         vc.play(discord.FFmpegOpusAudio("song.webm"))
+#     ydl_opts = {
+#         'format': '249/250/251',
+#     }
+#     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+#         ydl.download([songs[g.id][i]])
+#     for file in os.listdir("./"):
+#         if file.endswith(".webm"):
+#             os.rename(file, "song.webm")
+#     source = await discord.FFmpegOpusAudio.from_probe("song.webm")
+#     vc.play(source, after = looping(ctx, g, vc, i, vc.loop))
 
 
 
-#
-#
-#
-#
+
+
+
+
 @client.command()
 async def porn(ctx):
     guild = ctx.message.guild
@@ -395,6 +409,29 @@ async def radio(ctx, a):
     print(voice_client)
     voice_client.play(FFmpegPCMAudio(radia[a.lower()]))
 
+@client.command()
+async def play(ctx, x : str):
+    author = ctx.message.author
+    guild = ctx.message.guild
+    FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
+    YDL_OPTIONS = {'format':'bestaudio'}
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+    else:
+        await ctx.send("Nie ma cię na żadnym kanale głosowym")
+        return
+    try:
+        await channel.connect()
+    except:
+        print("Bot jest już na kanale")
+    voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild = guild)
+    print(voice_client)
+    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+         info = ydl.extract_info(x, download=False)
+         url2 = info['formats'][0]['url']
+         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+         voice_client.play(source)
+
 
 
 
@@ -403,16 +440,24 @@ async def radio(ctx, a):
 #     global obj
 #     global songs
 #
+#
+#     obj = {}
+#     songs = {}
+#     i = 0
+#
 #     hasRole =  False
 #     hasGuild = False
 #     canPlay = False
 #     author = ctx.message.author
-#     # guild = ctx.message.guild
-#     channel = client.get_channel(811324655310602304)
-#     guild = client.get_guild(811324655310602300)
+#     guild = ctx.message.guild
+#     # channel = client.get_channel(811324655310602304)
+#     # guild = client.get_guild(811324655310602300)
 #     for role in author.roles:
 #         if role.name != '@everyone':
 #             if role.name == '104th Battalion':
+#                 hasRole = True
+#                 break
+#             if role.name == 'Przeciętny Pasożyt':
 #                 hasRole = True
 #                 break
 #     if hasRole:
@@ -420,11 +465,11 @@ async def radio(ctx, a):
 #             if x == guild.id:
 #                 hasGuild = True
 #         if hasGuild == False:
-#             # if ctx.author.voice and ctx.author.voice.channel:
-#             #     channel = ctx.author.voice.channel
-#             # else:
-#             #     await ctx.send("Nie ma cię na żadnym kanale głosowym")
-#             #     return
+#             if ctx.author.voice and ctx.author.voice.channel:
+#                 channel = ctx.author.voice.channel
+#             else:
+#                 await ctx.send("Nie ma cię na żadnym kanale głosowym")
+#                 return
 #             try:
 #                 await channel.connect()
 #             except:
@@ -438,12 +483,12 @@ async def radio(ctx, a):
 #             }
 #             songs[guild.id].append(url)
 #             print("Nie ma gilidi")
-#             await playing(ctx, guild, voice_client)
+#             await playing(ctx, guild, voice_client, i)
 #
 #
 #         elif hasGuild == True:
 #             songs[guild.id].append(url)
-#             await playing(ctx, guild)
+#             #await playing(ctx, guild, voice_client, i)
 #
 #
 #
