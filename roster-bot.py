@@ -409,28 +409,28 @@ async def radio(ctx, a):
     print(voice_client)
     voice_client.play(FFmpegPCMAudio(radia[a.lower()]))
 
-@client.command()
-async def play(self, ctx, x : str):
-    author = ctx.message.author
-    guild = ctx.message.guild
-    FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
-    YDL_OPTIONS = {'format':'bestaudio'}
-    if ctx.author.voice and ctx.author.voice.channel:
-        channel = ctx.author.voice.channel
-    else:
-        await ctx.send("Nie ma cię na żadnym kanale głosowym")
-        return
-    try:
-        await channel.connect()
-    except:
-        print("Bot jest już na kanale")
-    voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild = guild)
-    print(voice_client)
-    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-         info = ydl.extract_info(x, download=False)
-         url2 = info['formats'][0]['url']
-         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-         voice_client.play(source)
+# @client.command()
+# async def play(self, ctx, x : str):
+#     author = ctx.message.author
+#     guild = ctx.message.guild
+#     FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
+#     YDL_OPTIONS = {'format':'bestaudio'}
+#     if ctx.author.voice and ctx.author.voice.channel:
+#         channel = ctx.author.voice.channel
+#     else:
+#         await ctx.send("Nie ma cię na żadnym kanale głosowym")
+#         return
+#     try:
+#         await channel.connect()
+#     except:
+#         print("Bot jest już na kanale")
+#     voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild = guild)
+#     print(voice_client)
+#     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+#          info = ydl.extract_info(x, download=False)
+#          url2 = info['formats'][0]['url']
+#          source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+#          voice_client.play(source)
 
 
 
