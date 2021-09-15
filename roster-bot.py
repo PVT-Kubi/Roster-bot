@@ -410,7 +410,7 @@ async def radio(ctx, a):
     voice_client.play(FFmpegPCMAudio(radia[a.lower()]))
 
 @client.command()
-async def play(ctx, x : str):
+async def play(self, ctx, x : str):
     author = ctx.message.author
     guild = ctx.message.guild
     FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
