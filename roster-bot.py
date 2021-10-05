@@ -1494,5 +1494,5 @@ async def o(ctx, tabela, pp):
 
     mycursor.close()
     conn.close()
-print(config)
+print(config['TOKEN'])
 client.run('ODIzNjMwMjEwMTkxNzIwNDg4.YFjnaA.sR4wBR_Av1r5hH-zpsK096EVEu8')
