@@ -316,17 +316,12 @@ async def po(ctx):
         print(ForCulturedMan.cover)
         try:
             embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
-        except Exception:
-            print(Exception)
-        try:
+
             embed.add_field(name = "Tagi", value = str(ForCulturedMan.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
-        except Exception:
-            print(Exception)
-        try:
+
             embed.set_image(url=ForCulturedMan.cover)
         except Exception:
-            print(Exception)
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
     else:
         await ctx.send("Chciałbyś :smirk:")
 
