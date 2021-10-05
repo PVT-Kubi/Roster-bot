@@ -1495,4 +1495,4 @@ async def o(ctx, tabela, pp):
     mycursor.close()
     conn.close()
 
-client.run(config["TOKEN"])
+client.run(config['TOKEN'])
