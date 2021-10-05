@@ -22,7 +22,7 @@ from waiting import wait
 # from discord_slash.utils.manage_commands import create_option
 from NHentai.nhentai import NHentai
 # from NHentai.nhentai_async import NHentaiAsync
-from dotenv import dotenv_values
+
 
 
 
