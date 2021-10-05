@@ -30,7 +30,8 @@ intents = discord.Intents.all()
 intents.members = True
 client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
 #slash = SlashCommand(client, sync_commands=True)
-config = dotenv_values('.env')
+# config = dotenv_values('.env')
+print(os.environ)
 
 #guild_ids = 811324655310602300
 
@@ -1494,5 +1495,5 @@ async def o(ctx, tabela, pp):
 
     mycursor.close()
     conn.close()
-print(config['TOKEN'])
+# print(config['TOKEN'])
 client.run('ODIzNjMwMjEwMTkxNzIwNDg4.YFjnaA.sR4wBR_Av1r5hH-zpsK096EVEu8')
