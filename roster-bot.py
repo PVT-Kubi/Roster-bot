@@ -319,14 +319,15 @@ async def po(ctx):
                 color = discord.Color.purple()
 
             )
-        print(ForCulturedMan.cover.src)
+        print(ForCulturedMan.title)
         try:
             embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
 
             embed.add_field(name = "Tagi", value = str(ForCulturedMan.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
 
-            embed.set_image(url=ForCulturedMan.cover.src)
+
         except Exception:
+            embed.set_image(url=ForCulturedMan.cover.src)
             await ctx.send(embed=embed)
     else:
         await ctx.send("Chciałbyś :smirk:")
