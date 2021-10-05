@@ -325,7 +325,7 @@ async def po(ctx):
 
             embed.add_field(name = "Tagi", value = str(ForCulturedMan.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
 
-            embed.set_image(url=ForCulturedMan.cover)
+            embed.set_image(url=ForCulturedMan.cover(src))
         except Exception:
             await ctx.send(embed=embed)
     else:
