@@ -300,7 +300,7 @@ async def help(ctx):
 
 #---------------------------------------------Proszę tego nie czytać, wstąpił we mnie diabeł-------------------------------------------------------------------------------------
 @client.command()
-async def porn(ctx):
+async def po(ctx):
     guild = ctx.message.guild
     if guild.id != 819694752240107590:
         nhentai = NHentai()
