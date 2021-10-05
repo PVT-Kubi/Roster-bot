@@ -305,24 +305,24 @@ async def porn(ctx):
     if guild.id != 819694752240107590:
         nhentai = NHentai()
         doujins: PopularPage = nhentai.get_popular_now()
-        PORNO = doujins.doujins[random.randrange(0, doujins.total_doujins)]
+        ForCulturedMan = doujins.doujins[random.randrange(0, doujins.total_doujins)]
 
         embed = discord.Embed(
-            title = PORNO.title,
-            url = PORNO.url,
-            color = discord.Color.purple()
+            title = ForCulturedMan.title,
+            url = ForCulturedMan.url,
+            color = ForCulturedMan.Color.purple()
 
         )
-        embed.add_field(name = "Język", value = PORNO.lang, inline = False)
-        embed.add_field(name = "Tagi", value = str(PORNO.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
-        embed.set_image(url=PORNO.cover)
+        embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
+        embed.add_field(name = "Tagi", value = str(ForCulturedMan.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
+        embed.set_image(url=ForCulturedMan.cover)
         await ctx.send(embed=embed)
     else:
-        await ctx.send("Ja ci dam porno zboczuszku :smirk:")
+        await ctx.send("Chciałbyś :smirk:")
 
 
 @client.command()
-async def szukamPronoFree(ctx, *, p):
+async def szukamPromoFree(ctx, *, p):
     nhentai = NHentai()
     print(p)
     guild = ctx.message.guild
@@ -363,7 +363,7 @@ async def szukamPronoFree(ctx, *, p):
     else:
         await ctx.send("Człowieku, poszukaj lepiej kiedy masz trening. Zrobisz chociaż coś pożytecznego")
 @client.command()
-async def ReadPorn(ctx, *, p):
+async def ReadSomeBook(ctx, *, p):
     nhentai = NHentai()
     guild = ctx.message.guild
     if guild.id != 819694752240107590:
