@@ -319,7 +319,7 @@ async def po(ctx):
                 color = discord.Color.purple()
 
             )
-        print(ForCulturedMan.cover)
+        print(ForCulturedMan.cover[0])
         try:
             embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
 
