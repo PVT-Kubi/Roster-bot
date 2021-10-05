@@ -306,13 +306,19 @@ async def po(ctx):
         nhentai = NHentai()
         doujins: PopularPage = nhentai.get_popular_now()
         ForCulturedMan = doujins.doujins[random.randrange(0, doujins.total_doujins)]
+        try:
+            embed = discord.Embed(
+                title = ForCulturedMan.title,
+                url = ForCulturedMan.url,
+                color = discord.Color.purple()
 
-        embed = discord.Embed(
-            title = ForCulturedMan.title,
-            url = ForCulturedMan.url,
-            color = discord.Color.purple()
+            )
+        except:
+            embed = discord.Embed(
+                url = ForCulturedMan.url,
+                color = discord.Color.purple()
 
-        )
+            )
         print(ForCulturedMan.cover)
         try:
             embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
