@@ -310,7 +310,7 @@ async def po(ctx):
         embed = discord.Embed(
             title = ForCulturedMan.title,
             url = ForCulturedMan.url,
-            color = ForCulturedMan.Color.purple()
+            color = discord.Color.purple()
 
         )
         embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
