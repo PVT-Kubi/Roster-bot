@@ -297,7 +297,7 @@ async def help(ctx):
 
 
 
-
+#---------------------------------------------Proszę tego nie czytać, wstąpił we mnie diabeł-------------------------------------------------------------------------------------
 @client.command()
 async def porn(ctx):
     guild = ctx.message.guild
@@ -383,7 +383,7 @@ async def ReadPorn(ctx, *, p):
     else:
         await ctx.send("Doceniam to, że czytasz, jednak radziłbym sięgnąć po bardziej rozwijające dzieła...")
 
-
+#---------------------------------------------Już można czytać, dziękuje za wyrozumiałość-------------------------------------------------------------------------------------
 @client.command()
 async def radio(ctx, a):
     author = ctx.message.author
