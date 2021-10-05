@@ -308,7 +308,7 @@ async def po(ctx):
         ForCulturedMan = doujins.doujins[random.randrange(0, doujins.total_doujins)]
         try:
             embed = discord.Embed(
-                title = ForCulturedMan.title,
+                title = ForCulturedMan.title.english,
                 url = ForCulturedMan.url,
                 color = discord.Color.purple()
 
