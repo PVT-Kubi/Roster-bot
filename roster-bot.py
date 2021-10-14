@@ -592,7 +592,7 @@ async def play(ctx, x : str):
             if '104th Battalion' in role.name:
                 hasRole = True
                 break
-            elif role.name == 'Przeciętny Pasożyt':
+            elif 'DJ' in role.name:
                 hasRole = True
                 break
     if hasRole:
@@ -612,7 +612,7 @@ async def play(ctx, x : str):
                 await channel.connect()
             except:
                 print("Bot jest już na kanale")
-            voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild = guild)
+            voice_client: discord.VoiceClient = ctx.guild.voice_client
             print(voice_client)
             dict = {guild.id : [[x], 0, voice_client]}
             print(dict[guild.id][0][0])
