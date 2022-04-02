@@ -1,4 +1,3 @@
-
 import discord
 import os
 from discord.ext import commands
@@ -500,7 +499,7 @@ async def skip(ctx):
             if '104th Battalion' in role.name:
                 hasRole = True
                 break
-            elif role.name == 'Przeciętny Pasożyt':
+            elif role.name == 'DJ':
                 hasRole = True
                 break
     if hasRole:
@@ -704,7 +703,7 @@ async def leave(ctx):
             if '104th Battalion' in role.name:
                 hasRole = True
                 break
-            elif role.name == 'Przeciętny Pasożyt':
+            elif role.name == 'DJ':
                 hasRole = True
                 break
     if hasRole:
@@ -1419,9 +1418,10 @@ async def o(ctx, tabela, pp):
     icon = author.avatar
     conn= connection()
     mycursor = SSCursor(conn)
-
+    counter = 0
+    arrayOfStrings = []
     #tab = ['Rang', 'Nick', 'Stat', 'Num', 'Spec', '+', '-', 'Aktyw', 'Zach', 'Data_Aw/Deg', 'Aw', 'Poz']
-    pracie = '```python\n'
+    arrayOfStrings.append('```python\n')
     #pracie += f'{padMiddle(tab[0], 4)} | {padMiddle(tab[1], 4)} | {padMiddle(tab[2], 4)} | {padMiddle(tab[3], 4)} | {padMiddle(tab[4], 4)} | {padMiddle(tab[5], 2)} | {padMiddle(tab[6], 2)} | {padMiddle(tab[7], 4)} | {padMiddle(tab[8], 4)} | {padMiddle(tab[9], 12)} | {padMiddle(tab[10], 2)} | {padMiddle(tab[11], 4)}\n'
     #pracie += '---------------------------------------------------\n'
     #AtName = (f"{author.name}#{author.discriminator}")
@@ -1437,49 +1437,69 @@ async def o(ctx, tabela, pp):
         if tabela.lower() == 'liderzy' or tabela.lower() == 'l':
             mycursor.execute(f"select IdStorm, Czego FROM liderzy ")
             re = mycursor.fetchall()
-            pracie += f"{padMiddle('ID Lidera', 30)} | {padMiddle('Blok dowodzenia', 38)}|\n"
-            pracie += f"----------------------------------------------------------------------\n"
+            arrayOfStrings[counter] += f"{padMiddle('ID Lidera', 30)} | {padMiddle('Blok dowodzenia', 38)}|\n"
+            arrayOfStrings[counter] += f"----------------------------------------------------------------------\n"
             for x in re:
                 print(x[0])
 
                 prin = ctx.message.guild.get_member(int(x[0]))
                 sliced = prin.nick[2:]
                 array = sliced.split("-")
-                pracie +=f"{padStart(f'{array[0]}-{array[1]}-{array[2]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
-            pracie += "```"
-            await ctx.send(pracie)
+                arrayOfStrings[counter] +=f"{padStart(f'{array[0]}-{array[1]}-{array[2]}', 29)} | {padStart(f'{x[1]}', 37)}|\n"
+            arrayOfStrings[counter] += "```"
+            await ctx.send(arrayOfStrings[counter])
 
         elif pp.lower() == 'podstawowe' or pp.lower() =='p':
             mycursor.execute(f"select  r.RangaId, r.RangaNazw, a.Nickname, a.Specka, a.Numer, a.Stat, p.Pozycja FROM {tabela} a, Rangi r, Pozycja p WHERE r.Ranga = a.Ranga and a.Pozycja = p.IDPozycja")
             re = mycursor.fetchall()
             print(re)
 
-            pracie += f"{padMiddle(f'RangaNazw',20)} | {padMiddle(f'Nickname',12)} | {padMiddle(f'Specka',10)} | {padMiddle(f'Numer',6)} | {padMiddle(f'Pozycja',18)}\n"
-            pracie += f"-----------------------------------------------------------------------------\n"
+            arrayOfStrings[counter] += f"{padMiddle(f'RangaNazw',20)} | {padMiddle(f'Nickname',12)} | {padMiddle(f'Specka',10)} | {padMiddle(f'Numer',6)} | {padMiddle(f'Pozycja',18)}\n"
+            arrayOfStrings[counter] += f"-----------------------------------------------------------------------------\n"
             for x in re:
-                 print(x[0])
-                 p = x[5]
+                if(len(arrayOfStrings[counter]) < 1900):
+                     print(x[0])
+                     p = x[5]
 
-                 pracie += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
+                     arrayOfStrings[counter] += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
+                else:
+                    arrayOfStrings[counter] += '```'
+                    await ctx.send(f'Podstawowe dane {tabela}u:\n{arrayOfStrings[counter]}')
+                    counter += 1
+                    arrayOfStrings.append('```python\n')
+                    arrayOfStrings[counter] += f"{padMiddle(f'RangaNazw',20)} | {padMiddle(f'Nickname',12)} | {padMiddle(f'Specka',10)} | {padMiddle(f'Numer',6)} | {padMiddle(f'Pozycja',18)}\n"
+                    arrayOfStrings[counter] += f"-----------------------------------------------------------------------------\n"
+                    arrayOfStrings[counter] += f" {padStart(f'{x[1]}',18)} | {padStart(f'{x[2]}', 12)} | {padStart(f'{x[3]}',10)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[6]}', 19)}\n"
 
-            pracie += '```'
-            await ctx.send(f'Podstawowe dane {tabela}u:\n{pracie}')
+
+            arrayOfStrings[counter] += '```'
+            print(len(arrayOfStrings[counter]))
+            await ctx.send(f'Podstawowe dane {tabela}u:\n{arrayOfStrings[counter]}')
 
         elif pp.lower() == 'aktywnosc' or pp.lower() =="ak":
             mycursor.execute(f"select  a.Nickname, a.Stat, a.Plusy, a.Minusy, a.Aktywnosc, a.Zachowanie FROM {tabela} a")
             re = mycursor.fetchall()
             print(re)
 
-            pracie += f"{padMiddle(f'Nickname',12)} | {padMiddle(f'Stat',8)} | {padMiddle('Plusy', 6)} | {padMiddle('Minusy', 8)} | {padMiddle(f'Aktywnosc',10)} | {padMiddle(f'Zachowanie',12)}|\n"
-            pracie += f"-----------------------------------------------------------------------------\n"
+            arrayOfStrings[counter] += f"{padMiddle(f'Nickname',12)} | {padMiddle(f'Stat',8)} | {padMiddle('Plusy', 6)} | {padMiddle('Minusy', 8)} | {padMiddle(f'Aktywnosc',10)} | {padMiddle(f'Zachowanie',12)}|\n"
+            arrayOfStrings[counter] += f"-----------------------------------------------------------------------------\n"
             for x in re:
                  print(x[0])
+                 if(len(arrayOfStrings[counter]) < 1900):
+                     arrayOfStrings[counter] += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
+                 else:
+                     arrayOfStrings[counter] += '```'
+                     await ctx.send(f'Dane dotyczące aktywności {tabela}u:\n{arrayOfStrings[counter]}')
+                     counter += 1
+                     arrayOfStrings.append('```python\n')
+                     arrayOfStrings[counter] += f"{padMiddle(f'Nickname',12)} | {padMiddle(f'Stat',8)} | {padMiddle('Plusy', 6)} | {padMiddle('Minusy', 8)} | {padMiddle(f'Aktywnosc',10)} | {padMiddle(f'Zachowanie',12)}|\n"
+                     arrayOfStrings[counter] += f"-----------------------------------------------------------------------------\n"
+                     arrayOfStrings[counter] += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
 
 
-                 pracie += f" {padStart(f'{x[0]}', 11)} | {padStart(f'{x[1]}',8)} | {padStart(f'{x[2]}', 9)} | {padStart(f'{x[3]}',11)} | {padStart(f'{x[4]}', 5)} | {padStart(f'{x[5]}', 7)}\n"
 
-            pracie += '```'
-            await ctx.send(f'Dane dotyczące aktywności {tabela}u:\n{pracie}')
+            arrayOfStrings[counter] += '```'
+            await ctx.send(f'Dane dotyczące aktywności {tabela}u:\n{arrayOfStrings[counter]}')
 
 
         elif pp.lower() == 'awanse' or pp.lower() =="aw" :
@@ -1487,19 +1507,27 @@ async def o(ctx, tabela, pp):
             re = mycursor.fetchall()
             print(re)
 
-            pracie += f"{padMiddle(f'Nickname',14)} | {padMiddle(f'DataAwDeg',12)} | {padMiddle(f'Awansujacy',22)} |\n"
-            pracie += f"-------------------------------------------------------\n"
+            arrayOfStrings[counter] += f"{padMiddle(f'Nickname',14)} | {padMiddle(f'DataAwDeg',12)} | {padMiddle(f'Awansujacy',22)} |\n"
+            arrayOfStrings[counter] += f"-------------------------------------------------------\n"
             for x in re:
                 print(x[0])
-                if x[2] is not None:
+                print(x[2] is not None)
+                if len(arrayOfStrings[counter])>= 1900:
+                    arrayOfStrings[counter] += '```'
+                    await ctx.send(f'Dane na temat awansów {tabela}u:\n{arrayOfStrings[counter]}')
+                    counter += 1
+                    arrayOfStrings.append('```python\n')
+                    arrayOfStrings[counter] += f"{padMiddle(f'Nickname',14)} | {padMiddle(f'DataAwDeg',12)} | {padMiddle(f'Awansujacy',22)} |\n"
+                    arrayOfStrings[counter] += f"-------------------------------------------------------\n"
+                if x[2] is not None and ctx.message.guild.get_member(int(x[2])) is not None:
                     prin = ctx.message.guild.get_member(int(x[2]))
                     sliced = prin.nick[2:]
                     print(sliced)
-                    pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'{sliced}', 22)} |\n"
+                    arrayOfStrings[counter] += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'{sliced}', 22)} |\n"
                 else:
-                    pracie += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
-            pracie += '```'
-            await ctx.send(f'Dane na temat awansów {tabela}u:\n{pracie}')
+                    arrayOfStrings[counter] += f" {padStart(f'{x[0]}', 13)} | {padStart(f'{x[1]}',11)} | {padStart(f'None', 22)} |\n"
+            arrayOfStrings[counter] += '```'
+            await ctx.send(f'Dane na temat awansów {tabela}u:\n{arrayOfStrings[counter]}')
         else:
             await ctx.send('Podaj poprawne dane!!!')
     else:
