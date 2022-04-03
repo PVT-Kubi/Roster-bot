@@ -620,7 +620,7 @@ async def play(ctx, x : str):
                 await channel.connect()
             except:
                 print("Bot jest już na kanale")
-            voice_client: discord.VoiceClient = voice_client = client.voice_client_in(server)
+            voice_client: discord.VoiceClient = client.voice_client_in(server)
             print(voice_client)
             dict = {guild.id : [[x], 0, voice_client]}
             print(dict[guild.id][0][0])
