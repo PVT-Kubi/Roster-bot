@@ -42,10 +42,11 @@ looping = False
 
 
 def connection():
-    host = config['HOST'],
-    user = config['USER'],
-    passwd = config['PASSW'],
-    db = config['DB'],
+    connection = MySQLdb.connect(
+        host = config['HOST'],
+        user = config['USER'],
+        passwd = config['PASSW'],
+        db = config['DB'],
     )
     return connection
 
