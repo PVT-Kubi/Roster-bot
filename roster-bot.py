@@ -42,7 +42,6 @@ looping = False
 
 
 def connection():
-    connection = MySQLdb.connect(
     host = config['HOST'],
     user = config['USER'],
     passwd = config['PASSW'],
@@ -106,7 +105,6 @@ async def on_ready():
     # embed.set_image(url = "https://media.discordapp.net/attachments/833425519802449951/836872743541669928/Wilk_Natasza.jpg?width=473&height=473")
     # await client.get_channel(843512570057195521).send(embed=embed)
     #
-    # await client.get_channel(843512570057195521).send(f'O i by the way, mogłem również wyglądać w ten sposób, ale Kubi uznał, że "piękny chłopiec" kupił jego serce (projekt opracowany przez Cherra/spagjedi)')
     # await client.get_channel(843512570057195521).send(f'https://media.discordapp.net/attachments/760953812713472060/838789087740690473/mergedimage.png?width=473&height=473')
 
 @client.event
@@ -611,7 +609,7 @@ async def play(ctx, x : str):
                 await channel.connect()
             except:
                 print("Bot jest już na kanale")
-            voice_client: discord.VoiceClient = ctx.guild.voice_client
+            voice_client: discord.VoiceClient = guild.voice_client
             print(voice_client)
             dict = {guild.id : [[x], 0, voice_client]}
             print(dict[guild.id][0][0])
