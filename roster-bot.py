@@ -34,6 +34,14 @@ config =os.environ
 
 #guild_ids = 811324655310602300
 
+if not discord.opus.is_loaded():
+    # the 'opus' library here is opus.dll on windows
+    # or libopus.so on linux in the current directory
+    # you should replace this with the location the
+    # opus library is located in and with the proper filename.
+    # note that on windows this DLL is automatically provided for you
+    discord.opus.load_opus('opus')
+
 # players = {}
 queue = []
 z = 0
@@ -584,6 +592,7 @@ async def play(ctx, x : str):
     guild = ctx.message.guild
     guilded = False
     hasRole =  False
+    server = ctx.message.server
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
@@ -606,11 +615,12 @@ async def play(ctx, x : str):
             else:
                 await ctx.send("Nie ma cię na żadnym kanale głosowym")
                 return
+            #channel =  client.get_channel(825294815007604788)
             try:
                 await channel.connect()
             except:
                 print("Bot jest już na kanale")
-            voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild=guild)
+            voice_client: discord.VoiceClient = voice_client = client.voice_client_in(server)
             print(voice_client)
             dict = {guild.id : [[x], 0, voice_client]}
             print(dict[guild.id][0][0])
