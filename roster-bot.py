@@ -120,6 +120,7 @@ async def on_ready():
 async def on_member_remove(member):
     #channel = client.get_channel(811324655310602303)
     #channel2 = client.get_channel(825294762776068136)
+    print('sssssssssssssssssssss')
     print(member.id)
     hasRole = True
     Oddzial = ''
