@@ -27,7 +27,7 @@ from NHentai.nhentai import NHentai
 
 intents = discord.Intents.all()
 intents.members = True
-client = commands.Bot(command_prefix = '.',  guild_subscriptions=True, help_command = None, intents=intents)
+client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
 #slash = SlashCommand(client, sync_commands=True)
 # config = dotenv_values('.env')
 config =os.environ
