@@ -27,7 +27,7 @@ from NHentai.nhentai import NHentai
 
 intents = discord.Intents.all()
 intents.members = True
-client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
+client = commands.Bot(command_prefix = '.',  guild_subscriptions=True, help_command = None, intents=intents)
 #slash = SlashCommand(client, sync_commands=True)
 # config = dotenv_values('.env')
 config =os.environ
@@ -118,21 +118,22 @@ async def on_ready():
 
 @client.event
 async def on_member_remove(member):
-    channel = client.get_channel(825344498178981888)
-    channel2 = client.get_channel(843512570057195521)
+    #channel = client.get_channel(811324655310602303)
+    #channel2 = client.get_channel(825294762776068136)
     print(member.id)
-    hasRole = False
+    hasRole = True
     Oddzial = ''
     for role in member.roles:
-        if role.name != '@everyone':
-            if role.name == '104th Battalion':
-                hasRole = True
-                break
+       if role.name != '@everyone':
+           if role.name[2:].lower() == '104th battalion':
+               hasRole = True
+               break
     if hasRole:
         for role in member.roles:
             if role.name != '@everyone':
-                if 'Platoon' in role.name:
+                if 'platoon' in role.name.lower():
                     Oddzial = role.name.replace('Platoon','')
+                    Oddzial = Oddzial[2:]
                     break
         print(Oddzial)
         conn = connection()
@@ -143,7 +144,8 @@ async def on_member_remove(member):
         if result:
             mycursor.execute(f"DELETE FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
             conn.commit()
-            await client.send_message(message.channel2, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
+            #await client.send_message(channel2, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
+            await client.get_channel(811324655310602303).send(f"Nasz kamrat {member.nick} opuścił nasz oddział...")
 
 
 
