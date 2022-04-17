@@ -123,30 +123,30 @@ async def on_member_remove(member):
     print('sssssssssssssssssssss')
     print(member.id)
     hasRole = True
-    # Oddzial = ''
-    # for role in member.roles:
-    #    if role.name != '@everyone':
-    #        if role.name[2:].lower() == '104th battalion':
-    #            hasRole = True
-    #            break
-    # if hasRole:
-    #     for role in member.roles:
-    #         if role.name != '@everyone':
-    #             if 'platoon' in role.name.lower():
-    #                 Oddzial = role.name.replace('Platoon','')
-    #                 Oddzial = Oddzial[2:]
-    #                 break
-    #     print(Oddzial)
-    #     conn = connection()
-    #     mycursor = SSCursor(conn)
-    #
-    #     mycursor.execute(f"select * FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
-    #     result = mycursor.fetchone()
-    #     if result:
-    #         mycursor.execute(f"DELETE FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
-    #         conn.commit()
-    #         #await client.send_message(channel2, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
-    #         await client.get_channel(811324655310602303).send(f"Nasz kamrat {member.nick} opuścił nasz oddział...")
+    Oddzial = ''
+    for role in member.roles:
+       if role.name != '@everyone':
+           if role.name[2:].lower() == '104th battalion':
+               hasRole = True
+               break
+    if hasRole:
+        for role in member.roles:
+            if role.name != '@everyone':
+                if 'platoon' in role.name.lower():
+                    Oddzial = role.name.replace('Platoon','')
+                    Oddzial = Oddzial[2:]
+                    break
+        print(Oddzial)
+        conn = connection()
+        mycursor = SSCursor(conn)
+
+        mycursor.execute(f"select * FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
+        result = mycursor.fetchone()
+        if result:
+            mycursor.execute(f"DELETE FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
+            conn.commit()
+            #await client.send_message(channel2, f"Nasz kamrat {member.nick} opuścił nasz oddział...")
+            await client.get_channel(811324655310602303).send(f"Nasz kamrat {member.nick} opuścił nasz oddział...")
 
 
 
