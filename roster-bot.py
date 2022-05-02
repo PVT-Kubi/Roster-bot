@@ -139,9 +139,11 @@ async def on_member_remove(member):
         print(Oddzial)
         conn = connection()
         mycursor = SSCursor(conn)
-
-        mycursor.execute(f"select * FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
-        result = mycursor.fetchone()
+        try:
+            mycursor.execute(f"select * FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
+            result = mycursor.fetchone()
+        except e:
+            print(e)
         if result:
             mycursor.execute(f"DELETE FROM {Oddzial.lower()} WHERE IdStorm = '{member.id}'")
             conn.commit()
