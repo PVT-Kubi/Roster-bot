@@ -491,7 +491,7 @@ async def playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x):
          url2 = info['formats'][0]['url']
          source = await discord.FFmpegOpusAudio.from_probe(url2)
          await actualPlay(guild, source)
-         looping(error, voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, loop, guild, x)
+        #  looping(error, voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, loop, guild, x)
          try:
              dict[guild.id][1] += 1
              x = dict[guild.id][0][dict[guild.id][1]]
@@ -543,10 +543,10 @@ async def play(ctx, x : str):
             voice_client = ctx.voice_client
 
             print(voice_client)
-            await playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x)
-            # dict = {guild.id : [[x], 0, voice_client]}
-            # print(dict[guild.id][0][0])
-            # await playing(dict[guild.id][2], FFMPEG_OPTIONS, YDL_OPTIONS, guild, dict[guild.id][0][0])
+            # await playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x)
+            dict = {guild.id : [[x], 0, voice_client]}
+            print(dict[guild.id][0][0])
+            await playing(dict[guild.id][2], FFMPEG_OPTIONS, YDL_OPTIONS, guild, dict[guild.id][0][0])
         else:
             print(dict[guild.id][0])
             dict[guild.id][0].append(x)
