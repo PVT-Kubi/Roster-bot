@@ -1,5 +1,6 @@
 import discord
 import os
+from dotenv import load_dotenv
 from discord.ext import commands
 import random
 import sys
@@ -24,25 +25,12 @@ from NHentai.nhentai import NHentai
 
 
 
-
+load_dotenv()
 intents = discord.Intents.all()
 intents.members = True
 client = commands.Bot(command_prefix = '.', help_command = None, intents=intents)
-#slash = SlashCommand(client, sync_commands=True)
-# config = dotenv_values('.env')
 config =os.environ
 
-#guild_ids = 811324655310602300
-
-# if not discord.opus.is_loaded():
-#     # the 'opus' library here is opus.dll on windows
-#     # or libopus.so on linux in the current directory
-#     # you should replace this with the location the
-#     # opus library is located in and with the proper filename.
-#     # note that on windows this DLL is automatically provided for you
-#     discord.opus.load_opus('opus')
-
-# players = {}
 queue = []
 z = 0
 dict = {}
@@ -51,10 +39,10 @@ looping = False
 
 def connection():
     connection = MySQLdb.connect(
-        host = config['HOST'],
-        user = config['USER'],
-        passwd = config['PASSW'],
-        db = config['DB'],
+        host = os.getenv('HOST'),
+        user = os.getenv('USER'),
+        passwd = os.getenv('PASSW'),
+        db =  os.getenv('DB'),
     )
     return connection
 
@@ -103,7 +91,7 @@ async def on_ready():
     cherr= client.get_user(521992400755884052)
 
 
-    await client.change_presence(activity=discord.Streaming(name="Pozdro Cherro jesteś kocur <3", url='https://www.youtube.com/watch?v=uVgZHQ93H1o'))
+    await client.change_presence(activity=discord.Streaming(name="Ej ogólnie to zdycham chłopaki", url='https://www.youtube.com/watch?v=uVgZHQ93H1o'))
 
     # embed = discord.Embed(
     #     color = 10092441,
@@ -112,9 +100,62 @@ async def on_ready():
     # )
     #
     # embed.set_image(url = "https://media.discordapp.net/attachments/833425519802449951/836872743541669928/Wilk_Natasza.jpg?width=473&height=473")
-    # await client.get_channel(843512570057195521).send(embed=embed)
+    # await client.get_channel(811324655310602303).send("porąbana akcja")
     #
     # await client.get_channel(843512570057195521).send(f'https://media.discordapp.net/attachments/760953812713472060/838789087740690473/mergedimage.png?width=473&height=473')
+
+@client.command()
+async def naprawiamOddzialy(ctx):
+    guild = client.get_guild(819694752240107590)
+    generalMembers = guild.members
+    members = []
+    oddzialy = ["ares", "helheim", "phoenix", "venus"]
+    conn = connection()
+    mycursor = SSCursor(conn)
+    Oddzial = ''
+    for m in generalMembers:
+        for role in m.roles:
+            #print(role.name.lower())
+            if role.name != '@everyone':
+               if role.name[1:].lower() == '104th battalion':
+                   members.append(m)
+                   print(m)
+
+    for m in members:
+        print(m.roles)
+        for role in m.roles:
+            if 'platoon' in role.name.lower() in role.name.lower() or 'squad' in role.name.lower() in role.name.lower():
+               if 'dowódca' not in role.name.lower():
+                   if 'platoon' in role.name.lower() in role.name.lower():
+                       Oddzial = role.name.replace('Platoon','')
+                   else:
+                       Oddzial = role.name.replace('Squad','')
+                   Oddzial = Oddzial[1:]
+                   print(Oddzial)
+                   try:
+                       mycursor.execute(f"select * from {Oddzial.lower()} where IdStorm = '{m.id}'")
+                       result = mycursor.fetchone()
+                       print(result)
+                       if result is None:
+                           for o in oddzialy:
+                               mycursor.execute(f"select * from {o.lower()} where IdStorm = '{m.id}'")
+                               result = mycursor.fetchone()
+                               if result is not None:
+                                   if result[11] is None or result[11] == 'None':
+                                       mycursor.execute(f"INSERT INTO {Oddzial.lower()}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', NULL, '{result[12]}') ")
+                                   else:
+                                       mycursor.execute(f"INSERT INTO {Oddzial.lower()}(`IdStorm`, `Ranga`, `Nickname`, `Stat`, `Numer`, `Specka`, `Plusy`, `Minusy`, `Aktywnosc`, `Zachowanie`, `DataAwDeg`, `Awansujacy`, `Pozycja`) values({result[0]}, {result[1]}, '{result[2]}', '{result[3]}', {result[4]}, '{result[5]}', '{result[6]}', '{result[7]}', '{result[8]}', '{result[9]}', '{result[10]}', '{result[11]}', '{result[12]}') ")
+                                   conn.commit()
+                                   mycursor.execute(f"DELETE FROM {o.lower()} WHERE IdStorm = '{m.id}'")
+                                   break
+                   except e:
+                       print(e)
+
+
+
+
+
+
 
 @client.event
 async def on_member_remove(member):
@@ -126,7 +167,7 @@ async def on_member_remove(member):
     Oddzial = ''
     for role in member.roles:
        if role.name != '@everyone':
-           if role.name[2:].lower() == '104th battalion':
+           if role.name[2:].lower() == '104th Battalion':
                hasRole = True
                break
     if hasRole:
@@ -206,107 +247,10 @@ async def help(ctx):
 
 
 
-# @client.command()
-# async def play(ctx, url):
-#     voice = get(client.voice_clients, guild=ctx.guild)
-#     YDL_OPTIONS = {
-#         'format': 'bestaudio',
-#         'postprocessors': [{
-#             'key': 'FFmpegExtractAudio',
-#             'preferredcodec': 'mp3',
-#             'preferredquality': '192',
-#         }],
-#         'outtmpl': 'song.%(ext)s',
-#     }
-#
-#     with YoutubeDL(Music.YDL_OPTIONS) as ydl:
-#         ydl.download("URL", download=True)
-#
-#     if not voice.is_playing():
-#         voice.play(FFmpegPCMAudio("song.mp3"))
-#         voice.is_playing()
-#         await ctx.send(f"Now playing {url}")
-#     else:
-#         await ctx.send("Already playing song")
-#         return
+
 
 
 #------------------------------------Moduł muzyczny-------------------------------------------------------------
-
-#opcja druga któa też nie działas
-# global songs
-# global obj
-# print(obj[g.id][1])
-# song_there = os.path.isfile("song.m4a")
-# wait(lambda: is_something_ready(obj[g.id][1]) == True)
-# for x in songs[g.id]:
-#     try:
-#         if song_there:
-#             os.remove("song.m4a")
-#     except PermissionError:
-#         await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
-#         return
-#
-#
-#     ydl_opts = {
-#         'format': 'm4a'
-#     }
-#     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download([x])
-#     for file in os.listdir("./"):
-#         if file.endswith(".m4a"):
-#             os.rename(file, "song.m4a")
-#     obj[g.id][1].play(discord.FFmpegOpusAudio("song.m4a"))
-#
-# def is_something_ready(something):
-#     if not something.is_playing(): #<- nawet tu miałem takie coś
-#         return True
-#     return False
-
-#tu event bu uratował bo nie musi co sekundę sprawdzać
-# def looping(ctx, g, vc, i, loop):
-#     global songs
-#     global obj
-#     if len(songs[g.id]) > 0:
-#         i+=1
-#         asyncio.run_coroutine_threadsafe(playing(ctx, g, vc, i), loop)
-#     else:
-#         return
-#
-#
-#
-#
-#
-# async def playing(ctx, g, vc, i):
-#     global songs
-#     global obj
-#     countdown = 0
-#
-#     print(songs[g.id])
-#     song_there = os.path.isfile("song.webm")
-#     # wait(lambda: is_something_ready(obj[g.id][1]), timeout_seconds=120, waiting_for="utwór się kończy")
-#     try:
-#         if song_there:
-#             os.remove("song.webm")
-#     except PermissionError:
-#         # await ctx.send("Zaczekaj, aż skończę, albo użyj stop")
-#         return
-#
-#
-#     ydl_opts = {
-#         'format': '249/250/251',
-#     }
-#     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download([songs[g.id][i]])
-#     for file in os.listdir("./"):
-#         if file.endswith(".webm"):
-#             os.rename(file, "song.webm")
-#     source = await discord.FFmpegOpusAudio.from_probe("song.webm")
-#     vc.play(source, after = looping(ctx, g, vc, i, vc.loop))
-
-
-
-
 
 
 #---------------------------------------------Proszę tego nie czytać, wstąpił we mnie diabeł-------------------------------------------------------------------------------------
@@ -438,66 +382,6 @@ async def radio(ctx, a):
     print(voice_client)
     voice_client.play(FFmpegPCMAudio(radia[a.lower()]))
 
-async def actualPlay(guild, source):
-    global dict
-    global looping
-    FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
-    YDL_OPTIONS = {'format':'bestaudio'}
-    voice_client = dict[guild.id][2]
-    if not voice_client.is_playing():
-        voice_client.play(source)
-    while voice_client.is_playing():
-        await asyncio.sleep(3)
-    if looping:
-        await doingStuff(FFMPEG_OPTIONS, YDL_OPTIONS, guild)
-
-async def doingStuff(FFMPEG_OPTIONS, YDL_OPTIONS, guild):
-        global dict
-        global looping
-        FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
-        YDL_OPTIONS = {'format':'bestaudio'}
-        with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-            vc = dict[guild.id][2]
-            x =dict[guild.id][0][0]
-            info = ydl.extract_info(x, download=False)
-            url2 = info['formats'][0]['url']
-            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-            while looping == True:
-                await actualPlay(guild, source)
-
-
-@client.command()
-async def loop(ctx):
-    global dict
-    global looping
-    guild = ctx.message.guild
-    guilded = False
-
-    for y in dict:
-        if y == guild.id:
-            guilded = True
-    if not guilded:
-        await ctx.send("Bot nie gra żadnego utworu")
-    else:
-        if not looping:
-            looping = True
-            await ctx.send("Włączono zapętlanie utworu")
-            FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
-            YDL_OPTIONS = {'format':'bestaudio'}
-            await doingStuff(FFMPEG_OPTIONS, YDL_OPTIONS, guild)
-            # with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-            #     vc = dict[guild.id][2]
-            #     x =dict[guild.id][0][0]
-            #     info = ydl.extract_info(x, download=False)
-            #     url2 = info['formats'][0]['url']
-            #     source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-            #     while looping == True:
-            #         await actualPlay(guild, source)
-        else:
-            looping = False
-            await ctx.send("Włączono zapętlanie utworu")
-
-
 @client.command()
 async def skip(ctx):
     global dict
@@ -544,17 +428,70 @@ async def skip(ctx):
     else:
         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
 
+@client.command()
+async def loop(ctx):
+    global dict
+    global looping
+    guild = ctx.message.guild
+    guilded = False
+
+    for y in dict:
+        if y == guild.id:
+            guilded = True
+    if not guilded:
+        await ctx.send("Bot nie gra żadnego utworu")
+    else:
+        if not looping:
+            looping = True
+            await ctx.send("Włączono zapętlanie utworu")
+            FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
+            YDL_OPTIONS = {'format':'bestaudio'}
+            await doingStuff(FFMPEG_OPTIONS, YDL_OPTIONS, guild)
+            # with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+            #     vc = dict[guild.id][2]
+            #     x =dict[guild.id][0][0]
+            #     info = ydl.extract_info(x, download=False)
+            #     url2 = info['formats'][0]['url']
+            #     source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            #     while looping == True:
+            #         await actualPlay(guild, source)
+        else:
+            looping = False
+            await ctx.send("Włączono zapętlanie utworu")
+    
+#------------------------------------------------------------------------------------------    
+
+async def actualPlay(guild, source):
+    global dict
+    global looping
+    FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
+    YDL_OPTIONS = {'format':'bestaudio'}
+    voice_client = dict[guild.id][2]
+    if not voice_client.is_playing():
+        voice_client.play(source)
+
+async def doingStuff(FFMPEG_OPTIONS, YDL_OPTIONS, guild):
+        global dict
+        global looping
+        FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
+        YDL_OPTIONS = {'format':'bestaudio'}
+        with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+            vc = dict[guild.id][2]
+            x =dict[guild.id][0][0]
+            info = ydl.extract_info(x, download=False)
+            url2 = info['formats'][0]['url']
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            await actualPlay(guild, source)
 
 async def playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x):
     global dict
-    # loop = asyncio.get_event_loop()
+    loop = asyncio.get_event_loop()
     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
          info = ydl.extract_info(x, download=False)
          url2 = info['formats'][0]['url']
-         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-         # voice_client.play(source)
+         source = await discord.FFmpegOpusAudio.from_probe(url2)
          await actualPlay(guild, source)
-         # looping(error, voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, loop, guild, x)
+         looping(error, voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, loop, guild, x)
          try:
              dict[guild.id][1] += 1
              x = dict[guild.id][0][dict[guild.id][1]]
@@ -567,29 +504,6 @@ async def playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x):
          await playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x)
 
 
-
-
-
-
-# def looping(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, loop, guild, x):
-#     global dict
-#
-#     try:
-#         dict[guild.id][1] += 1
-#         x = dict[guild.id][0][dict[guild.id][1]]
-#         print("Nice")
-#     except:
-#         print("Cock")
-#         del dict[guild.id]
-#         return
-#     x = dict[guild.id][dict[guild.id][1]]
-#     try:
-#         foot = asyncio.run_coroutine_threadsafe(playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x), client.loop)
-#         foot.result()
-#     except Exception as e:
-#         print(e)
-
-
 @client.command()
 async def play(ctx, x : str):
     global dict
@@ -597,7 +511,8 @@ async def play(ctx, x : str):
     guild = ctx.message.guild
     guilded = False
     hasRole =  False
-    server = ctx.message.server
+    #print(ctx.message.server)
+    # server = ctx.message.server
     author = ctx.message.author
     for role in author.roles:
         if role.name != '@everyone':
@@ -613,23 +528,25 @@ async def play(ctx, x : str):
                 guilded = True
         if guilded == False:
             FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options':'-vn'}
-            YDL_OPTIONS = {'format':'bestaudio'}
+            YDL_OPTIONS = {'format':'worstaudio'}
 
             if ctx.author.voice and ctx.author.voice.channel:
                 channel = ctx.author.voice.channel
             else:
                 await ctx.send("Nie ma cię na żadnym kanale głosowym")
                 return
-            #channel =  client.get_channel(825294815007604788)
+
             try:
                 await channel.connect()
             except:
                 print("Bot jest już na kanale")
-            voice_client: discord.VoiceClient = client.voice_client_in(server)
+            voice_client = ctx.voice_client
+
             print(voice_client)
-            dict = {guild.id : [[x], 0, voice_client]}
-            print(dict[guild.id][0][0])
-            await playing(dict[guild.id][2], FFMPEG_OPTIONS, YDL_OPTIONS, guild, dict[guild.id][0][0])
+            await playing(voice_client, FFMPEG_OPTIONS, YDL_OPTIONS, guild, x)
+            # dict = {guild.id : [[x], 0, voice_client]}
+            # print(dict[guild.id][0][0])
+            # await playing(dict[guild.id][2], FFMPEG_OPTIONS, YDL_OPTIONS, guild, dict[guild.id][0][0])
         else:
             print(dict[guild.id][0])
             dict[guild.id][0].append(x)
@@ -638,76 +555,8 @@ async def play(ctx, x : str):
         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
 
 
-# @client.command()
-# async def play(ctx, url : str):
-#     global obj
-#     global songs
-#
-#
-#     obj = {}
-#     songs = {}
-#     i = 0
-#
-#     hasRole =  False
-#     hasGuild = False
-#     canPlay = False
-#     author = ctx.message.author
-#     guild = ctx.message.guild
-#     # channel = client.get_channel(811324655310602304)
-#     # guild = client.get_guild(811324655310602300)
-#     for role in author.roles:
-#         if role.name != '@everyone':
-#             if role.name == '104th Battalion':
-#                 hasRole = True
-#                 break
-#             if role.name == 'Przeciętny Pasożyt':
-#                 hasRole = True
-#                 break
-#     if hasRole:
-#         for x in obj:
-#             if x == guild.id:
-#                 hasGuild = True
-#         if hasGuild == False:
-#             if ctx.author.voice and ctx.author.voice.channel:
-#                 channel = ctx.author.voice.channel
-#             else:
-#                 await ctx.send("Nie ma cię na żadnym kanale głosowym")
-#                 return
-#             try:
-#                 await channel.connect()
-#             except:
-#                 print("Bot jest już na kanale")
-#             voice_client = discord.utils.get(client.voice_clients, guild = guild)
-#             obj = {
-#                 guild.id: [channel, voice_client]
-#             }
-#             songs  = {
-#                 guild.id: []
-#             }
-#             songs[guild.id].append(url)
-#             print("Nie ma gilidi")
-#             await playing(ctx, guild, voice_client, i)
-#
-#
-#         elif hasGuild == True:
-#             songs[guild.id].append(url)
-#             #await playing(ctx, guild, voice_client, i)
-#
-#
-#
-#
-#
-#             # channel = obj[guild.id][0]
-#             # voice_client = obj[guild.id][1]
-#             # while canPlay == False:
-#             #     if not voice_client.is_playing():
-#             #         time.sleep()
-#             #         await playing(ctx, url, guild, channel, voice_client)
-#
-#     else:
-#         await ctx.send("Sory, ale służę w jednostce 104 i tylko oni mają dostęp do modułu muzycznego.")
-# #
-#
+
+
 @client.command()
 async def leave(ctx):
     hasRole =  False
@@ -1550,4 +1399,4 @@ async def o(ctx, tabela, pp):
     mycursor.close()
     conn.close()
 
-client.run(config['TOKEN'])
+client.run(os.getenv('TOKEN'))
