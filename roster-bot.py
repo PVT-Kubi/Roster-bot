@@ -19,8 +19,6 @@ from youtube_dl import YoutubeDL
 from waiting import wait
 # from discord_slash import SlashCommand
 # from discord_slash.utils.manage_commands import create_option
-from NHentai.nhentai import NHentai
-# from NHentai.nhentai_async import NHentaiAsync
 
 
 
@@ -105,17 +103,7 @@ async def on_ready():
 
     await client.change_presence(activity=discord.Streaming(name="Pozdro Cherro jesteś kocur <3", url='https://www.youtube.com/watch?v=uVgZHQ93H1o'))
 
-    # embed = discord.Embed(
-    #     color = 10092441,
-    #     title = "Siemano kapitany!",
-    #     description = f" Pewnie większość z was mnie zna, a jak nie to chociaż o mnie słyszała, gdyż z tego co mi wiadomo byłem pare razy wspominany, ale dla tych co mnie jeszcze nie kojarzą, jestem szeregowy Bubi i będę odpowiedzialny za papierkową robotę tego oddziału! Jeśli chodzi o pochodzenie to przenieśli mnie z innej jednostki (bo usłyszeli, że do teraz używacie tabelek w excelu). O i jeszcze jedno, nie jestem klonem, jednak nie jeste też naturalnie powstałą rasą. Zostałem sztucznie stworzony w ramach operacji R O A S T. Za projekt ciała odpowiada {levi.mention} jednak twórcą umysłu na moje cholerne nieszczęście jest {kubi.mention} (z tego powodu łatwo mogę się wywalić). Nom o mnie to chyba tyle...\n **Liczę na owocną współpracę!**"
-    # )
-    #
-    # embed.set_image(url = "https://media.discordapp.net/attachments/833425519802449951/836872743541669928/Wilk_Natasza.jpg?width=473&height=473")
-    # await client.get_channel(843512570057195521).send(embed=embed)
-    #
-    # await client.get_channel(843512570057195521).send(f'https://media.discordapp.net/attachments/760953812713472060/838789087740690473/mergedimage.png?width=473&height=473')
-
+  
 @client.event
 async def on_member_remove(member):
     #channel = client.get_channel(811324655310602303)
@@ -308,106 +296,6 @@ async def help(ctx):
 
 
 
-
-#---------------------------------------------Proszę tego nie czytać, wstąpił we mnie diabeł-------------------------------------------------------------------------------------
-@client.command()
-async def po(ctx):
-    guild = ctx.message.guild
-    if guild.id != 819694752240107590:
-        nhentai = NHentai()
-        doujins: PopularPage = nhentai.get_popular_now()
-        ForCulturedMan = doujins.doujins[random.randrange(0, doujins.total_doujins)]
-        try:
-            embed = discord.Embed(
-                title = ForCulturedMan.title.english,
-                url = ForCulturedMan.url,
-                color = discord.Color.purple()
-
-            )
-        except:
-            embed = discord.Embed(
-                url = ForCulturedMan.url,
-                color = discord.Color.purple()
-
-            )
-        print(ForCulturedMan.title)
-        try:
-            embed.add_field(name = "Język", value = ForCulturedMan.lang, inline = False)
-
-            embed.add_field(name = "Tagi", value = str(ForCulturedMan.data_tags).replace("'", "").replace("[", "").replace("]", ""), inline = False)
-
-
-        except Exception:
-            embed.set_image(url=ForCulturedMan.cover.src)
-            await ctx.send(embed=embed)
-    else:
-        await ctx.send("Chciałbyś :smirk:")
-
-
-@client.command()
-async def szukamPromoFree(ctx, *, p):
-    nhentai = NHentai()
-    print(p)
-    guild = ctx.message.guild
-    if guild.id != 819694752240107590:
-        try:
-            search_obj: SearchPage = nhentai.search(query=f'{p}', sort='popular', page=1)
-            print(search_obj)
-            ps = search_obj.doujins[0]
-            embed = discord.Embed(
-                title = ps.title,
-                url = ps.url,
-                color = discord.Color.purple()
-
-            )
-
-            embed.set_image(url=ps.cover)
-            await ctx.send(embed=embed)
-        except:
-            # try:
-            search_obj: SearchPage = nhentai.search(query=f'{p}', sort='popular', page=1)
-            sb2: SearchPage = nhentai.search(query=f'{search_obj.title}', sort='popular', page=1)
-            ps = sb2.doujins[0]
-            embed = discord.Embed(
-                title = ps.title+".",
-                url = ps.url,
-                color = discord.Color.purple()
-
-            )
-
-            embed.add_field(name = "Artysta/ci", value = str(search_obj.artists).replace("'", "").replace("[", "").replace("]", "")+".", inline = False)
-            embed.add_field(name = "Języki", value = str(search_obj.languages).replace("'", "").replace("[", "").replace("]", "")+".", inline = False)
-            embed.add_field(name = "Tags", value = str(search_obj.tags).replace("'", "").replace("[", "").replace("]", "")+".", inline = False)
-            embed.set_image(url=search_obj.images[0])
-            embed.set_footer(text = f"Total pages: {search_obj.total_pages}")
-            await ctx.send(embed=embed)
-            # except:
-            #     await ctx.send("Nie znaleziono żadnego wyniku pasującego do wyszukiwania")
-    else:
-        await ctx.send("Człowieku, poszukaj lepiej kiedy masz trening. Zrobisz chociaż coś pożytecznego")
-@client.command()
-async def ReadSomeBook(ctx, *, p):
-    nhentai = NHentai()
-    guild = ctx.message.guild
-    if guild.id != 819694752240107590:
-        try:
-            search_obj: SearchPage = nhentai.search(query=f'{p}', sort='popular', page=1)
-            ps = search_obj.doujins[0]
-            sb2: SearchPage = nhentai.get_doujin(id=ps.id)
-            print(sb2)
-            for i in sb2.images:
-                await ctx.send(i)
-        except:
-            try:
-                search_obj: SearchPage = nhentai.get_doujin(id=p)
-                for i in search_obj.images:
-                    await ctx.send(i)
-            except:
-                await ctx.send("Nie znaleziono żadnego wyniku pasującego do wyszukiwania")
-    else:
-        await ctx.send("Doceniam to, że czytasz, jednak radziłbym sięgnąć po bardziej rozwijające dzieła...")
-
-#---------------------------------------------Już można czytać, dziękuje za wyrozumiałość-------------------------------------------------------------------------------------
 @client.command()
 async def radio(ctx, a):
     author = ctx.message.author
